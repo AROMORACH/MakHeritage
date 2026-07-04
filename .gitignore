@@ -1,0 +1,8 @@
+# Ignore local environment variables
+.env
+
+# Ignore database binaries and logs
+*.db
+node_modules/
+dist/
+.DS_Store
