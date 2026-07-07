@@ -1,9 +1,22 @@
-[
+{"Landmarks":[
+
   {
     "id": 1,
     "name": "The Main Building (Ivory Tower)",
     "category": "Infrastructure",
     "foundation_year": 1941,
-    "description": "Construction began in 1938 and the building officially opened in 1941. It is the iconic symbol of Makerere University..."
+    "description": "Construction began in 1938 and the building officially opened in 1941. It is the iconic symbol of Makerere University\n"
+  },
+  {
+  "id": 2,
+  "name": "Freedom Square",
+  "category": "Institutional Architecture & Central landmarks",
+  "foundation_year": 1922,
+  "description": "It serves as the designated ground for major university ceremonies and every graduation congregation since Makerere's early days as a technical school in 1922. it was formerly dubbed as 'Freedom Square' during the political shifts of the 1970s. But beyond academic functions, it is famous historically as the staging ground for Makerere's intense student politicis,guild ralies, general freshers orientation and passionate debates that have shaped the national political landscape of uganda\n"
+  },
+  {
+    
   }
+
 ]
+}
