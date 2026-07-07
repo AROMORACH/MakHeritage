@@ -246,6 +246,13 @@
   "category": "Food Court / Student Facility",
   "foundation_year": "Unknown",
   "description": "The Main Library Canteens are centrally positioned behind the library complex and serve as convenient food hubs for students during study breaks. They provide affordable local delicacies such as Rolex (chapati and fried eggs) and African tea, offering a social and refreshment space within the academic environment."
+},
+{
+  "id": 36,
+  "name": "The Meeting Point",
+  "category": "Food Court / Social Hub",
+  "foundation_year": "Unknown",
+  "description": "The Meeting Point serves as a major social and culinary hub where students from diverse academic disciplines gather. It acts as a melting pot for campus interactions, combining informal discussions, technology problem-solving sessions, and legal or literary debates over local buffet meals."
 }
 
 ]
