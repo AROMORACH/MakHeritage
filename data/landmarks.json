@@ -113,6 +113,13 @@
   "category": "Academic School",
   "foundation_year": 1937,
   "description": "Founded in 1937 by British artist Margaret Trowell, the Margaret Trowell School of Industrial and Fine Arts is the oldest professional art school in East Africa. It began as informal art classes conducted at Trowell's residence before becoming part of Makerere University in the 1940s. The school is home to the Trowell Gallery, which preserves an important collection of African contemporary art, sculptures, paintings, and ceramics."
+},
+{
+  "id": 17,
+  "name": "School of Law",
+  "category": "Academic School",
+  "foundation_year": 1968,
+  "description": "Officially established as an autonomous Faculty of Law in 1968, the School of Law is Uganda's oldest premier legal training institution. Originally operating as a department within the Faculty of Social Sciences, it has played a significant role in legal education and the development of the country's legal profession. The school is now housed in a modern neo-classical building equipped with advanced moot courtrooms for practical legal training."
 }
 
 ]
