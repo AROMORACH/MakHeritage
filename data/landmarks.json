@@ -22,7 +22,14 @@
   "foundation_year": 1949,
   "description": "Established in 1949, the Main Library is the oldest academic library in Uganda. It serves as the National Reference Library and legal depository for published works in Uganda. The library houses the renowned Africana Section, which contains rare historical collections, photographs, manuscripts, and diaries of early explorers and political figures."
 
-  }
+  },
+  {
+  "id":"uuid-4",
+  "name": "Senate Building",
+  "category": "Administration",
+  "foundation_year": 2001,
+  "description": "Commissioned in 2001, the Senate Building serves as Makerere University's central hub for academic administration. It houses the Office of the Academic Registrar and supports services such as enrollment, transcript verification, and graduation clearance. Designed as a modern multi-storey facility, it accommodates the University Senate, the institution's highest academic decision-making body."
+}
 
 ]
 }
