@@ -78,6 +78,13 @@
   "category": "Hall",
   "foundation_year": 1954,
   "description": "Officially opened on 6 July 1954 as 'New Hall,' the residence was later renamed in honour of Osagyefo Dr. Kwame Nkrumah, the first President of Ghana and a leading figure in the Pan-African movement. Known as 'The Rams,' the hall symbolizes strength, determination, and leadership. A prominent bronze statue of Kwame Nkrumah stands at its entrance, serving as a landmark for cultural events and student gatherings."
+},
+{
+  "id": 12,
+  "name": "Nsibirwa Hall",
+  "category": "Hall",
+  "foundation_year": 1952,
+  "description": "Originally opened in 1952 as Northcote Hall, the residence was later renamed Nsibirwa Hall in 1996 to honour Martin Luther Nsibirwa, the former Katikkiro (Prime Minister) of Buganda. The hall is known for its rich student traditions and its unique history of student self-governance. Today, its residents are known as 'Roosters.'"
 }
 
 ]
