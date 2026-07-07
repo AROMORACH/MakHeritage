@@ -106,6 +106,13 @@
   "category": "Academic College",
   "foundation_year": 2010,
   "description": "Officially established in 2010 through the merger of the Faculty of Technology and the School of Fine Art, CEDAT became one of Makerere University's leading centres for engineering, architecture, design, and technology. Building on the legacy of the Faculty of Technology, which was founded in 1970, the college provides modern workshops, laboratories, and studios for training engineers, architects, designers, and technology professionals."
+},
+{
+  "id": 16,
+  "name": "Margaret Trowell School of Industrial and Fine Arts (MTSIFA)",
+  "category": "Academic School",
+  "foundation_year": 1937,
+  "description": "Founded in 1937 by British artist Margaret Trowell, the Margaret Trowell School of Industrial and Fine Arts is the oldest professional art school in East Africa. It began as informal art classes conducted at Trowell's residence before becoming part of Makerere University in the 1940s. The school is home to the Trowell Gallery, which preserves an important collection of African contemporary art, sculptures, paintings, and ceramics."
 }
 
 ]
