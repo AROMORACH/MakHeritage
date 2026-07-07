@@ -57,6 +57,13 @@
   "category": "Hall",
   "foundation_year": 1957,
   "description": "Officially opened in 1957, University Hall is distinguished by its traditional collegiate courtyard design. Known as 'The Goats' (Mbaazi), the hall represents resilience, determination, and independence. It is also well known for its historic rivalry with Mitchell Hall, particularly during inter-hall sports competitions and student guild campaigns."
+},
+{
+  "id": 9,
+  "name": "Livingstone Hall",
+  "category": "Hall",
+  "foundation_year": 1959,
+  "description": "Officially opened in 1959, Livingstone Hall was established to accommodate the growing student population during Makerere University's affiliation with the University of London. Named after the British explorer and missionary David Livingstone, the hall is known for its tradition of academic excellence and disciplined student life. Its residents, known as 'Stonians' or 'Gentlemen,' share a long-standing cultural and political alliance with Africa Hall through the Afro-Stone solidarity."
 }
 
 ]
