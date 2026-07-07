@@ -197,6 +197,13 @@
   "category": "Health Facility",
   "foundation_year": 1972,
   "description": "Makerere University Hospital originated as a small student sick bay clinic before expanding after the university acquired the premises of the former Nile Nursing Home following the 1972 Asian expulsion. The sick bay was relocated to the new premises, and on 16th February 1978, during the presidency of Idi Amin Dada, the facility was officially upgraded to full hospital status. It continues to provide healthcare services to the Makerere University community."
+},
+{
+  "id": 29,
+  "name": "The University Printery",
+  "category": "Academic Support Facility",
+  "foundation_year": "1960s",
+  "description": "The University Printery was established to help Makerere University become self-reliant in producing academic and institutional literature. The highly secured facility is responsible for publishing internal examination papers, research monographs, graduation booklets, and other official university materials."
 }
 
 ]
