@@ -64,6 +64,13 @@
   "category": "Hall",
   "foundation_year": 1959,
   "description": "Officially opened in 1959, Livingstone Hall was established to accommodate the growing student population during Makerere University's affiliation with the University of London. Named after the British explorer and missionary David Livingstone, the hall is known for its tradition of academic excellence and disciplined student life. Its residents, known as 'Stonians' or 'Gentlemen,' share a long-standing cultural and political alliance with Africa Hall through the Afro-Stone solidarity."
+},
+{
+  "id": 10,
+  "name": "Africa Hall",
+  "category": "Hall",
+  "foundation_year": 1971,
+  "description": "Officially opened in 1971, Africa Hall was named to celebrate the spirit of Pan-African liberation and independence across the African continent. Its residents, known as 'The Crocodiles,' are recognized for their resilience, intelligence, and strong sense of community. Together with Livingstone Hall, Africa Hall forms the Afro-Stone solidarity, a prominent alliance in Makerere University's student leadership and guild politics."
 }
 
 ]
