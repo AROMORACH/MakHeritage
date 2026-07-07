@@ -190,6 +190,13 @@
   "category": "Innovation Centre",
   "foundation_year": 2023,
   "description": "Officially launched in July 2023, the Makerere Innovation Hub was established through a flagship partnership with the United Nations Development Programme (UNDP). Located at the Yusuf Lule Central Teaching Facility, the hub provides an incubation environment for software engineering, robotics, entrepreneurship, and digital innovation, supporting students, researchers, and technology startups."
+},
+{
+  "id": 28,
+  "name": "Makerere University Hospital",
+  "category": "Health Facility",
+  "foundation_year": 1972,
+  "description": "Makerere University Hospital originated as a small student sick bay clinic before expanding after the university acquired the premises of the former Nile Nursing Home following the 1972 Asian expulsion. The sick bay was relocated to the new premises, and on 16th February 1978, during the presidency of Idi Amin Dada, the facility was officially upgraded to full hospital status. It continues to provide healthcare services to the Makerere University community."
 }
 
 ]
