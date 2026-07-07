@@ -183,6 +183,13 @@
   "category": "Religious Centre",
   "foundation_year": 1970,
   "description": "Established in the 1970s with support from international Islamic partnerships, the Main Mosque serves as Makerere University's principal Islamic place of worship. Situated on a scenic ridge within the campus, it is distinguished by its classic Islamic architecture, featuring a soaring minaret and a prominent central dome. The mosque continues to serve as a centre for worship, spiritual guidance, and community life."
+},
+{
+  "id": 27,
+  "name": "Makerere Innovation Hub",
+  "category": "Innovation Centre",
+  "foundation_year": 2023,
+  "description": "Officially launched in July 2023, the Makerere Innovation Hub was established through a flagship partnership with the United Nations Development Programme (UNDP). Located at the Yusuf Lule Central Teaching Facility, the hub provides an incubation environment for software engineering, robotics, entrepreneurship, and digital innovation, supporting students, researchers, and technology startups."
 }
 
 ]
