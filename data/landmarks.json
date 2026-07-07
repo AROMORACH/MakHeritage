@@ -29,6 +29,13 @@
   "category": "Administration",
   "foundation_year": 2001,
   "description": "Commissioned in 2001, the Senate Building serves as Makerere University's central hub for academic administration. It houses the Office of the Academic Registrar and supports services such as enrollment, transcript verification, and graduation clearance. Designed as a modern multi-storey facility, it accommodates the University Senate, the institution's highest academic decision-making body."
+},
+{
+  "id": "uuid-5",
+  "name": "Lumumba Hall",
+  "category": "Hall",
+  "foundation_year": 1971,
+  "description": "Opened in 1971 to accommodate the post-independence increase in student enrollment, Lumumba Hall was named after Patrice Lumumba, the first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants,' the hall has a strong tradition of student leadership and campus solidarity. It is also home to the iconic 'Gongom' monument, a symbol of student autonomy and the hall's cultural heritage."
 }
 
 ]
