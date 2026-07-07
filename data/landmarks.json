@@ -232,6 +232,13 @@
   "category": "Campus Entrance",
   "foundation_year": "1940s",
   "description": "The Eastern Gate was established in the 1940s as a simple transit passage allowing staff and scholars to exit down the slopes of Makerere Hill into the Wandegeya trading center. Over the decades, it developed into a major pedestrian access point and later received modern overhead architectural signage to integrate with the wider campus entrance network."
+},
+{
+  "id": 34,
+  "name": "The Western Gate (Kikoni Gate)",
+  "category": "Campus Entrance",
+  "foundation_year": "Unknown",
+  "description": "The Western Gate, also known as Kikoni Gate, serves as a critical daily access point facing the extensive residential hostel district of Kikoni. It provides a major transit route for commuting students and has been the focus of modern architectural redesign initiatives by campus engineering scholars to improve its functionality and appearance."
 }
 
 ]
