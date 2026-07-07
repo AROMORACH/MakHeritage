@@ -99,6 +99,13 @@
   "category": "Academic College",
   "foundation_year": 2010,
   "description": "Officially established in 2010 as part of Makerere University's collegiate restructuring, the College of Computing and Information Sciences (CoCIS) was formed through the merger of the Institute of Computer Science, the Faculty of Computing and Information Technology (FCIT), and the East African School of Library and Information Science (EASLIS). Today, it is one of Africa's leading centres for computing, information technology, and digital innovation, with modern teaching facilities, advanced laboratories, and research infrastructure."
+},
+{
+  "id": 15,
+  "name": "College of Engineering, Design, Art and Technology (CEDAT)",
+  "category": "Academic College",
+  "foundation_year": 2010,
+  "description": "Officially established in 2010 through the merger of the Faculty of Technology and the School of Fine Art, CEDAT became one of Makerere University's leading centres for engineering, architecture, design, and technology. Building on the legacy of the Faculty of Technology, which was founded in 1970, the college provides modern workshops, laboratories, and studios for training engineers, architects, designers, and technology professionals."
 }
 
 ]
