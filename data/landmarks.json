@@ -141,6 +141,13 @@
   "category": "Academic College",
   "foundation_year": 2010,
   "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Natural Sciences (CoNAS) brought together the long-established departments of Physics, Chemistry, and Mathematics. Building on a scientific heritage that dates back to the 1950s, the college is a leading centre for scientific research, innovation, and education, supported by modern laboratories and specialized research facilities."
+},
+{
+  "id": 21,
+  "name": "College of Health Sciences (School of Medicine)",
+  "category": "Academic College",
+  "foundation_year": 1924,
+  "description": "Tracing its origins to 1924 as the Mulago Medical School, the College of Health Sciences is the oldest medical training institution in East Africa. Developed through a long-standing affiliation with the University of London, it has played a pioneering role in medical education, research, and healthcare in the region. Located on Mulago Hill and closely integrated with Mulago National Referral Hospital, the college continues to train medical professionals while supporting clinical research and patient care."
 }
 
 ]
