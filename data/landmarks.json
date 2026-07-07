@@ -36,6 +36,13 @@
   "category": "Hall",
   "foundation_year": 1971,
   "description": "Opened in 1971 to accommodate the post-independence increase in student enrollment, Lumumba Hall was named after Patrice Lumumba, the first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants,' the hall has a strong tradition of student leadership and campus solidarity. It is also home to the iconic 'Gongom' monument, a symbol of student autonomy and the hall's cultural heritage."
+},
+{
+  "id": 6,
+  "name": "Mary Stuart Hall",
+  "category": "Hall",
+  "foundation_year": 1953,
+  "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere University's permanent residence for female students after the university admitted its first women in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart, the hall symbolizes the advancement of women's higher education in East Africa. Known as 'The Box,' it shares a long-standing cultural alliance with Lumumba Hall through the 'Lumbox' tradition."
 }
 
 ]
