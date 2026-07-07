@@ -169,6 +169,13 @@
   "category": "Religious Centre",
   "foundation_year": 1942,
   "description": "Built in 1942, St. Francis Chapel is Makerere University's historic Anglican place of worship. Located near the main administrative area, the chapel is renowned for its striking mosaic artwork on the front exterior wall, symbolizing spiritual illumination. It continues to serve as a centre for worship, reflection, and spiritual life within the university community."
+},
+{
+  "id": 25,
+  "name": "St. Augustine Catholic Chapel",
+  "category": "Religious Centre",
+  "foundation_year": 1950,
+  "description": "Consecrated in the 1950s and named after St. Augustine of Hippo, St. Augustine Catholic Chapel serves as the Catholic place of worship at Makerere University. The chapel is distinguished by its mid-century modern ecclesiastical architecture and expansive stained-glass windows, providing a welcoming space for worship, prayer, and spiritual formation."
 }
 
 ]
