@@ -134,6 +134,13 @@
   "category": "Academic College",
   "foundation_year": 2010,
   "description": "Officially established on 5 November 2010 during Makerere University's collegiate restructuring, the College of Humanities and Social Sciences (CHUSS) was formed through the merger of the Faculties of Arts and Social Sciences. Building on a heritage dating back to the university's early expansions in the 1930s and 1940s, the college has become a leading centre for the humanities, social sciences, and post-colonial scholarship."
+},
+{
+  "id": 20,
+  "name": "College of Natural Sciences (CoNAS)",
+  "category": "Academic College",
+  "foundation_year": 2010,
+  "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Natural Sciences (CoNAS) brought together the long-established departments of Physics, Chemistry, and Mathematics. Building on a scientific heritage that dates back to the 1950s, the college is a leading centre for scientific research, innovation, and education, supported by modern laboratories and specialized research facilities."
 }
 
 ]
