@@ -162,6 +162,13 @@
   "category": "Academic College",
   "foundation_year": 1953,
   "description": "Tracing its origins to veterinary training in the 1930s, the College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB) builds on the Faculty of Veterinary Medicine established in 1953. Today, the college is a leading centre for veterinary medicine, animal health, agriculture, and bio-security research. Located on the north-western slopes of Makerere University, it is distinguished by its iconic concrete water tower."
+},
+{
+  "id": 24,
+  "name": "St. Francis Chapel",
+  "category": "Religious Centre",
+  "foundation_year": 1942,
+  "description": "Built in 1942, St. Francis Chapel is Makerere University's historic Anglican place of worship. Located near the main administrative area, the chapel is renowned for its striking mosaic artwork on the front exterior wall, symbolizing spiritual illumination. It continues to serve as a centre for worship, reflection, and spiritual life within the university community."
 }
 
 ]
