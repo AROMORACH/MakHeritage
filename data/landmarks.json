@@ -92,6 +92,13 @@
   "category": "Hall",
   "foundation_year": 1961,
   "description": "Established in 1961, Dag Hammarskjöld Hall was named in honour of Dag Hammarskjöld, the second Secretary-General of the United Nations, who died in a plane crash while on a peace mission to the Congo. The hall was dedicated as a quiet residential community for postgraduate Master's and PhD students, providing an environment that supports advanced study and research."
+},
+{
+  "id": 14,
+  "name": "College of Computing and Information Sciences (CoCIS)",
+  "category": "Academic College",
+  "foundation_year": 2010,
+  "description": "Officially established in 2010 as part of Makerere University's collegiate restructuring, the College of Computing and Information Sciences (CoCIS) was formed through the merger of the Institute of Computer Science, the Faculty of Computing and Information Technology (FCIT), and the East African School of Library and Information Science (EASLIS). Today, it is one of Africa's leading centres for computing, information technology, and digital innovation, with modern teaching facilities, advanced laboratories, and research infrastructure."
 }
 
 ]
