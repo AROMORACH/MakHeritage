@@ -225,6 +225,13 @@
   "category": "Campus Entrance",
   "foundation_year": "1940s",
   "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years, it was completely demolished and reconstructed in 2022 into a majestic dual-carriage monument as part of the university's Centenary celebrations."
+},
+{
+  "id": 33,
+  "name": "The Eastern Gate",
+  "category": "Campus Entrance",
+  "foundation_year": "1940s",
+  "description": "The Eastern Gate was established in the 1940s as a simple transit passage allowing staff and scholars to exit down the slopes of Makerere Hill into the Wandegeya trading center. Over the decades, it developed into a major pedestrian access point and later received modern overhead architectural signage to integrate with the wider campus entrance network."
 }
 
 ]
