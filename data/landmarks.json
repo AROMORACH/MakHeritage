@@ -43,6 +43,13 @@
   "category": "Hall",
   "foundation_year": 1953,
   "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere University's permanent residence for female students after the university admitted its first women in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart, the hall symbolizes the advancement of women's higher education in East Africa. Known as 'The Box,' it shares a long-standing cultural alliance with Lumumba Hall through the 'Lumbox' tradition."
+},
+{
+  "id": 7,
+  "name": "Mitchell Hall",
+  "category": "Hall",
+  "foundation_year": 1930,
+  "description": "Originating in the 1930s as one of the original hostels of Makerere Technical School, Mitchell Hall was later named after Sir Philip Mitchell, the colonial Governor of Uganda, who supported Makerere's development into a center of higher learning. Known as 'The Rats,' the hall is recognized for its traditions of resilience, independence, and active participation in student leadership and campus activities."
 }
 
 ]
