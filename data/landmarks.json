@@ -218,6 +218,13 @@
   "category": "Accommodation Facility",
   "foundation_year": "1950s",
   "description": "The University Guest House was built in the late 1950s, reflecting mid-century colonial architectural design. The low-rise facility provides a quiet green sanctuary for accommodating visiting scholars, researchers, and members of external academic networks away from the busier areas of the campus."
+},
+{
+  "id": 32,
+  "name": "The Main Gate",
+  "category": "Campus Entrance",
+  "foundation_year": "1940s",
+  "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years, it was completely demolished and reconstructed in 2022 into a majestic dual-carriage monument as part of the university's Centenary celebrations."
 }
 
 ]
