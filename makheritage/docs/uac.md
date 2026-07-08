@@ -22,3 +22,9 @@ Users can select different landmarks
 ### Search
 Users can search for a landmark by name
 Matching landmarks are displayed
+
+### data quality
+No landmark has missing required fields
+Foundation years are valid
+duplicate landmark IDs do not exist
+
