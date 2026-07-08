@@ -28,3 +28,6 @@ No landmark has missing required fields
 Foundation years are valid
 duplicate landmark IDs do not exist
 
+### Error handling 
+If a landmark data cannot be loaded, a clear message is displayed
+The application continues running without crashing
