@@ -18,3 +18,7 @@ Selecting a landmark displays:
 Users can zoom in and out 
 Users can pan around the map
 Users can select different landmarks
+
+### Search
+Users can search for a landmark by name
+Matching landmarks are displayed
