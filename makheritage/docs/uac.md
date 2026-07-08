@@ -13,3 +13,8 @@ Selecting a landmark displays:
     category
     foundation year
     description
+
+### Navigation
+Users can zoom in and out 
+Users can pan around the map
+Users can select different landmarks
