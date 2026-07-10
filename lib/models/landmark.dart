@@ -1,25 +1,17 @@
-/// Data model for a single historical landmark/tour stop.
-///
-/// This shape is a REASONABLE GUESS at what Josephine's data/landmarks.json
-/// (Week 2 deliverable) will look like, based on Ritah's QA note about
-/// checking for "missing years or category mismatches."
-///
-/// Once Josephine's real JSON schema lands, only this file and
-/// `fromJson` need to change — the rest of the UI won't care.
 class Landmark {
   final String id;
   final String name;
-  final int year;
+  final int foundationYear; // Renamed to align with database
   final String category;
   final String description;
   final double latitude;
   final double longitude;
-  final String? imageUrl;
+  final String? imageUrl;   // Maps from image_url
 
   const Landmark({
     required this.id,
     required this.name,
-    required this.year,
+    required this.foundationYear,
     required this.category,
     required this.description,
     required this.latitude,
@@ -31,23 +23,23 @@ class Landmark {
     return Landmark(
       id: json['id'].toString(),
       name: json['name'] as String,
-      year: json['year'] as int,
+      foundationYear: json['foundation_year'] as int, // Fixed key match
       category: json['category'] as String,
       description: json['description'] as String? ?? '',
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
-      imageUrl: json['imageUrl'] as String?,
+      latitude: (json['latitude'] as num? ?? 0.3163).toDouble(),   // Added fallback safety
+      longitude: (json['longitude'] as num? ?? 32.5822).toDouble(), // Added fallback safety
+      imageUrl: json['image_url'] as String?, // Fixed key match
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'year': year,
+        'foundation_year': foundationYear,
         'category': category,
         'description': description,
         'latitude': latitude,
         'longitude': longitude,
-        'imageUrl': imageUrl,
+        'image_url': imageUrl,
       };
 }
