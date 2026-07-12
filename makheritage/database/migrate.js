@@ -9,7 +9,7 @@ db.serialize(() => {
   console.log("Starting database migration...");
 
   // Add the latitude column
-  db.run(`ALTER TABLE landmarks ADD COLUMN latitude REAL;`, (err) => {
+  db.run(`ALTER TABLE HeritageSites ADD COLUMN latitude REAL;`, (err) => {
     if (err) {
       if (err.message.includes("duplicate column name")) {
         console.log("Latitude column already exists!");
@@ -22,7 +22,7 @@ db.serialize(() => {
   });
 
   // Add the longitude column
-  db.run(`ALTER TABLE landmarks ADD COLUMN longitude REAL;`, (err) => {
+  db.run(`ALTER TABLE HeritageSites ADD COLUMN longitude REAL;`, (err) => {
     if (err) {
       if (err.message.includes("duplicate column name")) {
         console.log("Longitude column already exists!");
