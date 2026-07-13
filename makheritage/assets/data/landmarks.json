@@ -237,20 +237,6 @@
       "category": "Gate",
       "foundation_year": 1970,
       "description": "The Western Gate, also known as Kikoni Gate, serves as a critical daily access point facing the extensive residential hostel district of Kikoni. It provides a major transit route for commuting students and has been the focus of modern architectural redesign initiatives by campus engineering scholars to improve its functionality and appearance."
-    },
-    {
-      "id": "uuid-35",
-      "name": "The Main Library Canteens",
-      "category": "Infrastructure",
-      "foundation_year": 1990,
-      "description": "The Main Library Canteens are centrally positioned behind the library complex and serve as convenient food hubs for students during study breaks. They provide affordable local delicacies such as Rolex (chapati and fried eggs) and African tea, offering a social and refreshment space within the academic environment."
-    },
-    {
-      "id": "uuid-36",
-      "name": "The Meeting Point",
-      "category": "Infrastructure",
-      "foundation_year": 1995,
-      "description": "The Meeting Point serves as a major social and culinary hub where students from diverse academic disciplines gather. It acts as a melting pot for campus interactions, combining informal discussions, technology problem-solving sessions, and legal or literary debates over local buffet meals."
     }
   ]
 }
