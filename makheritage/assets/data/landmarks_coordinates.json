@@ -29,7 +29,160 @@
     "name": "Mary Stuart Hall",
     "latitude":0.3306141,
     "longitude":32.5667851
-  }
+  },
+  {
+    "name": "Mitchell Hall",
+    "latitude":0.3338704,
+    "longitude":32.5703265
+  },
+  {
+      "name": "University Hall",
+      "latitude":0.3331181,
+      "longitude":32.5724472
+    },
+    {
+      "name": "Livingstone Hall",
+      "latitude":0.3388683,
+      "longitude":32.5679934
+    },
+    {
+      "name": "Africa Hall",
+      "latitude":0.338064,
+      "longitude":32.5686583
+    },
+    {
+      "name": "Nkrumah Hall",
+      "latitude":0.3359256,
+      "longitude":32.5693814
+    },
+    {
+      "name": "Nsibirwa Hall",
+      "latitude":0.33582,
+      "longitude":32.5700121 
+    },
+    {
+      "name": "Dag Hammarskjöld Hall",
+      "latitude":0.333898,
+      "longitude":32.5723508 
+    },
+    {
+      "name": "College of Computing and Information Sciences (CoCIS)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Engineering, Design, Art and Technology (CEDAT)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "Margaret Trowell School of Industrial and Fine Arts (MTSIFA)",
+      "latitude":,
+      "longitude"
+    },
+    {
+      "name": "School of Law",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Business and Management Sciences (CoBAMS)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Humanities and Social Sciences (CHUSS)",
+      "latitude":,
+      "longitude"
+    },
+    {
+      "name": "College of Natural Sciences (CoNAS)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Health Sciences (School of Medicine)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Education and External Studies (CEES)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "St. Francis Chapel",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "St. Augustine Catholic Chapel",
+      "latitude":,
+      "longitude":
+    },
+    {
+      "name": "Main Mosque",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "Makerere Innovation Hub",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "Makerere University Hospital",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The University Printery",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "Swimming Pool & Sports Grounds",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The University Guest House",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The Main Gate",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The Eastern Gate",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The Western Gate (Kikoni Gate)",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The Main Library Canteens",
+      "latitude":,
+      "longitude": 
+    },
+    {
+      "name": "The Meeting Point",
+      "latitude":,
+      "longitude": 
+    }
+  
+
+  
 
 ]
 }
