@@ -1,30 +1,36 @@
 const express = require('express');
-const dotenv = require('dotenv');
-const db = require('./db'); // Import the connection module
-
-dotenv.config();
+const cors = require('cors');
+const { getLandmarks } = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
+// Enable CORS so Christian's emulator can access endpoints across local origins
+app.use(cors({
+    origin: '*', // Allows access from any development browser or mobile simulator context
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
-// API Endpoint to get all landmarks for Christian's frontend map
+// Main entry route
 app.get('/api/landmarks', (req, res) => {
-  const sql = 'SELECT * FROM landmarks';
-  
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: "success",
-      data: rows
+    const { category } = req.query;
+
+    getLandmarks(category, (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Database query execution failed.' });
+        }
+        res.json(rows);
     });
-  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Health check route
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'API operational', timestamp: new Date() });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://127.0.0.1:${PORT}`);
 });
