@@ -67,122 +67,109 @@
     },
     {
       "name": "College of Computing and Information Sciences (CoCIS)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3314192,
+      "longitude":32.5706358
     },
     {
       "name": "College of Engineering, Design, Art and Technology (CEDAT)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3361123,
+      "longitude":32.5645263 
     },
     {
       "name": "Margaret Trowell School of Industrial and Fine Arts (MTSIFA)",
-      "latitude":,
-      "longitude"
+      "latitude":0.3287405,
+      "longitude":32.5692058
     },
     {
       "name": "School of Law",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3284765,
+      "longitude":32.569708
     },
     {
       "name": "College of Business and Management Sciences (CoBAMS)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3350244,
+      "longitude":32.5686035
     },
     {
       "name": "College of Humanities and Social Sciences (CHUSS)",
-      "latitude":,
-      "longitude"
+      "latitude":0.3323611,
+      "longitude":32.5675392
     },
     {
       "name": "College of Natural Sciences (CoNAS)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3360062,
+      "longitude":32.5658249
     },
     {
       "name": "College of Health Sciences (School of Medicine)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3379661,
+      "longitude":32.5757539 
     },
     {
       "name": "College of Education and External Studies (CEES)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3348781,
+      "longitude":32.5708967
     },
     {
       "name": "College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB)",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3399576,
+      "longitude":32.5676849
     },
     {
       "name": "St. Francis Chapel",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3329318,
+      "longitude":32.567456
     },
     {
       "name": "St. Augustine Catholic Chapel",
-      "latitude":,
-      "longitude":
+      "latitude":0.3336282,
+      "longitude":32.5667487
     },
     {
       "name": "Main Mosque",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3298733,
+      "longitude":32.5711668
     },
     {
       "name": "Makerere Innovation Hub",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3323261,
+      "longitude":32.5704417
     },
     {
       "name": "Makerere University Hospital",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3279056,
+      "longitude":32.5707073
     },
     {
       "name": "The University Printery",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3336863,
+      "longitude":32.5674141
     },
     {
       "name": "Swimming Pool & Sports Grounds",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3350717,
+      "longitude":32.5692296
     },
     {
       "name": "The University Guest House",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3312273,
+      "longitude":32.5694347
     },
     {
       "name": "The Main Gate",
-      "latitude":,
-      "longitude": 
+      "latitude":0.329201,
+      "longitude":32.5710341
     },
     {
       "name": "The Eastern Gate",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3357751,
+      "longitude":32.572592
     },
     {
       "name": "The Western Gate (Kikoni Gate)",
-      "latitude":,
-      "longitude": 
-    },
-    {
-      "name": "The Main Library Canteens",
-      "latitude":,
-      "longitude": 
-    },
-    {
-      "name": "The Meeting Point",
-      "latitude":,
-      "longitude": 
+      "latitude":0.3348122,
+      "longitude":32.5639104
     }
-  
-
-  
 
 ]
 }
