@@ -237,6 +237,71 @@
       "category": "Gate",
       "foundation_year": 1970,
       "description": "The Western Gate, also known as Kikoni Gate, serves as a critical daily access point facing the extensive residential hostel district of Kikoni. It provides a major transit route for commuting students and has been the focus of modern architectural redesign initiatives by campus engineering scholars to improve its functionality and appearance."
+    },
+    {
+      "id": "uuid_35",
+      "name": "Central Teaching Facility I (CTF I)",
+      "category": "Infrastructure",
+      "foundation_year": 2009,
+      "description": "Commissioned in 2009, Central Teaching Facility I (CTF I) was established to expand Makerere University's teaching capacity and provide modern learning spaces for its growing student population. The multi-storey facility houses lecture theatres, classrooms, computer laboratories, and administrative offices, serving students from multiple colleges across the university."
+    },
+    {
+      "id": "uuid_36",
+      "name": "Central Teaching Facility II (CTF II)",
+      "category": "Infrastructure",
+      "foundation_year": 2013,
+      "description": "Commissioned in 2013, Central Teaching Facility II (CTF II) was constructed to further expand Makerere University's teaching infrastructure and address increasing student enrolment. Located adjacent to CTF I, the facility provides modern lecture theatres, classrooms, seminar rooms, and learning spaces that support teaching and academic activities across multiple colleges. It also accommodates innovation initiatives, including the Makerere Innovation Hub."
+
+    },
+    {
+      "id": "uuid_37",
+      "name": "Mastercard Foundation Office",
+      "category": "Infrastructure",
+      "foundation_year": 2013,
+      "description": "Established in 2013 as part of the Mastercard Foundation Scholars Program, the Mastercard Foundation Office coordinates scholarship administration, student support services, leadership development, and partnership activities at Makerere University. The office works to expand access to quality higher education for academically talented young people, particularly those from economically disadvantaged backgrounds, while promoting innovation, entrepreneurship, and community engagement."
+    },
+    {
+      "id": "uuid_38",
+      "name": "Makerere Rotaract Club",
+      "category": "Infrastructure",
+      "foundation_year": 1991,
+      "description": "Founded in 1991, the Makerere Rotaract Club is one of the university's leading student service organizations and operates under the global Rotary International network. The club promotes leadership, professional development, community service, and fellowship among students through projects focused on education, health, environmental conservation, and youth empowerment. Over the years, it has become one of the most active student organizations at Makerere University."
+    },
+    {
+      "id": "uuid_39",
+      "name": "Complex Hall",
+      "category": "Hall",
+      "foundation_year": 1990,
+      "description": "Opened in 1990, Complex Hall was established to provide residential accommodation for Makerere University students as enrolment continued to grow. Located near the College of Education and External Studies, the hall offers convenient access to lecture facilities and academic resources. Over the years, it has become an important part of the university's residential community, providing accommodation while supporting student life and academic engagement."
+    },
+    {
+      "id": "uuid_40",
+      "name": "Galloway House",
+      "category": "Hall",
+      "foundation_year": 1924,
+      "description": "Established in 1924 alongside the growth of the Mulago Medical School, Galloway House serves as a residence for students of the Makerere University College of Health Sciences. Located on Mulago Hill near Mulago National Referral Hospital, the residence provides convenient accommodation for medical students undertaking clinical training and has remained an integral part of the university's medical education infrastructure."
+    },
+    {
+      "id": "uuid_41",
+      "name": "College of Agricultural and Environmental Sciences (CAES)",
+      "category": "College",
+      "foundation_year": 1922,
+      "description": "Tracing its origins to the School of Agriculture established in 1922, the College of Agricultural and Environmental Sciences (CAES) is one of Makerere University's oldest academic colleges. It has played a leading role in agricultural education, environmental management, food security, and scientific research in Uganda and across Africa. The college comprises modern teaching facilities, research laboratories, demonstration farms, and experimental gardens that support practical learning and innovation in agriculture and natural resource management."
+    },
+    {
+      "id": "uuid_42",
+      "name": "University Oval (Main Sports Ground)",
+      "category": "Infrastructure",
+      "foundation_year": 1949,
+      "description": "Established in 1949, the University Oval is Makerere University's principal sports ground and one of the campus's most recognizable recreational landmarks. The facility hosts football, athletics, cricket, ceremonial events, inter-hall competitions, and university celebrations throughout the academic year. Surrounded by academic buildings and student residences, the Oval serves as a vibrant centre for sports, fitness, and community activities."
+    },
+    {
+      "id": "uuid_45",
+      "name": "Lincoln Flats",
+      "category": "Hall",
+      "foundation_year": 1960,
+      "description": "Lincoln Flats are residential facilities within Makerere University that provide accommodation for members of the university community. The flats represent part of the institution's continuous development of residential infrastructure to support students and campus residents. Located within the university environment, Lincoln Flats contribute to the wider residential landscape of Makerere by providing convenient accommodation close to academic facilities and other campus services."
     }
+    
   ]
 }

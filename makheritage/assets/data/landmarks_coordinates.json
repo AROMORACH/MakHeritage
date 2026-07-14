@@ -169,7 +169,49 @@
       "name": "The Western Gate (Kikoni Gate)",
       "latitude":0.3348122,
       "longitude":32.5639104
-    }
+    },
+    {
+      "name": "Central Teaching Facility I (CTF I)",
+      "latitude":0.3324983,
+      "longitude": 32.5690181
+    },
+    {
+      "name": "Central Teaching Facility II (CTF II)",
+      "latitude":0.3358249,
+      "longitude":32.5682398 
 
+    },
+    {
+      "name": "Mastercard Foundation Office",
+      "latitude":0.3323265,
+      "longitude": 32.5708533
+    },
+    {
+      "name": "Complex Hall",
+      "latitude":0.3299602,
+      "longitude":32.5701147
+    },
+    {
+      "name": "Galloway House",
+      "latitude":0.3388093,
+      "longitude":32.5778747
+    },
+    {
+      "name": "College of Agricultural and Environmental Sciences (CAES)",
+      "latitude":0.3327663,
+      "longitude":32.5681271 
+    },
+    {
+      "name": "University Oval (Main Sports Ground)",
+      "latitude":0.3293627,
+      "longitude":32.5656331
+    },
+    {
+      "name": "Lincoln Flats",
+      "latitude":0.332042,
+      "longitude":32.5699289 
+    }
+    
+  
 ]
 }
