@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Old Kampala Fort",
+    "year": 1890,
+    "category": "Colonial",
+    "description": "One of the earliest British administrative posts in the region.",
+    "latitude": 0.3245,
+    "longitude": 32.5658,
+    "imageUrl": null
+  },
+  {
+    "id": "2",
+    "name": "Namugongo Martyrs Shrine",
+    "year": 1886,
+    "category": "Religious",
+    "description": "Site commemorating the Uganda Martyrs.",
+    "latitude": 0.3775,
+    "longitude": 32.6928,
+    "imageUrl": null
+  },
+  {
+    "id": "3",
+    "name": "Independence Monument",
+    "year": 1962,
+    "category": "National",
+    "description": "Erected to mark Uganda's independence from British rule.",
+    "latitude": 0.3163,
+    "longitude": 32.5822,
+    "imageUrl": null
+  }
+]
