@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'screens/map_screen.dart';
 import 'screens/landmark_list_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env"); // Load variables
   runApp(const MakHeritageApp());
 }
 

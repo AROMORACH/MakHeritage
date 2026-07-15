@@ -16,16 +16,21 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
  * Fetch all landmarks with optional category filtering
  */
 const getLandmarks = (category, callback) => {
-    let sql = 'SELECT id, name, description, category, latitude, longitude, image_url FROM landmarks';
-    const params = [];
+    db.all("PRAGMA table_info(landmarks)", (err, columns) => {
+        if (err) return callback(err, null);
+        const hasGeospatial = columns.some(col => col.name === 'latitude');
 
-    if (category) {
-        sql += ' WHERE category = ?';
-        params.push(category);
-    }
+        let sql = hasGeospatial 
+            ? 'SELECT id, name, description, category, latitude, longitude, image_url FROM landmarks'
+            : 'SELECT id, name, description, category, 0.0 AS latitude, 0.0 AS longitude, "" AS image_url FROM landmarks';
 
-    db.all(sql, params, (err, rows) => {
-        callback(err, rows);
+        const params = [];
+        if (category && category !== 'All') {
+            sql += ' WHERE category = ?';
+            params.push(category);
+        }
+
+        db.all(sql, params, callback);
     });
 };
 
