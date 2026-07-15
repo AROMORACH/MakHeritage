@@ -21,6 +21,9 @@ class _MapScreenState extends State<MapScreen> {
   
   StreamSubscription<Position>? _positionStream;
   final Set<String> _triggeredLandmarks = {};
+  
+  // Holds the user's live coordinates for the blue dot
+  LatLng? _currentPosition; 
 
   // Approximate center of Makerere University, Kampala.
   static const LatLng _makerereCenter = LatLng(0.3315, 32.5675);
@@ -52,6 +55,12 @@ class _MapScreenState extends State<MapScreen> {
       Position currentPos = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high
       );
+      if (mounted) {
+        setState(() {
+          _currentPosition = LatLng(currentPos.latitude, currentPos.longitude);
+        });
+      }
+      
       _geofenceService.checkProximity(currentPos, landmarks, (landmark) {
         if (!_triggeredLandmarks.contains(landmark.name)) {
           _triggeredLandmarks.add(landmark.name);
@@ -69,6 +78,12 @@ class _MapScreenState extends State<MapScreen> {
     );
     
     _positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
+      if (mounted) {
+        setState(() {
+          _currentPosition = LatLng(position.latitude, position.longitude);
+        });
+      }
+      
       _geofenceService.checkProximity(position, landmarks, (landmark) {
         if (!_triggeredLandmarks.contains(landmark.name)) {
           _triggeredLandmarks.add(landmark.name);
@@ -173,6 +188,27 @@ class _MapScreenState extends State<MapScreen> {
             )
             .toList();
 
+        // Inject the Live User "Blue Dot" Marker
+        if (_currentPosition != null) {
+          markers.add(
+            Marker(
+              point: _currentPosition!,
+              width: 24,
+              height: 24,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 3),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black26, blurRadius: 4, spreadRadius: 1)
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
         return Stack(
           children: [
             FlutterMap(
@@ -210,6 +246,12 @@ class _MapScreenState extends State<MapScreen> {
                       desiredAccuracy: LocationAccuracy.high,
                     );
                     
+                    if (context.mounted) {
+                      setState(() {
+                        _currentPosition = LatLng(pos.latitude, pos.longitude);
+                      });
+                    }
+
                     bool found = false;
                     _geofenceService.checkProximity(pos, landmarks, (landmark) {
                       found = true;
