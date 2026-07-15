@@ -8,6 +8,8 @@ CREATE TABLE landmarks (
     foundation_year INTEGER NOT NULL,
     description TEXT NOT NULL,
     image_url VARCHAR(255),
+    latitude DECIMAL,
+    longitude DECIMAL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

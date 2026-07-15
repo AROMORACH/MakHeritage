@@ -3,7 +3,7 @@ const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
 const dbPath = path.resolve(__dirname, 'makheritage_db.sqlite');
-const dataPath = path.resolve(__dirname, '../data/landmarks.json');
+const dataPath = path.resolve(__dirname, '../makheritage/assets/data/landmarks.json');
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) return console.error('❌ Connection layer mapping failed:', err.message);

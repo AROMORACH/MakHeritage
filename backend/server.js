@@ -15,9 +15,9 @@ app.use(express.json());
 
 // Main entry route
 app.get('/api/landmarks', (req, res) => {
-    const { category } = req.query;
+    const { category, year } = req.query;
 
-    getLandmarks(category, (err, rows) => {
+    getLandmarks(category, year, (err, rows) => {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ error: 'Database query execution failed.' });
