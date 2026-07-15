@@ -24,26 +24,36 @@ try {
             if (err) console.error('Error clearing stale database table fields:', err.message);
         });
 
+        // Updated INSERT query layout containing the geospatial coordinates fields
         const stmt = db.prepare(`
-            INSERT INTO landmarks (id, name, category, foundation_year, description) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO landmarks (id, name, category, foundation_year, description, latitude, longitude) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `);
 
         console.log(`Starting dynamic parsing execution for ${landmarks.length} entries...`);
 
         landmarks.forEach((site) => {
-            stmt.run(site.id, site.name, site.category, site.foundation_year, site.description, (err) => {
-                if (err) {
-                    console.error(`❌ Check constraint rejection on: ${site.name} ->`, err.message);
+            stmt.run(
+                site.id, 
+                site.name, 
+                site.category, 
+                site.foundation_year, 
+                site.description,
+                site.latitude !== undefined ? site.latitude : null,
+                site.longitude !== undefined ? site.longitude : null,
+                (err) => {
+                    if (err) {
+                        console.error(`❌ Check constraint rejection on: ${site.name} ->`, err.message);
+                    }
                 }
-            });
+            );
         });
 
         stmt.finalize((err) => {
             if (err) {
                 console.error('❌ Error finalizing transaction arrays:', err.message);
             } else {
-                console.log('✔ Production seeder successfully injected all records into SQLite engine.');
+                console.log('✔ Production seeder successfully injected all records (with coordinates) into SQLite engine.');
             }
             db.close();
         });
