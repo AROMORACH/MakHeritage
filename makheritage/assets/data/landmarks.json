@@ -5,303 +5,387 @@
       "name": "The Main Building (Ivory Tower)",
       "category": "Infrastructure",
       "foundation_year": 1941,
-      "description": "Construction began in 1938 and the building officially opened in 1941. It is the iconic symbol of Makerere University.\n"
+      "description": "Construction began in 1938 and the building officially opened in 1941. It is the iconic symbol of Makerere University.\n",
+      "latitude": 0.3336554,
+      "longitude": 32.5675605
     },
     {
       "id": "uuid-2",
       "name": "Freedom Square",
       "category": "Infrastructure",
       "foundation_year": 1922,
-      "description": "It serves as the designated ground for major university ceremonies and every graduation congregation since Makerere's early days as a technical school in 1922. It was formerly dubbed as 'Freedom Square' during the political shifts of the 1970s. But beyond academic functions, it is famous historically as the staging ground for Makerere's intense student politics, guild rallies, general freshers orientation and passionate debates that have shaped the national political landscape of Uganda.\n"
+      "description": "It serves as the designated ground for major university ceremonies and every graduation congregation since Makerere's early days as a technical school in 1922. It was formerly dubbed as 'Freedom Square' during the political shifts of the 1970s. But beyond academic functions, it is famous historically as the staging ground for Makerere's intense student politics, guild rallies, general freshers orientation and passionate debates that have shaped the national political landscape of Uganda.\n",
+      "latitude": 0.3337585,
+      "longitude": 32.5683837
     },
     {
       "id": "uuid-3",
       "name": "Main Library",
       "category": "Infrastructure",
       "foundation_year": 1949,
-      "description": "Established in 1949, the Main Library is the oldest academic library in Uganda. It serves as the National Reference Library and legal depository for published works in Uganda. The library houses the renowned Africana Section, which contains rare historical collections, photographs, manuscripts, and diaries of early explorers and political figures."
+      "description": "Established in 1949, the Main Library is the oldest academic library in Uganda. It serves as the National Reference Library and legal depository for published works in Uganda. The library houses the renowned Africana Section, which contains rare historical collections, photographs, manuscripts, and diaries of early explorers and political figures.",
+      "latitude": 0.3293574,
+      "longitude": 32.6161659
     },
     {
       "id": "uuid-4",
       "name": "Senate Building",
       "category": "Infrastructure",
       "foundation_year": 2001,
-      "description": "Commissioned in 2001, the Senate Building serves as Makerere University's central hub for academic administration. It houses the Office of the Academic Registrar and supports services such as enrollment, transcript verification, and graduation clearance. Designed as a modern multi-storey facility, it accommodates the University Senate, the institution's highest academic decision-making body."
+      "description": "Commissioned in 2001, the Senate Building serves as Makerere University's central hub for academic administration. It houses the Office of the Academic Registrar and supports services such as enrollment, transcript verification, and graduation clearance. Designed as a modern multi-storey facility, it accommodates the University Senate, the institution's highest academic decision-making body.",
+      "latitude": 0.3326347,
+      "longitude": 32.5685861
     },
     {
       "id": "uuid-5",
       "name": "Lumumba Hall",
       "category": "Hall",
       "foundation_year": 1971,
-      "description": "Opened in 1971 to accommodate the post-independence increase in student enrollment, Lumumba Hall was named after Patrice Lumumba, the first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants,' the hall has a strong tradition of student leadership and campus solidarity. It is also home to the iconic 'Gongom' monument, a symbol of student autonomy and the hall's cultural heritage."
+      "description": "Opened in 1971 to accommodate the post-independence increase in student enrollment, Lumumba Hall was named after Patrice Lumumba, the first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants,' the hall has a strong tradition of student leadership and campus solidarity. It is also home to the iconic 'Gongom' monument, a symbol of student autonomy and the hall's cultural heritage.",
+      "latitude": 0.3319012,
+      "longitude": 32.5660851
     },
     {
       "id": "uuid-6",
       "name": "Mary Stuart Hall",
       "category": "Hall",
       "foundation_year": 1953,
-      "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere University's permanent residence for female students after the university admitted its first women in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart, the hall symbolizes the advancement of women's higher education in East Africa. Known as 'The Box,' it shares a long-standing cultural alliance with Lumumba Hall through the 'Lumbox' tradition."
+      "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere University's permanent residence for female students after the university admitted its first women in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart, the hall symbolizes the advancement of women's higher education in East Africa. Known as 'The Box,' it shares a long-standing cultural alliance with Lumumba Hall through the 'Lumbox' tradition.",
+      "latitude": 0.3306141,
+      "longitude": 32.5667851
     },
     {
       "id": "uuid-7",
       "name": "Mitchell Hall",
       "category": "Hall",
       "foundation_year": 1930,
-      "description": "Originating in the 1930s as one of the original hostels of Makerere Technical School, Mitchell Hall was later named after Sir Philip Mitchell, the colonial Governor of Uganda, who supported Makerere's development into a center of higher learning. Known as 'The Rats,' the hall is recognized for its traditions of resilience, independence, and active participation in student leadership and campus activities."
+      "description": "Originating in the 1930s as one of the original hostels of Makerere Technical School, Mitchell Hall was later named after Sir Philip Mitchell, the colonial Governor of Uganda, who supported Makerere's development into a center of higher learning. Known as 'The Rats,' the hall is recognized for its traditions of resilience, independence, and active participation in student leadership and campus activities.",
+      "latitude": 0.3338704,
+      "longitude": 32.5703265
     },
     {
       "id": "uuid-8",
       "name": "University Hall",
       "category": "Hall",
       "foundation_year": 1957,
-      "description": "Officially opened in 1957, University Hall is distinguished by its traditional collegiate courtyard design. Known as 'The Goats' (Mbaazi), the hall represents resilience, determination, and independence. It is also well known for its historic rivalry with Mitchell Hall, particularly during inter-hall sports competitions and student guild campaigns."
+      "description": "Officially opened in 1957, University Hall is distinguished by its traditional collegiate courtyard design. Known as 'The Goats' (Mbaazi), the hall represents resilience, determination, and independence. It is also well known for its historic rivalry with Mitchell Hall, particularly during inter-hall sports competitions and student guild campaigns.",
+      "latitude": 0.3331181,
+      "longitude": 32.5724472
     },
     {
       "id": "uuid-9",
       "name": "Livingstone Hall",
       "category": "Hall",
       "foundation_year": 1959,
-      "description": "Officially opened in 1959, Livingstone Hall was established to accommodate the growing student population during Makerere University's affiliation with the University of London. Named after the British explorer and missionary David Livingstone, the hall is known for its tradition of academic excellence and disciplined student life. Its residents, known as 'Stonians' or 'Gentlemen,' share a long-standing cultural and political alliance with Africa Hall through the Afro-Stone solidarity."
+      "description": "Officially opened in 1959, Livingstone Hall was established to accommodate the growing student population during Makerere University's affiliation with the University of London. Named after the British explorer and missionary David Livingstone, the hall is known for its tradition of academic excellence and disciplined student life. Its residents, known as 'Stonians' or 'Gentlemen,' share a long-standing cultural and political alliance with Africa Hall through the Afro-Stone solidarity.",
+      "latitude": 0.3388683,
+      "longitude": 32.5679934
     },
     {
       "id": "uuid-10",
       "name": "Africa Hall",
       "category": "Hall",
       "foundation_year": 1971,
-      "description": "Officially opened in 1971, Africa Hall was named to celebrate the spirit of Pan-African liberation and independence across the African continent. Its residents, known as 'The Crocodiles,' are recognized for their resilience, intelligence, and strong sense of community. Together with Livingstone Hall, Africa Hall forms the Afro-Stone solidarity, a prominent alliance in Makerere University's student leadership and guild politics."
+      "description": "Officially opened in 1971, Africa Hall was named to celebrate the spirit of Pan-African liberation and independence across the African continent. Its residents, known as 'The Crocodiles,' are recognized for their resilience, intelligence, and strong sense of community. Together with Livingstone Hall, Africa Hall forms the Afro-Stone solidarity, a prominent alliance in Makerere University's student leadership and guild politics.",
+      "latitude": 0.338064,
+      "longitude": 32.5686583
     },
     {
       "id": "uuid-11",
       "name": "Nkrumah Hall",
       "category": "Hall",
       "foundation_year": 1954,
-      "description": "Officially opened on 6 July 1954 as 'New Hall,' the residence was later renamed in honour of Osagyefo Dr. Kwame Nkrumah, the first President of Ghana and a leading figure in the Pan-African movement. Known as 'The Rams,' the hall symbolizes strength, determination, and leadership. A prominent bronze statue of Kwame Nkrumah stands at its entrance, serving as a landmark for cultural events and student gatherings."
+      "description": "Officially opened on 6 July 1954 as 'New Hall,' the residence was later renamed in honour of Osagyefo Dr. Kwame Nkrumah, the first President of Ghana and a leading figure in the Pan-African movement. Known as 'The Rams,' the hall symbolizes strength, determination, and leadership. A prominent bronze statue of Kwame Nkrumah stands at its entrance, serving as a landmark for cultural events and student gatherings.",
+      "latitude": 0.3359256,
+      "longitude": 32.5693814
     },
     {
       "id": "uuid-12",
       "name": "Nsibirwa Hall",
       "category": "Hall",
       "foundation_year": 1952,
-      "description": "Originally opened in 1952 as Northcote Hall, the residence was later renamed Nsibirwa Hall in 1996 to honour Martin Luther Nsibirwa, the former Katikkiro (Prime Minister) of Buganda. The hall is known for its rich student traditions and its unique history of student self-governance. Today, its residents are known as 'Roosters.'"
+      "description": "Originally opened in 1952 as Northcote Hall, the residence was later renamed Nsibirwa Hall in 1996 to honour Martin Luther Nsibirwa, the former Katikkiro (Prime Minister) of Buganda. The hall is known for its rich student traditions and its unique history of student self-governance. Today, its residents are known as 'Roosters.'",
+      "latitude": 0.33582,
+      "longitude": 32.5700121
     },
     {
       "id": "uuid-13",
       "name": "Dag Hammarskjöld Hall",
       "category": "Hall",
       "foundation_year": 1961,
-      "description": "Established in 1961, Dag Hammarskjöld Hall was named in honour of Dag Hammarskjöld, the second Secretary-General of the United Nations, who died in a plane crash while on a peace mission to the Congo. The hall was dedicated as a quiet residential community for postgraduate Master's and PhD students, providing an environment that supports advanced study and research."
+      "description": "Established in 1961, Dag Hammarskjöld Hall was named in honour of Dag Hammarskjöld, the second Secretary-General of the United Nations, who died in a plane crash while on a peace mission to the Congo. The hall was dedicated as a quiet residential community for postgraduate Master's and PhD students, providing an environment that supports advanced study and research.",
+      "latitude": 0.333898,
+      "longitude": 32.5723508
     },
     {
       "id": "uuid-14",
       "name": "College of Computing and Information Sciences (CoCIS)",
       "category": "College",
       "foundation_year": 2010,
-      "description": "Officially established in 2010 as part of Makerere University's collegiate restructuring, the College of Computing and Information Sciences (CoCIS) was formed through the merger of the Institute of Computer Science, the Faculty of Computing and Information Technology (FCIT), and the East African School of Library and Information Science (EASLIS). Today, it is one of Africa's leading centres for computing, information technology, and digital innovation, with modern teaching facilities, advanced laboratories, and research infrastructure."
+      "description": "Officially established in 2010 as part of Makerere University's collegiate restructuring, the College of Computing and Information Sciences (CoCIS) was formed through the merger of the Institute of Computer Science, the Faculty of Computing and Information Technology (FCIT), and the East African School of Library and Information Science (EASLIS). Today, it is one of Africa's leading centres for computing, information technology, and digital innovation, with modern teaching facilities, advanced laboratories, and research infrastructure.",
+      "latitude": 0.3314192,
+      "longitude": 32.5706358
     },
     {
       "id": "uuid-15",
       "name": "College of Engineering, Design, Art and Technology (CEDAT)",
       "category": "College",
       "foundation_year": 2010,
-      "description": "Officially established in 2010 through the merger of the Faculty of Technology and the School of Fine Art, CEDAT became one of Makerere University's leading centres for engineering, architecture, design, and technology. Building on the legacy of the Faculty of Technology, which was founded in 1970, the college provides modern workshops, laboratories, and studios for training engineers, architects, designers, and technology professionals."
+      "description": "Officially established in 2010 through the merger of the Faculty of Technology and the School of Fine Art, CEDAT became one of Makerere University's leading centres for engineering, architecture, design, and technology. Building on the legacy of the Faculty of Technology, which was founded in 1970, the college provides modern workshops, laboratories, and studios for training engineers, architects, designers, and technology professionals.",
+      "latitude": 0.3361123,
+      "longitude": 32.5645263
     },
     {
       "id": "uuid-16",
       "name": "Margaret Trowell School of Industrial and Fine Arts (MTSIFA)",
       "category": "College",
       "foundation_year": 1937,
-      "description": "Founded in 1937 by British artist Margaret Trowell, the Margaret Trowell School of Industrial and Fine Arts is the oldest professional art school in East Africa. It began as informal art classes conducted at Trowell's residence before becoming part of Makerere University in the 1940s. The school is home to the Trowell Gallery, which preserves an important collection of African contemporary art, sculptures, paintings, and ceramics."
+      "description": "Founded in 1937 by British artist Margaret Trowell, the Margaret Trowell School of Industrial and Fine Arts is the oldest professional art school in East Africa. It began as informal art classes conducted at Trowell's residence before becoming part of Makerere University in the 1940s. The school is home to the Trowell Gallery, which preserves an important collection of African contemporary art, sculptures, paintings, and ceramics.",
+      "latitude": 0.3287405,
+      "longitude": 32.5692058
     },
     {
       "id": "uuid-17",
       "name": "School of Law",
       "category": "College",
       "foundation_year": 1968,
-      "description": "Officially established as an autonomous Faculty of Law in 1968, the School of Law is Uganda's oldest premier legal training institution. Originally operating as a department within the Faculty of Social Sciences, it has played a significant role in legal education and the development of the country's legal profession. The school is now housed in a modern neo-classical building equipped with advanced moot courtrooms for practical legal training."
+      "description": "Officially established as an autonomous Faculty of Law in 1968, the School of Law is Uganda's oldest premier legal training institution. Originally operating as a department within the Faculty of Social Sciences, it has played a significant role in legal education and the development of the country's legal profession. The school is now housed in a modern neo-classical building equipped with advanced moot courtrooms for practical legal training.",
+      "latitude": 0.3284765,
+      "longitude": 32.569708
     },
     {
       "id": "uuid-18",
       "name": "College of Business and Management Sciences (CoBAMS)",
       "category": "College",
       "foundation_year": 2010,
-      "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Business and Management Sciences (CoBAMS) brought together the Institute of Economics and the School of Statistics and Planning under one academic college. Today, it is a leading centre for business, economics, management, statistics, and policy research, with facilities that combine historic campus architecture and modern academic buildings."
+      "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Business and Management Sciences (CoBAMS) brought together the Institute of Economics and the School of Statistics and Planning under one academic college. Today, it is a leading centre for business, economics, management, statistics, and policy research, with facilities that combine historic campus architecture and modern academic buildings.",
+      "latitude": 0.3350244,
+      "longitude": 32.5686035
     },
     {
       "id": "uuid-19",
       "name": "College of Humanities and Social Sciences (CHUSS)",
       "category": "College",
       "foundation_year": 2010,
-      "description": "Officially established on 5 November 2010 during Makerere University's collegiate restructuring, the College of Humanities and Social Sciences (CHUSS) was formed through the merger of the Faculties of Arts and Social Sciences. Building on a heritage dating back to the university's early expansions in the 1930s and 1940s, the college has become a leading centre for the humanities, social sciences, and post-colonial scholarship."
+      "description": "Officially established on 5 November 2010 during Makerere University's collegiate restructuring, the College of Humanities and Social Sciences (CHUSS) was formed through the merger of the Faculties of Arts and Social Sciences. Building on a heritage dating back to the university's early expansions in the 1930s and 1940s, the college has become a leading centre for the humanities, social sciences, and post-colonial scholarship.",
+      "latitude": 0.3323611,
+      "longitude": 32.5675392
     },
     {
       "id": "uuid-20",
       "name": "College of Natural Sciences (CoNAS)",
       "category": "College",
       "foundation_year": 2010,
-      "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Natural Sciences (CoNAS) brought together the long-established departments of Physics, Chemistry, and Mathematics. Building on a scientific heritage that dates back to the 1950s, the college is a leading centre for scientific research, innovation, and education, supported by modern laboratories and specialized research facilities."
+      "description": "Officially established in 2010 during Makerere University's collegiate restructuring, the College of Natural Sciences (CoNAS) brought together the long-established departments of Physics, Chemistry, and Mathematics. Building on a scientific heritage that dates back to the 1950s, the college is a leading centre for scientific research, innovation, and education, supported by modern laboratories and specialized research facilities.",
+      "latitude": 0.3360062,
+      "longitude": 32.5658249
     },
     {
       "id": "uuid-21",
       "name": "College of Health Sciences (School of Medicine)",
       "category": "College",
       "foundation_year": 1924,
-      "description": "Tracing its origins to 1924 as the Mulago Medical School, the College of Health Sciences is the oldest medical training institution in East Africa. Developed through a long-standing affiliation with the University of London, it has played a pioneering role in medical education, research, and healthcare in the region. Located on Mulago Hill and closely integrated with Mulago National Referral Hospital, the college continues to train medical professionals while supporting clinical research and patient care."
+      "description": "Tracing its origins to 1924 as the Mulago Medical School, the College of Health Sciences is the oldest medical training institution in East Africa. Developed through a long-standing affiliation with the University of London, it has played a pioneering role in medical education, research, and healthcare in the region. Located on Mulago Hill and closely integrated with Mulago National Referral Hospital, the college continues to train medical professionals while supporting clinical research and patient care.",
+      "latitude": 0.3379661,
+      "longitude": 32.5757539
     },
     {
       "id": "uuid-22",
       "name": "College of Education and External Studies (CEES)",
       "category": "College",
       "foundation_year": 1947,
-      "description": "Tracing its origins to the Department of Education established in 1947, the College of Education and External Studies (CEES) has played a central role in training teachers, educational leaders, and researchers in Uganda. Located near Makerere University's main gate, the college supports teacher education, distance learning, and educational research through modern multimedia studios, learning resource centres, and outreach programmes."
+      "description": "Tracing its origins to the Department of Education established in 1947, the College of Education and External Studies (CEES) has played a central role in training teachers, educational leaders, and researchers in Uganda. Located near Makerere University's main gate, the college supports teacher education, distance learning, and educational research through modern multimedia studios, learning resource centres, and outreach programmes.",
+      "latitude": 0.3348781,
+      "longitude": 32.5708967
     },
     {
       "id": "uuid-23",
       "name": "College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB)",
       "category": "College",
       "foundation_year": 1953,
-      "description": "Tracing its origins to veterinary training in the 1930s, the College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB) builds on the Faculty of Veterinary Medicine established in 1953. Today, the college is a leading centre for veterinary medicine, animal health, agriculture, and bio-security research. Located on the north-western slopes of Makerere University, it is distinguished by its iconic concrete water tower."
+      "description": "Tracing its origins to veterinary training in the 1930s, the College of Veterinary Medicine, Animal Resources and Bio-security (CoVAB) builds on the Faculty of Veterinary Medicine established in 1953. Today, the college is a leading centre for veterinary medicine, animal health, agriculture, and bio-security research. Located on the north-western slopes of Makerere University, it is distinguished by its iconic concrete water tower.",
+      "latitude": 0.3399576,
+      "longitude": 32.5676849
     },
     {
       "id": "uuid-24",
       "name": "St. Francis Chapel",
       "category": "Spiritual",
       "foundation_year": 1942,
-      "description": "Built in 1942, St. Francis Chapel is Makerere University's historic Anglican place of worship. Located near the main administrative area, the chapel is renowned for its striking mosaic artwork on the front exterior wall, symbolizing spiritual illumination. It continues to serve as a centre for worship, reflection, and spiritual life within the university community."
+      "description": "Built in 1942, St. Francis Chapel is Makerere University's historic Anglican place of worship. Located near the main administrative area, the chapel is renowned for its striking mosaic artwork on the front exterior wall, symbolizing spiritual illumination. It continues to serve as a centre for worship, reflection, and spiritual life within the university community.",
+      "latitude": 0.3329318,
+      "longitude": 32.567456
     },
     {
       "id": "uuid-25",
       "name": "St. Augustine Catholic Chapel",
       "category": "Spiritual",
       "foundation_year": 1950,
-      "description": "Consecrated in the 1950s and named after St. Augustine of Hippo, St. Augustine Catholic Chapel serves as the Catholic place of worship at Makerere University. The chapel is distinguished by its mid-century modern ecclesiastical architecture and expansive stained-glass windows, providing a welcoming space for worship, prayer, and spiritual formation."
+      "description": "Consecrated in the 1950s and named after St. Augustine of Hippo, St. Augustine Catholic Chapel serves as the Catholic place of worship at Makerere University. The chapel is distinguished by its mid-century modern ecclesiastical architecture and expansive stained-glass windows, providing a welcoming space for worship, prayer, and spiritual formation.",
+      "latitude": 0.3336282,
+      "longitude": 32.5667487
     },
     {
       "id": "uuid-26",
       "name": "Main Mosque",
       "category": "Spiritual",
       "foundation_year": 1970,
-      "description": "Established in the 1970s with support from international Islamic partnerships, the Main Mosque serves as Makerere University's principal Islamic place of worship. Situated on a scenic ridge within the campus, it is distinguished by its classic Islamic architecture, featuring a soaring minaret and a prominent central dome. The mosque continues to serve as a centre for worship, spiritual guidance, and community life."
+      "description": "Established in the 1970s with support from international Islamic partnerships, the Main Mosque serves as Makerere University's principal Islamic place of worship. Situated on a scenic ridge within the campus, it is distinguished by its classic Islamic architecture, featuring a soaring minaret and a prominent central dome. The mosque continues to serve as a centre for worship, spiritual guidance, and community life.",
+      "latitude": 0.3298733,
+      "longitude": 32.5711668
     },
     {
       "id": "uuid-27",
       "name": "Makerere Innovation Hub",
       "category": "College",
       "foundation_year": 2023,
-      "description": "Officially launched in July 2023, the Makerere Innovation Hub was established through a flagship partnership with the United Nations Development Programme (UNDP). Located at the Yusuf Lule Central Teaching Facility, the hub provides an incubation environment for software engineering, robotics, entrepreneurship, and digital innovation, supporting students, researchers, and technology startups."
+      "description": "Officially launched in July 2023, the Makerere Innovation Hub was established through a flagship partnership with the United Nations Development Programme (UNDP). Located at the Yusuf Lule Central Teaching Facility, the hub provides an incubation environment for software engineering, robotics, entrepreneurship, and digital innovation, supporting students, researchers, and technology startups.",
+      "latitude": 0.3323261,
+      "longitude": 32.5704417
     },
     {
       "id": "uuid-28",
       "name": "Makerere University Hospital",
       "category": "Infrastructure",
       "foundation_year": 1972,
-      "description": "Makerere University Hospital originated as a small student sick bay clinic before expanding after the university acquired the premises of the former Nile Nursing Home following the 1972 Asian expulsion. The sick bay was relocated to the new premises, and on 16th February 1978, during the presidency of Idi Amin Dada, the facility was officially upgraded to full hospital status. It continues to provide healthcare services to the Makerere University community."
+      "description": "Makerere University Hospital originated as a small student sick bay clinic before expanding after the university acquired the premises of the former Nile Nursing Home following the 1972 Asian expulsion. The sick bay was relocated to the new premises, and on 16th February 1978, during the presidency of Idi Amin Dada, the facility was officially upgraded to full hospital status. It continues to provide healthcare services to the Makerere University community.",
+      "latitude": 0.3279056,
+      "longitude": 32.5707073
     },
     {
       "id": "uuid-29",
       "name": "The University Printery",
       "category": "Infrastructure",
       "foundation_year": 1960,
-      "description": "The University Printery was established to help Makerere University become self-reliant in producing academic and institutional literature. The highly secured facility is responsible for publishing internal examination papers, research monographs, graduation booklets, and other official university materials."
+      "description": "The University Printery was established to help Makerere University become self-reliant in producing academic and institutional literature. The highly secured facility is responsible for publishing internal examination papers, research monographs, graduation booklets, and other official university materials.",
+      "latitude": 0.3336863,
+      "longitude": 32.5674141
     },
     {
       "id": "uuid-30",
       "name": "Swimming Pool & Sports Grounds",
       "category": "Infrastructure",
       "foundation_year": 1960,
-      "description": "The Swimming Pool & Sports Grounds complex was constructed during the high-investment post-independence era of the 1960s. It features one of the oldest open-air Olympic-sized swimming pools in Uganda and includes the main sports field known as Impala Grounds, serving as a major recreational and sporting facility for the Makerere University community."
+      "description": "The Swimming Pool & Sports Grounds complex was constructed during the high-investment post-independence era of the 1960s. It features one of the oldest open-air Olympic-sized swimming pools in Uganda and includes the main sports field known as Impala Grounds, serving as a major recreational and sporting facility for the Makerere University community.",
+      "latitude": 0.3350717,
+      "longitude": 32.5692296
     },
     {
       "id": "uuid-31",
       "name": "The University Guest House",
       "category": "Infrastructure",
       "foundation_year": 1950,
-      "description": "The University Guest House was built in the late 1950s, reflecting mid-century colonial architectural design. The low-rise facility provides a quiet green sanctuary for accommodating visiting scholars, researchers, and members of external academic networks away from the busier areas of the campus."
+      "description": "The University Guest House was built in the late 1950s, reflecting mid-century colonial architectural design. The low-rise facility provides a quiet green sanctuary for accommodating visiting scholars, researchers, and members of external academic networks away from the busier areas of the campus.",
+      "latitude": 0.3312273,
+      "longitude": 32.5694347
     },
     {
       "id": "uuid-32",
       "name": "The Main Gate",
       "category": "Gate",
       "foundation_year": 1940,
-      "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years, it was completely demolished and reconstructed in 2022 into a majestic dual-carriage monument as part of the university's Centenary celebrations."
+      "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years, it was completely demolished and reconstructed in 2022 into a majestic dual-carriage monument as part of the university's Centenary celebrations.",
+      "latitude": 0.329201,
+      "longitude": 32.5710341
     },
     {
       "id": "uuid-33",
       "name": "The Eastern Gate",
       "category": "Gate",
       "foundation_year": 1940,
-      "description": "The Eastern Gate was established in the 1940s as a simple transit passage allowing staff and scholars to exit down the slopes of Makerere Hill into the Wandegeya trading center. Over the decades, it developed into a major pedestrian access point and later received modern overhead architectural signage to integrate with the wider campus entrance network."
+      "description": "The Eastern Gate was established in the 1940s as a simple transit passage allowing staff and scholars to exit down the slopes of Makerere Hill into the Wandegeya trading center. Over the decades, it developed into a major pedestrian access point and later received modern overhead architectural signage to integrate with the wider campus entrance network.",
+      "latitude": 0.3357751,
+      "longitude": 32.572592
     },
     {
       "id": "uuid-34",
       "name": "The Western Gate (Kikoni Gate)",
       "category": "Gate",
       "foundation_year": 1970,
-      "description": "The Western Gate, also known as Kikoni Gate, serves as a critical daily access point facing the extensive residential hostel district of Kikoni. It provides a major transit route for commuting students and has been the focus of modern architectural redesign initiatives by campus engineering scholars to improve its functionality and appearance."
+      "description": "The Western Gate, also known as Kikoni Gate, serves as a critical daily access point facing the extensive residential hostel district of Kikoni. It provides a major transit route for commuting students and has been the focus of modern architectural redesign initiatives by campus engineering scholars to improve its functionality and appearance.",
+      "latitude": 0.3348122,
+      "longitude": 32.5639104
     },
     {
       "id": "uuid_35",
       "name": "Central Teaching Facility I (CTF I)",
       "category": "Infrastructure",
       "foundation_year": 2009,
-      "description": "Commissioned in 2009, Central Teaching Facility I (CTF I) was established to expand Makerere University's teaching capacity and provide modern learning spaces for its growing student population. The multi-storey facility houses lecture theatres, classrooms, computer laboratories, and administrative offices, serving students from multiple colleges across the university."
+      "description": "Commissioned in 2009, Central Teaching Facility I (CTF I) was established to expand Makerere University's teaching capacity and provide modern learning spaces for its growing student population. The multi-storey facility houses lecture theatres, classrooms, computer laboratories, and administrative offices, serving students from multiple colleges across the university.",
+      "latitude": 0.3324983,
+      "longitude": 32.5690181
     },
     {
       "id": "uuid_36",
       "name": "Central Teaching Facility II (CTF II)",
       "category": "Infrastructure",
       "foundation_year": 2013,
-      "description": "Commissioned in 2013, Central Teaching Facility II (CTF II) was constructed to further expand Makerere University's teaching infrastructure and address increasing student enrolment. Located adjacent to CTF I, the facility provides modern lecture theatres, classrooms, seminar rooms, and learning spaces that support teaching and academic activities across multiple colleges. It also accommodates innovation initiatives, including the Makerere Innovation Hub."
-
+      "description": "Commissioned in 2013, Central Teaching Facility II (CTF II) was constructed to further expand Makerere University's teaching infrastructure and address increasing student enrolment. Located adjacent to CTF I, the facility provides modern lecture theatres, classrooms, seminar rooms, and learning spaces that support teaching and academic activities across multiple colleges. It also accommodates innovation initiatives, including the Makerere Innovation Hub.",
+      "latitude": 0.3358249,
+      "longitude": 32.5682398
     },
     {
       "id": "uuid_37",
       "name": "Mastercard Foundation Office",
       "category": "Infrastructure",
       "foundation_year": 2013,
-      "description": "Established in 2013 as part of the Mastercard Foundation Scholars Program, the Mastercard Foundation Office coordinates scholarship administration, student support services, leadership development, and partnership activities at Makerere University. The office works to expand access to quality higher education for academically talented young people, particularly those from economically disadvantaged backgrounds, while promoting innovation, entrepreneurship, and community engagement."
+      "description": "Established in 2013 as part of the Mastercard Foundation Scholars Program, the Mastercard Foundation Office coordinates scholarship administration, student support services, leadership development, and partnership activities at Makerere University. The office works to expand access to quality higher education for academically talented young people, particularly those from economically disadvantaged backgrounds, while promoting innovation, entrepreneurship, and community engagement.",
+      "latitude": 0.3323265,
+      "longitude": 32.5708533
     },
     {
       "id": "uuid_38",
       "name": "Makerere Rotaract Club",
       "category": "Infrastructure",
       "foundation_year": 1991,
-      "description": "Founded in 1991, the Makerere Rotaract Club is one of the university's leading student service organizations and operates under the global Rotary International network. The club promotes leadership, professional development, community service, and fellowship among students through projects focused on education, health, environmental conservation, and youth empowerment. Over the years, it has become one of the most active student organizations at Makerere University."
+      "description": "Founded in 1991, the Makerere Rotaract Club is one of the university's leading student service organizations and operates under the global Rotary International network. The club promotes leadership, professional development, community service, and fellowship among students through projects focused on education, health, environmental conservation, and youth empowerment. Over the years, it has become one of the most active student organizations at Makerere University.",
+      "latitude": null,
+      "longitude": null
     },
     {
       "id": "uuid_39",
       "name": "Complex Hall",
       "category": "Hall",
       "foundation_year": 1990,
-      "description": "Opened in 1990, Complex Hall was established to provide residential accommodation for Makerere University students as enrolment continued to grow. Located near the College of Education and External Studies, the hall offers convenient access to lecture facilities and academic resources. Over the years, it has become an important part of the university's residential community, providing accommodation while supporting student life and academic engagement."
+      "description": "Opened in 1990, Complex Hall was established to provide residential accommodation for Makerere University students as enrolment continued to grow. Located near the College of Education and External Studies, the hall offers convenient access to lecture facilities and academic resources. Over the years, it has become an important part of the university's residential community, providing accommodation while supporting student life and academic engagement.",
+      "latitude": 0.3299602,
+      "longitude": 32.5701147
     },
     {
       "id": "uuid_40",
       "name": "Galloway House",
       "category": "Hall",
       "foundation_year": 1924,
-      "description": "Established in 1924 alongside the growth of the Mulago Medical School, Galloway House serves as a residence for students of the Makerere University College of Health Sciences. Located on Mulago Hill near Mulago National Referral Hospital, the residence provides convenient accommodation for medical students undertaking clinical training and has remained an integral part of the university's medical education infrastructure."
+      "description": "Established in 1924 alongside the growth of the Mulago Medical School, Galloway House serves as a residence for students of the Makerere University College of Health Sciences. Located on Mulago Hill near Mulago National Referral Hospital, the residence provides convenient accommodation for medical students undertaking clinical training and has remained an integral part of the university's medical education infrastructure.",
+      "latitude": 0.3388093,
+      "longitude": 32.5778747
     },
     {
       "id": "uuid_41",
       "name": "College of Agricultural and Environmental Sciences (CAES)",
       "category": "College",
       "foundation_year": 1922,
-      "description": "Tracing its origins to the School of Agriculture established in 1922, the College of Agricultural and Environmental Sciences (CAES) is one of Makerere University's oldest academic colleges. It has played a leading role in agricultural education, environmental management, food security, and scientific research in Uganda and across Africa. The college comprises modern teaching facilities, research laboratories, demonstration farms, and experimental gardens that support practical learning and innovation in agriculture and natural resource management."
+      "description": "Tracing its origins to the School of Agriculture established in 1922, the College of Agricultural and Environmental Sciences (CAES) is one of Makerere University's oldest academic colleges. It has played a leading role in agricultural education, environmental management, food security, and scientific research in Uganda and across Africa. The college comprises modern teaching facilities, research laboratories, demonstration farms, and experimental gardens that support practical learning and innovation in agriculture and natural resource management.",
+      "latitude": 0.3327663,
+      "longitude": 32.5681271
     },
     {
       "id": "uuid_42",
       "name": "University Oval (Main Sports Ground)",
       "category": "Infrastructure",
       "foundation_year": 1949,
-      "description": "Established in 1949, the University Oval is Makerere University's principal sports ground and one of the campus's most recognizable recreational landmarks. The facility hosts football, athletics, cricket, ceremonial events, inter-hall competitions, and university celebrations throughout the academic year. Surrounded by academic buildings and student residences, the Oval serves as a vibrant centre for sports, fitness, and community activities."
+      "description": "Established in 1949, the University Oval is Makerere University's principal sports ground and one of the campus's most recognizable recreational landmarks. The facility hosts football, athletics, cricket, ceremonial events, inter-hall competitions, and university celebrations throughout the academic year. Surrounded by academic buildings and student residences, the Oval serves as a vibrant centre for sports, fitness, and community activities.",
+      "latitude": 0.3293627,
+      "longitude": 32.5656331
     },
     {
       "id": "uuid_45",
       "name": "Lincoln Flats",
       "category": "Hall",
       "foundation_year": 1960,
-      "description": "Lincoln Flats are residential facilities within Makerere University that provide accommodation for members of the university community. The flats represent part of the institution's continuous development of residential infrastructure to support students and campus residents. Located within the university environment, Lincoln Flats contribute to the wider residential landscape of Makerere by providing convenient accommodation close to academic facilities and other campus services."
+      "description": "Lincoln Flats are residential facilities within Makerere University that provide accommodation for members of the university community. The flats represent part of the institution's continuous development of residential infrastructure to support students and campus residents. Located within the university environment, Lincoln Flats contribute to the wider residential landscape of Makerere by providing convenient accommodation close to academic facilities and other campus services.",
+      "latitude": 0.332042,
+      "longitude": 32.5699289
     }
-    
   ]
 }
