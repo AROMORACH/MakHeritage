@@ -3,7 +3,7 @@ const cors = require('cors');
 const { getLandmarks } = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Enable CORS so Christian's emulator can access endpoints across local origins
 app.use(cors({
