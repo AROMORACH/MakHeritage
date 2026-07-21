@@ -38,6 +38,4 @@ const getLandmarks = (category, year, callback) => {
     });
 };
 
-module.exports = {
-    getLandmarks
-};
+module.exports = { db, getLandmarks };

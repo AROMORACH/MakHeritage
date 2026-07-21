@@ -60,4 +60,18 @@ class LandmarkService {
     if (decoded is! List) throw const FormatException();
     return decoded.whereType<Map<String, dynamic>>().map(Landmark.fromJson).toList();
   }
+  Future<bool> addLandmark(Map<String, dynamic> data) async {
+    final url = Uri.parse('$baseUrl/api/landmarks');
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(data),
+      );
+      return response.statusCode == 201;
+    } catch (e) {
+      print("Error creating landmark: $e");
+      return false;
+    }
+  }
 }
