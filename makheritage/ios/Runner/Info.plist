@@ -66,6 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>audio</string>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MakHeritage needs your location to automatically show history for landmarks nearby.</string>
 	<key>NSLocationAlwaysUsageDescription</key>

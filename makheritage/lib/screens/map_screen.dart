@@ -46,6 +46,34 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   Timer? _adminTimer;
   StreamSubscription? _taskDataSubscription; 
 
+  void _initForegroundTask() {
+    FlutterForegroundTask.init(
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'makheritage_bg_service',
+        channelName: 'MakHeritage Location Tracking',
+        channelDescription: 'Tracks location in the background to narrate nearby landmarks.',
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+        iconData: const NotificationIconData(
+          resType: ResourceType.mipmap,
+          resPrefix: 'ic_launcher',
+          name: 'ic_launcher',
+        ),
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(
+        showNotification: true,
+        playSound: false,
+      ),
+      foregroundTaskOptions: const ForegroundTaskOptions(
+        interval: 5000,
+        isOnceEvent: false,
+        autoRunOnBoot: false,
+        allowWakeLock: true,
+        allowWifiLock: true,
+      ),
+    );
+  }
+
   void _initForegroundTaskListener() {
     _taskDataSubscription = FlutterForegroundTask.receivePort?.listen((data) {
       if (data is! Map) return;
@@ -96,6 +124,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _initTts();
     _initCompass();
+    _initForegroundTask();
     _initForegroundTaskListener(); // ADDED
     _future = _service.fetchLandmarks().then((landmarks) {
       _loadedLandmarks = landmarks; // ADDED
