@@ -147,7 +147,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
       FlutterForegroundTask.stopService();
     }
   }
-  
+
   Future<void> _startTracking(List<Landmark> landmarks) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -160,6 +160,17 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
         notificationText: 'Tracking nearby landmarks...',
         callback: startCallback,
       );
+    }
+    // Request notification permission (Required for Android 13+)
+    final NotificationPermission notificationPermissionStatus =
+        await FlutterForegroundTask.checkNotificationPermission();
+    if (notificationPermissionStatus != NotificationPermission.granted) {
+      await FlutterForegroundTask.requestNotificationPermission();
+    }
+
+    // Prevent the OS from aggressively killing the background task
+    if (await FlutterForegroundTask.isIgnoringBatteryOptimizations == false) {
+      await FlutterForegroundTask.requestIgnoreBatteryOptimization();
     }
 
     try {
