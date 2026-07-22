@@ -56,8 +56,8 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
         priority: NotificationPriority.LOW,
         iconData: const NotificationIconData(
           resType: ResourceType.mipmap,
-          resPrefix: 'ic_launcher',
-          name: 'ic_launcher',
+          resPrefix: ResourcePrefix.ic, // Replaced String with Enum
+          name: 'launcher',             // Removed 'ic_' since the prefix handles it
         ),
       ),
       iosNotificationOptions: const IOSNotificationOptions(
