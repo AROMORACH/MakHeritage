@@ -13,7 +13,13 @@ import '../services/landmark_service.dart';
 import '../services/geofence_service.dart';
 import 'add_landmark_screen.dart';
 import 'dart:ui' as ui;
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import '../main.dart';
 
+@pragma('vm:entry-point')
+void startCallback() {
+  FlutterForegroundTask.setTaskHandler(LocationTaskHandler());
+}
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -21,11 +27,12 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   final LandmarkService _service = LandmarkService();
   final GeofenceService _geofenceService = GeofenceService();
   final FlutterTts _flutterTts = FlutterTts();
   final MapController _mapController = MapController();
+  List<Landmark> _loadedLandmarks = [];
   
   late Future<List<Landmark>> _future;
   StreamSubscription<Position>? _positionStream;
@@ -40,16 +47,91 @@ class _MapScreenState extends State<MapScreen> {
   Landmark? _activeDestination; 
   
   bool _followUser = false; 
-  Timer? _adminTimer; 
+  Timer? _adminTimer;
+  StreamSubscription? _taskDataSubscription; 
+
+  void _initForegroundTask() {
+    FlutterForegroundTask.init(
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'makheritage_bg_service',
+        channelName: 'MakHeritage Location Tracking',
+        channelDescription: 'Tracks location in the background to narrate nearby landmarks.',
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+        iconData: const NotificationIconData(
+          resType: ResourceType.mipmap,
+          resPrefix: ResourcePrefix.ic, // Replaced String with Enum
+          name: 'launcher',             // Removed 'ic_' since the prefix handles it
+        ),
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(
+        showNotification: true,
+        playSound: false,
+      ),
+      foregroundTaskOptions: const ForegroundTaskOptions(
+        interval: 5000,
+        isOnceEvent: false,
+        autoRunOnBoot: false,
+        allowWakeLock: true,
+        allowWifiLock: true,
+      ),
+    );
+  }
+
+  void _initForegroundTaskListener() {
+    _taskDataSubscription = FlutterForegroundTask.receivePort?.listen((data) {
+      if (data is! Map) return;
+
+      final lat = data['lat'] as double?;
+      final lng = data['lng'] as double?;
+
+      if (lat != null && lng != null) {
+        final position = Position(
+          latitude: lat,
+          longitude: lng,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          altitudeAccuracy: 0.0,
+          heading: 0.0,
+          headingAccuracy: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+        );
+
+        if (mounted) {
+          setState(() {
+            _currentPosition = LatLng(lat, lng);
+          });
+
+          if (_followUser) {
+            _mapController.move(_currentPosition!, _mapController.camera.zoom);
+          }
+
+          if (_activeDestination != null) {
+            _drawRouteTo(_activeDestination!);
+          }
+        }
+
+        if (_loadedLandmarks.isNotEmpty) {
+          _geofenceService.checkProximity(position, _loadedLandmarks, _handleProximityTrigger);
+        }
+      }
+    });
+  }
 
   static const LatLng _makerereCenter = LatLng(0.3315, 32.5675);
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initTts();
     _initCompass();
+    _initForegroundTask();
+    _initForegroundTaskListener(); // ADDED
     _future = _service.fetchLandmarks().then((landmarks) {
+      _loadedLandmarks = landmarks; // ADDED
       _startTracking(landmarks);
       return landmarks;
     });
@@ -82,6 +164,8 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _taskDataSubscription?.cancel(); // Replaced removeTaskDataCallback
     _positionStream?.cancel();
     _compassStream?.cancel();
     _flutterTts.stop();
@@ -90,11 +174,39 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  Future<void> _startTracking(List<Landmark> landmarks) async {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      FlutterForegroundTask.stopService();
+    }
+  }
+
+Future<void> _startTracking(List<Landmark> landmarks) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) return;
+    }
+
+    // 1. Request notification permission FIRST (Required for Android 13+)
+    final NotificationPermission notificationPermissionStatus =
+        await FlutterForegroundTask.checkNotificationPermission();
+    if (notificationPermissionStatus != NotificationPermission.granted) {
+      await FlutterForegroundTask.requestNotificationPermission();
+    }
+
+    // 2. Prevent the OS from aggressively killing the background task FIRST
+    if (await FlutterForegroundTask.isIgnoringBatteryOptimizations == false) {
+      await FlutterForegroundTask.requestIgnoreBatteryOptimization();
+    }
+
+    // 3. NOW start the service
+    if (!await FlutterForegroundTask.isRunningService) {
+      FlutterForegroundTask.startService(
+        notificationTitle: 'MakHeritage',
+        notificationText: 'Tracking nearby landmarks...',
+        callback: startCallback,
+      );
     }
 
     try {
@@ -211,7 +323,7 @@ class _MapScreenState extends State<MapScreen> {
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      labelText: 'Makerere Email (@students.mak.ac.ug)',
+                      labelText: 'Email Address',
                       border: OutlineInputBorder(),
                     ),
                   )
@@ -238,21 +350,18 @@ class _MapScreenState extends State<MapScreen> {
 
                   try {
                     final email = emailController.text.trim().toLowerCase();
+                    
+                    if (email.isEmpty || !email.contains('@')) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter a valid email.'))
+                      );
+                      setDialogState(() => isProcessing = false);
+                      return;
+                    }
+
                     if (!isOtpSent) {
-                      final isAllowed = email.endsWith('@students.mak.ac.ug') || 
-                                        email.endsWith('@mak.ac.ug') || 
-                                        email.endsWith('@gmail.com');
-
-                      if (!isAllowed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unauthorised domain.'))
-                        );
-                        setDialogState(() => isProcessing = false);
-                        return;
-                      }
-
                       final response = await http.post(
-                        Uri.parse('http://127.0.0.1:3000/api/admin/request-otp'), 
+                        Uri.parse('https://makheritage.onrender.com/api/admin/request-otp'), 
                         headers: {"Content-Type": "application/json"},
                         body: json.encode({"email": email}),
                       );
@@ -267,9 +376,13 @@ class _MapScreenState extends State<MapScreen> {
                       final otp = otpController.text.trim();
 
                       final response = await http.post(
-                        Uri.parse('http://127.0.0.1:3000/api/admin/verify-otp'),
+                        Uri.parse('https://makheritage.onrender.com/api/admin/verify-otp'),
                         headers: {"Content-Type": "application/json"},
-                        body: json.encode({"email": email, "code": otp}),
+                        body: json.encode({
+                          "email": email, 
+                          "code": otp, 
+                          "secretCode": "MAK2026"
+                        }),
                       );
 
                       if (response.statusCode == 200) {

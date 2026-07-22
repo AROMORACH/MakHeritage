@@ -5,8 +5,8 @@ const { getLandmarks, db } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADMIN_SECRET = "MAK2026"; // Secret code for admin verification
 
-// Enable CORS so Christian's emulator can access endpoints across local origins
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST'],
@@ -14,23 +14,20 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Add OTP table to your database setup
 db.run(`CREATE TABLE IF NOT EXISTS otps (
     email TEXT PRIMARY KEY,
     code TEXT,
     expires_at INTEGER
 )`);
 
-// Configure the email sender (We will use Gmail for now)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'joshuassenyonjo1@gmail.com', // Replace with your email
-        pass: 'xlnsypebnhhgcnui'     // Replace with a 16-digit Google App Password
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS  
     }
 });
 
-// Main entry route
 app.get('/api/landmarks', (req, res) => {
     const { category, year } = req.query;
 
@@ -55,35 +52,25 @@ app.post('/api/landmarks', (req, res) => {
     const params = [name, category || 'Uncategorised', description || '', latitude, longitude];
 
     db.run(sql, params, function (err) {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.status(201).json({
-            message: "Landmark added successfully!",
-            id: this.lastID
-        });
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: "Landmark added successfully!", id: this.lastID });
     });
 });
 
-// Request OTP Route
-// Request OTP Route
 app.post('/api/admin/request-otp', (req, res) => {
     const { email } = req.body;
     const cleanEmail = email.trim().toLowerCase();
     
-    // Whitelist: Allow student emails, staff emails, and your personal gmail for testing
     const isAllowedDomain = cleanEmail.endsWith('@students.mak.ac.ug') || cleanEmail.endsWith('@mak.ac.ug');
-    const isDevGmail = cleanEmail === 'joshuassenyonjo1@gmail.com'; // Replace with your test gmail
+    const isDevGmail = cleanEmail === 'joshuassenyonjo1@gmail.com'; 
 
     if (!isAllowedDomain && !isDevGmail) {
         return res.status(403).json({ error: "Unauthorised email domain. Must be a Makerere address." });
     }
 
-    // Generate a random 6-digit code
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes from now
+    const expiresAt = Date.now() + 5 * 60 * 1000; 
 
-    // Save to database
     db.run(
         `INSERT INTO otps (email, code, expires_at) VALUES (?, ?, ?) 
          ON CONFLICT(email) DO UPDATE SET code = excluded.code, expires_at = excluded.expires_at`,
@@ -91,9 +78,8 @@ app.post('/api/admin/request-otp', (req, res) => {
         function(err) {
             if (err) return res.status(500).json({ error: "Database error" });
 
-            // Send the email
             const mailOptions = {
-                from: 'YOUR_GMAIL@gmail.com', // Replace with your email
+                from: 'joshuassenyonjo1@gmail.com', 
                 to: email,
                 subject: 'MakHeritage Admin Login Code',
                 text: `Your admin access code is: ${otp}. It expires in 5 minutes.`
@@ -101,7 +87,7 @@ app.post('/api/admin/request-otp', (req, res) => {
 
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.error("NODEMAILER ERROR:", error); // <-- Add this to see the exact rejection reason
+                    console.error("NODEMAILER ERROR:", error); 
                     return res.status(500).json({ error: "Failed to send email" });
                 }
                 res.status(200).json({ message: "OTP sent successfully" });
@@ -110,34 +96,24 @@ app.post('/api/admin/request-otp', (req, res) => {
     );
 });
 
-// Verify OTP Route
 app.post('/api/admin/verify-otp', (req, res) => {
-    const { email, code } = req.body;
+    const { email, code, secretCode } = req.body;
+
+    if (secretCode !== ADMIN_SECRET) {
+    return res.status(403).json({ error: "Invalid admin secret code" });
+    }
 
     db.get(`SELECT * FROM otps WHERE email = ?`, [email], (err, row) => {
         if (err) return res.status(500).json({ error: "Database error" });
         if (!row) return res.status(400).json({ error: "No OTP requested for this email" });
+        if (Date.now() > row.expires_at) return res.status(400).json({ error: "OTP has expired" });
+        if (row.code !== code) return res.status(400).json({ error: "Invalid OTP" });
 
-        if (Date.now() > row.expires_at) {
-            return res.status(400).json({ error: "OTP has expired" });
-        }
-
-        if (row.code !== code) {
-            return res.status(400).json({ error: "Invalid OTP" });
-        }
-
-        // OTP is correct and valid. Clear it from the database to prevent reuse.
         db.run(`DELETE FROM otps WHERE email = ?`, [email]);
-        
-        res.status(200).json({ message: "Verification successful" });
+        res.status(200).json({ message: "Verification successful. Admin authenticated." });
     });
 });
 
-// Health check route
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'API operational', timestamp: new Date() });
-});
+app.get('/api/health', (req, res) => res.json({ status: 'API operational', timestamp: new Date() }));
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://127.0.0.1:${PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on http://127.0.0.1:${PORT}`));

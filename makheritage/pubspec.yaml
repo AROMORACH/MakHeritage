@@ -19,6 +19,7 @@ dependencies:
   flutter_local_notifications: ^18.0.0
   flutter_tts: ^4.2.5
   flutter_compass: ^0.8.1
+  flutter_foreground_task: ^6.1.1
 
 dev_dependencies:
   flutter_test:
@@ -30,4 +31,5 @@ flutter:
   
   assets:
     - assets/data/
+    - assets/images/
     - .env
