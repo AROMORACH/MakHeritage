@@ -23,8 +23,8 @@ db.run(`CREATE TABLE IF NOT EXISTS otps (
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'joshuassenyonjo1@gmail.com', 
-        pass: 'xlnsypebnhhgcnui'     
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS  
     }
 });
 
@@ -100,7 +100,7 @@ app.post('/api/admin/verify-otp', (req, res) => {
     const { email, code, secretCode } = req.body;
 
     if (secretCode !== ADMIN_SECRET) {
-        return res.status(403).json({ error: "Invalid admin secret code" });
+    return res.status(403).json({ error: "Invalid admin secret code" });
     }
 
     db.get(`SELECT * FROM otps WHERE email = ?`, [email], (err, row) => {

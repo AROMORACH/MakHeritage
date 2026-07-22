@@ -323,7 +323,7 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      labelText: 'Makerere Email (@students.mak.ac.ug)',
+                      labelText: 'Email Address',
                       border: OutlineInputBorder(),
                     ),
                   )
@@ -350,21 +350,18 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
 
                   try {
                     final email = emailController.text.trim().toLowerCase();
+                    
+                    if (email.isEmpty || !email.contains('@')) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter a valid email.'))
+                      );
+                      setDialogState(() => isProcessing = false);
+                      return;
+                    }
+
                     if (!isOtpSent) {
-                      final isAllowed = email.endsWith('@students.mak.ac.ug') || 
-                                        email.endsWith('@mak.ac.ug') || 
-                                        email.endsWith('@gmail.com');
-
-                      if (!isAllowed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unauthorised domain.'))
-                        );
-                        setDialogState(() => isProcessing = false);
-                        return;
-                      }
-
                       final response = await http.post(
-                        Uri.parse('http://127.0.0.1:3000/api/admin/request-otp'), 
+                        Uri.parse('https://makheritage.onrender.com/api/admin/request-otp'), 
                         headers: {"Content-Type": "application/json"},
                         body: json.encode({"email": email}),
                       );
@@ -379,9 +376,13 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
                       final otp = otpController.text.trim();
 
                       final response = await http.post(
-                        Uri.parse('http://127.0.0.1:3000/api/admin/verify-otp'),
+                        Uri.parse('https://makheritage.onrender.com/api/admin/verify-otp'),
                         headers: {"Content-Type": "application/json"},
-                        body: json.encode({"email": email, "code": otp}),
+                        body: json.encode({
+                          "email": email, 
+                          "code": otp, 
+                          "secretCode": "MAK2026"
+                        }),
                       );
 
                       if (response.statusCode == 200) {

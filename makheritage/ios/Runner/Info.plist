@@ -27,7 +27,6 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
-	
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
@@ -44,12 +43,6 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
-					<key>NSLocationWhenInUseUsageDescription</key>
-					<string>Location is required to narrate nearby landmarks.</string>
-					<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-					<string>Background location is needed to trigger audio while the app is minimised.</string>
-					<key>NSLocationAlwaysUsageDescription</key>
-					<string>Background location is needed to trigger audio while the app is minimised.</string>
 				</dict>
 			</array>
 		</dict>
@@ -73,14 +66,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
+	<!-- Background Modes -->
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
 		<string>audio</string>
 	</array>
+	
+	<!-- Location Permissions -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MakHeritage needs your location to automatically show history for landmarks nearby.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>MakHeritage needs your location to alert you when you are near a historical site.</string>
-	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Background location is needed to trigger audio while the app is minimised.</string>
+</dict>
 </plist>
