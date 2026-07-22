@@ -21,7 +21,9 @@ db.run(`CREATE TABLE IF NOT EXISTS otps (
 )`);
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER, 
         pass: process.env.EMAIL_PASS  
@@ -79,7 +81,7 @@ app.post('/api/admin/request-otp', (req, res) => {
             if (err) return res.status(500).json({ error: "Database error" });
 
             const mailOptions = {
-                from: 'joshuassenyonjo1@gmail.com', 
+                from: process.env.EMAIL_USER, 
                 to: email,
                 subject: 'MakHeritage Admin Login Code',
                 text: `Your admin access code is: ${otp}. It expires in 5 minutes.`
