@@ -27,6 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
+	
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
@@ -43,6 +44,12 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
+					<key>NSLocationWhenInUseUsageDescription</key>
+					<string>Location is required to narrate nearby landmarks.</string>
+					<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+					<string>Background location is needed to trigger audio while the app is minimised.</string>
+					<key>NSLocationAlwaysUsageDescription</key>
+					<string>Background location is needed to trigger audio while the app is minimised.</string>
 				</dict>
 			</array>
 		</dict>

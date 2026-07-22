@@ -16,6 +16,10 @@ import 'dart:ui' as ui;
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import '../main.dart';
 
+@pragma('vm:entry-point')
+void startCallback() {
+  FlutterForegroundTask.setTaskHandler(LocationTaskHandler());
+}
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
