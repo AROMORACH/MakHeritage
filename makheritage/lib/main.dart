@@ -3,6 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'screens/map_screen.dart';
 import 'screens/landmark_list_screen.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'dart:isolate';
+import 'package:geolocator/geolocator.dart';
 
 // Background task entry point
 @pragma('vm:entry-point')
@@ -13,8 +16,24 @@ void startCallback() {
 class LocationTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {}
+
   @override
-  Future<void> onEvent(DateTime timestamp, SendPort? sendPort) async {}
+  Future<void> onRepeatEvent(DateTime timestamp, SendPort? sendPort) async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      
+      // Send live coordinates back to the main UI thread
+      sendPort?.send({
+        'lat': position.latitude,
+        'lng': position.longitude,
+      });
+    } catch (e) {
+      // Fails silently in background if location is off
+    }
+  }
+
   @override
   Future<void> onDestroy(DateTime timestamp, SendPort? sendPort) async {}
 }

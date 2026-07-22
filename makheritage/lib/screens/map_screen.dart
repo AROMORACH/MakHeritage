@@ -13,6 +13,7 @@ import '../services/landmark_service.dart';
 import '../services/geofence_service.dart';
 import 'add_landmark_screen.dart';
 import 'dart:ui' as ui;
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -26,6 +27,7 @@ class _MapScreenState extends State<MapScreen> {
   final GeofenceService _geofenceService = GeofenceService();
   final FlutterTts _flutterTts = FlutterTts();
   final MapController _mapController = MapController();
+  List<Landmark> _loadedLandmarks = [];
   
   late Future<List<Landmark>> _future;
   StreamSubscription<Position>? _positionStream;
@@ -40,7 +42,50 @@ class _MapScreenState extends State<MapScreen> {
   Landmark? _activeDestination; 
   
   bool _followUser = false; 
-  Timer? _adminTimer; 
+  Timer? _adminTimer;
+  StreamSubscription? _taskDataSubscription; 
+
+  void _initForegroundTaskListener() {
+    _taskDataSubscription = FlutterForegroundTask.receivePort?.listen((data) {
+      if (data is! Map) return;
+
+      final lat = data['lat'] as double?;
+      final lng = data['lng'] as double?;
+
+      if (lat != null && lng != null) {
+        final position = Position(
+          latitude: lat,
+          longitude: lng,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          altitudeAccuracy: 0.0,
+          heading: 0.0,
+          headingAccuracy: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+        );
+
+        if (mounted) {
+          setState(() {
+            _currentPosition = LatLng(lat, lng);
+          });
+
+          if (_followUser) {
+            _mapController.move(_currentPosition!, _mapController.camera.zoom);
+          }
+
+          if (_activeDestination != null) {
+            _drawRouteTo(_activeDestination!);
+          }
+        }
+
+        if (_loadedLandmarks.isNotEmpty) {
+          _geofenceService.checkProximity(position, _loadedLandmarks, _handleProximityTrigger);
+        }
+      }
+    });
+  }
 
   static const LatLng _makerereCenter = LatLng(0.3315, 32.5675);
 
@@ -49,7 +94,9 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initTts();
     _initCompass();
+    _initForegroundTaskListener(); // ADDED
     _future = _service.fetchLandmarks().then((landmarks) {
+      _loadedLandmarks = landmarks; // ADDED
       _startTracking(landmarks);
       return landmarks;
     });
@@ -82,6 +129,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void dispose() {
+    _taskDataSubscription?.cancel(); // Replaced removeTaskDataCallback
     _positionStream?.cancel();
     _compassStream?.cancel();
     _flutterTts.stop();
