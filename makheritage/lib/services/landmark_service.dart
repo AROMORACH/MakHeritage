@@ -14,7 +14,7 @@ class LandmarkServiceException implements Exception {
 }
 
 class LandmarkService {
-  static final String baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://10.0.2.2:3000';
+  static final String baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://makheritage.onrender.com';
   final http.Client _client;
 
   LandmarkService({http.Client? client}) : _client = client ?? http.Client();
@@ -28,7 +28,7 @@ class LandmarkService {
     final cacheKey = 'cached_landmarks_${category ?? "All"}_${year ?? "All"}';
 
     try {
-      final response = await _client.get(uri).timeout(const Duration(seconds: 10));
+      final response = await _client.get(uri).timeout(const Duration(seconds: 60));
 
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
