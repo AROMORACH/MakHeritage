@@ -181,29 +181,32 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _startTracking(List<Landmark> landmarks) async {
+Future<void> _startTracking(List<Landmark> landmarks) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) return;
     }
-    if (!await FlutterForegroundTask.isRunningService) {
-      FlutterForegroundTask.startService(
-        notificationTitle: 'MakHeritage',
-        notificationText: 'Tracking nearby landmarks...',
-        callback: startCallback,
-      );
-    }
-    // Request notification permission (Required for Android 13+)
+
+    // 1. Request notification permission FIRST (Required for Android 13+)
     final NotificationPermission notificationPermissionStatus =
         await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermissionStatus != NotificationPermission.granted) {
       await FlutterForegroundTask.requestNotificationPermission();
     }
 
-    // Prevent the OS from aggressively killing the background task
+    // 2. Prevent the OS from aggressively killing the background task FIRST
     if (await FlutterForegroundTask.isIgnoringBatteryOptimizations == false) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
+    }
+
+    // 3. NOW start the service
+    if (!await FlutterForegroundTask.isRunningService) {
+      FlutterForegroundTask.startService(
+        notificationTitle: 'MakHeritage',
+        notificationText: 'Tracking nearby landmarks...',
+        callback: startCallback,
+      );
     }
 
     try {
