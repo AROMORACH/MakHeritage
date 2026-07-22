@@ -14,6 +14,7 @@ import '../services/geofence_service.dart';
 import 'add_landmark_screen.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import '../main.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -22,7 +23,7 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   final LandmarkService _service = LandmarkService();
   final GeofenceService _geofenceService = GeofenceService();
   final FlutterTts _flutterTts = FlutterTts();
@@ -92,6 +93,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initTts();
     _initCompass();
     _initForegroundTaskListener(); // ADDED
@@ -129,6 +131,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _taskDataSubscription?.cancel(); // Replaced removeTaskDataCallback
     _positionStream?.cancel();
     _compassStream?.cancel();
@@ -138,11 +141,25 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      FlutterForegroundTask.stopService();
+    }
+  }
+  
   Future<void> _startTracking(List<Landmark> landmarks) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) return;
+    }
+    if (!await FlutterForegroundTask.isRunningService) {
+      FlutterForegroundTask.startService(
+        notificationTitle: 'MakHeritage',
+        notificationText: 'Tracking nearby landmarks...',
+        callback: startCallback,
+      );
     }
 
     try {
