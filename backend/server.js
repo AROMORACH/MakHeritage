@@ -20,15 +20,13 @@ db.run(`CREATE TABLE IF NOT EXISTS otps (
     expires_at INTEGER
 )`);
 
+// --- MAILTRAP TRANSPORTER ---
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    family: 4, // Forces IPv4
+    host: process.env.MAIL_HOST || 'sandbox.smtp.mailtrap.io',
+    port: process.env.MAIL_PORT || 2525,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
     }
 });
 
@@ -83,7 +81,7 @@ app.post('/api/admin/request-otp', (req, res) => {
             if (err) return res.status(500).json({ error: "Database error" });
 
             const mailOptions = {
-                from: process.env.EMAIL_USER, 
+                from: '"MakHeritage Admin" <admin@makheritage.com>', 
                 to: email,
                 subject: 'MakHeritage Admin Login Code',
                 text: `Your admin access code is: ${otp}. It expires in 5 minutes.`
@@ -103,8 +101,8 @@ app.post('/api/admin/request-otp', (req, res) => {
 app.post('/api/admin/verify-otp', (req, res) => {
     const { email, code, secretCode } = req.body;
 
-    if (secretCode !== ADMIN_SECRET) {
-    return res.status(403).json({ error: "Invalid admin secret code" });
+    if (secretCode !== MAK2026) {
+        return res.status(403).json({ error: "Invalid admin secret code" });
     }
 
     db.get(`SELECT * FROM otps WHERE email = ?`, [email], (err, row) => {
