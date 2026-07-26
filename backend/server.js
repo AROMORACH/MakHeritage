@@ -101,7 +101,7 @@ app.post('/api/admin/request-otp', (req, res) => {
 app.post('/api/admin/verify-otp', (req, res) => {
     const { email, code, secretCode } = req.body;
 
-    if (secretCode !== MAK2026) {
+    if (secretCode !== "MAK2026") {
         return res.status(403).json({ error: "Invalid admin secret code" });
     }
 

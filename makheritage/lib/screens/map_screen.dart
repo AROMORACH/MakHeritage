@@ -163,7 +163,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   String _formatPronunciation(String text) {
     return text
         .replaceAll(RegExp(r'Kikoni', caseSensitive: false), 'Chiko-ni')
-        .replaceAll(RegExp(r'Makerere', caseSensitive: false), 'Mah-kerere');
+        .replaceAll(RegExp(r'Makerere', caseSensitive: false), 'Maah-keh-reh-reh');
   }
 
   void _initCompass() {
@@ -387,8 +387,11 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       if (response.statusCode == 200) {
                         setDialogState(() => isOtpSent = true);
                       } else {
-                        final error = json.decode(response.body)['error'] ?? 'Failed to send OTP';
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        String error = 'Failed to send OTP';
+                        try { error = json.decode(response.body)['error'] ?? error; } catch (_) {}
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        }
                       }
                     } else {
                       final otp = otpController.text.trim();
@@ -404,19 +407,24 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       );
 
                       if (response.statusCode == 200) {
-                        Navigator.pop(context); 
+                        if (context.mounted) Navigator.pop(context); 
                         final result = await Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const AddLandmarkScreen()),
                         );
                         if (result == true) _retry(); 
                       } else {
-                        final error = json.decode(response.body)['error'] ?? 'Invalid OTP';
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        String error = 'Server Error (${response.statusCode})';
+                        try { error = json.decode(response.body)['error'] ?? 'Invalid OTP'; } catch (_) {}
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        }
                       }
                     }
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Network error: $e')));
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Network error: $e')));
+                    }
                   } finally {
                     setDialogState(() => isProcessing = false);
                   }
@@ -842,7 +850,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
         ),
       );
     }
-}    
+}   
 class _CompassBeamPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
