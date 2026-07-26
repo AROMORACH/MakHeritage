@@ -20,6 +20,7 @@ import '../main.dart';
 void startCallback() {
   FlutterForegroundTask.setTaskHandler(LocationTaskHandler());
 }
+
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -40,7 +41,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   final Set<String> _triggeredLandmarks = {};
   
   LatLng? _currentPosition; 
-  double _heading = 0.0; // Dynamic device heading (degrees)
+  double _heading = 0.0; 
   List<LatLng> _routePoints = [];
   String? _routeDistance;
   bool _isSearchVisible = false;
@@ -60,8 +61,8 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
         priority: NotificationPriority.LOW,
         iconData: const NotificationIconData(
           resType: ResourceType.mipmap,
-          resPrefix: ResourcePrefix.ic, // Replaced String with Enum
-          name: 'launcher',             // Removed 'ic_' since the prefix handles it
+          resPrefix: ResourcePrefix.ic, 
+          name: 'launcher',             
         ),
       ),
       iosNotificationOptions: const IOSNotificationOptions(
@@ -129,9 +130,9 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
     _initTts();
     _initCompass();
     _initForegroundTask();
-    _initForegroundTaskListener(); // ADDED
+    _initForegroundTaskListener(); 
     _future = _service.fetchLandmarks().then((landmarks) {
-      _loadedLandmarks = landmarks; // ADDED
+      _loadedLandmarks = landmarks; 
       _startTracking(landmarks);
       return landmarks;
     });
@@ -142,6 +143,27 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
     await _flutterTts.setSpeechRate(0.5);
     await _flutterTts.setVolume(1.0);
     await _flutterTts.setPitch(1.0);
+
+    try {
+      dynamic voices = await _flutterTts.getVoices;
+      if (voices != null) {
+        for (var voice in voices) {
+          String voiceName = voice["name"].toString().toLowerCase();
+          if (voiceName.contains("male") || voiceName.contains("daniel")) {
+            await _flutterTts.setVoice({"name": voice["name"], "locale": voice["locale"]});
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("Failed to set male voice: $e");
+    }
+  }
+
+  String _formatPronunciation(String text) {
+    return text
+        .replaceAll(RegExp(r'Kikoni', caseSensitive: false), 'Chiko-ni')
+        .replaceAll(RegExp(r'Makerere', caseSensitive: false), 'Mah-kerere');
   }
 
   void _initCompass() {
@@ -153,7 +175,6 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
         setState(() {
           _heading = direction;
           
-          // Smoothly spin the whole map if in locking follow mode
           if (_followUser && _currentPosition != null) {
             _mapController.rotate(360 - direction);
           }
@@ -165,7 +186,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _taskDataSubscription?.cancel(); // Replaced removeTaskDataCallback
+    _taskDataSubscription?.cancel(); 
     _positionStream?.cancel();
     _compassStream?.cancel();
     _flutterTts.stop();
@@ -181,26 +202,23 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
     }
   }
 
-Future<void> _startTracking(List<Landmark> landmarks) async {
+  Future<void> _startTracking(List<Landmark> landmarks) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) return;
     }
 
-    // 1. Request notification permission FIRST (Required for Android 13+)
     final NotificationPermission notificationPermissionStatus =
         await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermissionStatus != NotificationPermission.granted) {
       await FlutterForegroundTask.requestNotificationPermission();
     }
 
-    // 2. Prevent the OS from aggressively killing the background task FIRST
     if (await FlutterForegroundTask.isIgnoringBatteryOptimizations == false) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
     }
 
-    // 3. NOW start the service
     if (!await FlutterForegroundTask.isRunningService) {
       FlutterForegroundTask.startService(
         notificationTitle: 'MakHeritage',
@@ -420,7 +438,14 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
 
   void _showLandmarkDetails(Landmark landmark, {bool isProximity = false}) {
     bool isPlaying = true;
-    _flutterTts.speak(landmark.description ?? "No description available.");
+    
+    String displayDescription = landmark.description ?? "No description available.";
+    if (landmark.name.toLowerCase().contains('ivory tower') || landmark.name.toLowerCase().contains('main admin')) {
+      displayDescription = "The Makerere University Main Administration Building, affectionately known as the Ivory Tower, is the most recognisable symbol of the university. Completed in 1941, its striking white-walled and blue-tiled architecture was heavily funded by the British colonial government. It serves as the central hub for administrative affairs and stands as a monument to East Africa's academic heritage. In September 2020, a devastating fire caused extensive damage to the structure, but a massive restoration project was launched to rebuild it to its former glory while modernising its interior.";
+    }
+
+    String textToSpeak = _formatPronunciation(displayDescription);
+    _flutterTts.speak(textToSpeak);
 
     showModalBottomSheet(
       context: context,
@@ -469,7 +494,7 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
                       ),
                       IconButton(
                         icon: Icon(
-                          isPlaying ? Icons.volume_off : Icons.volume_up, 
+                          isPlaying ? Icons.volume_up : Icons.volume_off, 
                           color: const Color(0xFFE5A93C), 
                           size: 28
                         ),
@@ -478,7 +503,7 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
                             await _flutterTts.stop();
                             setModalState(() { isPlaying = false; });
                           } else {
-                            await _flutterTts.speak(landmark.description ?? "No description available.");
+                            await _flutterTts.speak(_formatPronunciation(displayDescription));
                             setModalState(() { isPlaying = true; });
                           }
                         },
@@ -492,7 +517,7 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    landmark.description ?? "No description available.",
+                    displayDescription,
                     style: const TextStyle(fontSize: 15, height: 1.4),
                   ),
                   const SizedBox(height: 24),
@@ -531,296 +556,293 @@ Future<void> _startTracking(List<Landmark> landmarks) async {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Scaffold completely removed. Returns direct Stack/FutureBuilder layout.
-    return FutureBuilder<List<Landmark>>(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    Widget build(BuildContext context) {
+      return Scaffold(
+        body: FutureBuilder<List<Landmark>>(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        if (snapshot.hasError) {
-          return _ErrorState(message: snapshot.error.toString(), onRetry: _retry);
-        }
+            if (snapshot.hasError) {
+              return _ErrorState(message: snapshot.error.toString(), onRetry: _retry);
+            }
 
-        final landmarks = snapshot.data ?? [];
+            final landmarks = snapshot.data ?? [];
 
-        final markers = landmarks
-            .where((l) => l.hasCoordinates)
-            .map(
-              (l) => Marker(
-                point: LatLng(l.latitude!, l.longitude!),
-                width: 50,
-                height: 50,
-                child: GestureDetector(
-                  onTap: () {
-                    _showLandmarkDetails(l);
-                  },
-                  child: const Tooltip(
-                    message: "Tap to view",
-                    child: Icon(
-                      Icons.location_on,
-                      color: Color(0xFFE5A93C),
-                      size: 44,
-                    ),
-                  ),
-                ),
-              ),
-            )
-            .toList();
-
-        if (_currentPosition != null) {
-          markers.add(
-            Marker(
-              point: _currentPosition!,
-              width: 100, // Size increased to contain the rotating light beam properly
-              height: 100,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // 1. Google Maps Faded Rotation Beam
-                  Transform.rotate(
-                    angle: (_heading * math.pi / 180), // Convert compass degrees to radians
-                    child: CustomPaint(
-                      size: const Size(80, 80),
-                      painter: _CompassBeamPainter(),
-                    ),
-                  ),
-                  // 2. Central Positioning Dot
-                  Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black26, blurRadius: 4, spreadRadius: 1)
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return Stack(
-          children: [
-            FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                initialCenter: _makerereCenter,
-                initialZoom: 16,
-                onPositionChanged: (position, hasGesture) {
-                  if (hasGesture && _followUser) {
-                    setState(() {
-                      _followUser = false;
-                    });
-                  }
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.makheritage.app',
-                ),
-                PolylineLayer(
-                  polylines: [
-                    if (_routePoints.isNotEmpty)
-                      Polyline(
-                        points: _routePoints,
-                        color: Colors.blueAccent,
-                        strokeWidth: 5.0,
-                      ),
-                  ],
-                ),
-                MarkerLayer(markers: markers),
-              ],
-            ),
-
-            if (_isSearchVisible)
-              Positioned(
-                top: 16,
-                left: 16, 
-                right: 16,
-                child: Autocomplete<Landmark>(
-                  optionsBuilder: (TextEditingValue textEditingValue) {
-                    if (textEditingValue.text.isEmpty) {
-                      return const Iterable<Landmark>.empty();
-                    }
-                    return landmarks.where((l) => 
-                      l.name.toLowerCase().contains(textEditingValue.text.toLowerCase())
-                    );
-                  },
-                  displayStringForOption: (Landmark option) => option.name,
-                  onSelected: (Landmark selection) {
-                    setState(() {
-                      _isSearchVisible = false;
-                    });
-                    _showLandmarkDetails(selection);
-                  },
-                  fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                    return Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(30),
-                      child: TextField(
-                        controller: controller,
-                        focusNode: focusNode,
-                        autofocus: true,
-                        decoration: InputDecoration(
-                          hintText: 'Search landmarks...',
-                          filled: true,
-                          fillColor: Colors.white,
-                          prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear, color: Colors.grey),
-                            onPressed: () {
-                              controller.clear();
-                              setState(() {
-                                _routePoints.clear();
-                                _routeDistance = null;
-                                _activeDestination = null;
-                                _isSearchVisible = false;
-                              });
-                            },
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+            final markers = landmarks
+                .where((l) => l.hasCoordinates)
+                .map(
+                  (l) => Marker(
+                    point: LatLng(l.latitude!, l.longitude!),
+                    width: 50,
+                    height: 50,
+                    child: GestureDetector(
+                      onTap: () {
+                        _showLandmarkDetails(l);
+                      },
+                      child: const Tooltip(
+                        message: "Tap to view",
+                        child: Icon(
+                          Icons.location_on,
+                          color: Color(0xFFE5A93C),
+                          size: 44,
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ),
+                )
+                .toList();
+
+            if (_currentPosition != null) {
+              markers.add(
+                Marker(
+                  point: _currentPosition!,
+                  width: 100, 
+                  height: 100,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Transform.rotate(
+                        angle: (_heading * math.pi / 180), 
+                        child: CustomPaint(
+                          size: const Size(80, 80),
+                          painter: _CompassBeamPainter(),
+                        ),
+                      ),
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 3),
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black26, blurRadius: 4, spreadRadius: 1)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            else
-              Positioned(
-                top: 16,
-                right: 16,
-                child: Listener(
-                  onPointerDown: (_) {
-                    _adminTimer = Timer(const Duration(seconds: 10), () {
-                      _showAdminAuthDialog();
-                    });
-                  },
-                  onPointerUp: (_) => _adminTimer?.cancel(),
-                  onPointerCancel: (_) => _adminTimer?.cancel(),
-                  child: FloatingActionButton.small(
-                    heroTag: 'searchBtn',
-                    backgroundColor: Colors.red,
+              );
+            }
+
+            return Stack(
+              children: [
+                FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: _makerereCenter,
+                    initialZoom: 16,
+                    onPositionChanged: (position, hasGesture) {
+                      if (hasGesture && _followUser) {
+                        setState(() {
+                          _followUser = false;
+                        });
+                      }
+                    },
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.makheritage.app',
+                    ),
+                    PolylineLayer(
+                      polylines: [
+                        if (_routePoints.isNotEmpty)
+                          Polyline(
+                            points: _routePoints,
+                            color: Colors.blueAccent,
+                            strokeWidth: 5.0,
+                          ),
+                      ],
+                    ),
+                    MarkerLayer(markers: markers),
+                  ],
+                ),
+
+                if (_isSearchVisible)
+                  Positioned(
+                    top: 16,
+                    left: 16, 
+                    right: 16,
+                    child: Autocomplete<Landmark>(
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        if (textEditingValue.text.isEmpty) {
+                          return const Iterable<Landmark>.empty();
+                        }
+                        return landmarks.where((l) => 
+                          l.name.toLowerCase().contains(textEditingValue.text.toLowerCase())
+                        );
+                      },
+                      displayStringForOption: (Landmark option) => option.name,
+                      onSelected: (Landmark selection) {
+                        setState(() {
+                          _isSearchVisible = false;
+                        });
+                        _showLandmarkDetails(selection);
+                      },
+                      fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                        return Material(
+                          elevation: 4,
+                          borderRadius: BorderRadius.circular(30),
+                          child: TextField(
+                            controller: controller,
+                            focusNode: focusNode,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              hintText: 'Search landmarks...',
+                              filled: true,
+                              fillColor: Colors.white,
+                              prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.clear, color: Colors.grey),
+                                onPressed: () {
+                                  controller.clear();
+                                  setState(() {
+                                    _routePoints.clear();
+                                    _routeDistance = null;
+                                    _activeDestination = null;
+                                    _isSearchVisible = false;
+                                  });
+                                },
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Listener(
+                      onPointerDown: (_) {
+                        _adminTimer = Timer(const Duration(seconds: 10), () {
+                          _showAdminAuthDialog();
+                        });
+                      },
+                      onPointerUp: (_) => _adminTimer?.cancel(),
+                      onPointerCancel: (_) => _adminTimer?.cancel(),
+                      child: FloatingActionButton.small(
+                        heroTag: 'searchBtn',
+                        backgroundColor: Colors.red,
+                        onPressed: () {
+                          setState(() {
+                            _isSearchVisible = true;
+                          });
+                        },
+                        child: const Icon(Icons.search, color: Colors.white),
+                      ),
+                    ),
+                  ),
+
+                if (_routeDistance != null)
+                  Positioned(
+                    top: _isSearchVisible ? 80 : 24,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                        ),
+                        child: Text(
+                          '$_routeDistance away',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (landmarks.isNotEmpty && markers.isEmpty)
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                    child: _InfoBanner(
+                      text: '${landmarks.length} landmarks loaded, but none have coordinates yet.',
+                    ),
+                  ),
+                
+                Positioned(
+                  bottom: 140, 
+                  right: 16,
+                  child: FloatingActionButton(
+                    heroTag: 'followBtn',
+                    backgroundColor: _followUser ? Colors.blueAccent : Colors.red,
                     onPressed: () {
                       setState(() {
-                        _isSearchVisible = true;
+                        _followUser = !_followUser;
                       });
+                      if (_followUser && _currentPosition != null) {
+                        _mapController.move(_currentPosition!, 18.0); 
+                        _mapController.rotate(360 - _heading);
+                      } else {
+                        _mapController.rotate(0);
+                      }
                     },
-                    child: const Icon(Icons.search, color: Colors.white),
-                  ),
-                ),
-              ),
-
-            if (_routeDistance != null)
-              Positioned(
-                top: _isSearchVisible ? 80 : 24,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
-                    ),
-                    child: Text(
-                      '$_routeDistance away',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                    child: Icon(
+                      _followUser ? Icons.explore : Icons.my_location, 
+                      color: Colors.white
                     ),
                   ),
                 ),
-              ),
+                
+                Positioned(
+                  bottom: 80,
+                  right: 16,
+                  child: FloatingActionButton(
+                    heroTag: 'radarBtn',
+                    backgroundColor: Colors.red,
+                    child: const Icon(Icons.radar, color: Colors.white),
+                    onPressed: () async {
+                      try {
+                        Position pos = await Geolocator.getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.high,
+                        );
+                        
+                        if (context.mounted) {
+                          setState(() {
+                            _currentPosition = LatLng(pos.latitude, pos.longitude);
+                          });
+                        }
 
-            if (landmarks.isNotEmpty && markers.isEmpty)
-              Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
-                child: _InfoBanner(
-                  text: '${landmarks.length} landmarks loaded, but none have coordinates yet.',
+                        bool found = false;
+                        _geofenceService.checkProximity(pos, landmarks, (landmark) {
+                          found = true;
+                          _showLandmarkDetails(landmark, isProximity: true);
+                        });
+
+                        if (!found && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('No landmarks within 50 metres.')),
+                          );
+                        }
+                      } catch (e) {
+                        debugPrint("Location error: $e");
+                      }
+                    },
+                  ),
                 ),
-              ),
-            
-            Positioned(
-              bottom: 140, 
-              right: 16,
-              child: FloatingActionButton(
-                heroTag: 'followBtn',
-                backgroundColor: _followUser ? Colors.blueAccent : Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _followUser = !_followUser;
-                  });
-                  if (_followUser && _currentPosition != null) {
-                    _mapController.move(_currentPosition!, 18.0); 
-                    _mapController.rotate(360 - _heading);
-                  } else {
-                    _mapController.rotate(0);
-                  }
-                },
-                child: Icon(
-                  _followUser ? Icons.explore : Icons.my_location, 
-                  color: Colors.white
-                ),
-              ),
-            ),
-            
-            Positioned(
-              bottom: 80,
-              right: 16,
-              child: FloatingActionButton(
-                heroTag: 'radarBtn',
-                backgroundColor: Colors.red,
-                child: const Icon(Icons.radar, color: Colors.white),
-                onPressed: () async {
-                  try {
-                    Position pos = await Geolocator.getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high,
-                    );
-                    
-                    if (context.mounted) {
-                      setState(() {
-                        _currentPosition = LatLng(pos.latitude, pos.longitude);
-                      });
-                    }
-
-                    bool found = false;
-                    _geofenceService.checkProximity(pos, landmarks, (landmark) {
-                      found = true;
-                      _handleProximityTrigger(landmark);
-                    });
-
-                    if (!found && context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('No landmarks within 50 metres.')),
-                      );
-                    }
-                  } catch (e) {
-                    debugPrint("Location error: $e");
-                  }
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-// Draw the Custom Google Maps direction radar cone
+              ],
+            );
+          },
+        ),
+      );
+    }
+}    
 class _CompassBeamPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -833,7 +855,6 @@ class _CompassBeamPainter extends CustomPainter {
       ).createShader(Rect.fromCircle(center: Offset(size.width / 2, size.height / 2), radius: size.width / 2))
       ..style = PaintingStyle.fill;
 
-    // Using ui.Path resolves the namespace clash with latlong2
     final path = ui.Path();
     final double centerX = size.width / 2;
     final double centerY = size.height / 2;
@@ -897,6 +918,61 @@ class _InfoBanner extends StatelessWidget {
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white, fontSize: 13),
       ),
+    );
+  }
+}
+Future<void> runScanner(BuildContext context, List landmarks) async {
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please enable location services.")),
+    );
+    return;
+  }
+
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Location permissions denied.")),
+      );
+      return;
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Location permissions permanently denied. Open settings.")),
+    );
+    return;
+  }
+
+  Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high);
+
+  List nearbyLandmarks = [];
+
+  for (var landmark in landmarks) {
+    double distance = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      landmark.latitude, 
+      landmark.longitude,
+    );
+
+    if (distance <= 50) {
+      nearbyLandmarks.add(landmark);
+    }
+  }
+
+  if (nearbyLandmarks.isNotEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Found ${nearbyLandmarks.length} landmarks within 50 metres.")),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("No landmarks nearby.")),
     );
   }
 }

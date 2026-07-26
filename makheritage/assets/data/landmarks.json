@@ -5,7 +5,7 @@
       "name": "The Main Building (Ivory Tower)",
       "category": "Infrastructure",
       "foundation_year": 1941,
-      "description": "Construction began in 1938 and the building officially opened in 1941. It is the iconic symbol of Makerere University.\n",
+      "description": "The Makerere University Main Administration Building, affectionately known as the Ivory Tower, is the most recognisable symbol of the university. Completed in 1941, its striking white-walled and blue-tiled architecture was heavily funded by the British colonial government. It serves as the central hub for administrative affairs and stands as a monument to East Africa's academic heritage. In September 2020, a devastating fire caused extensive damage to the structure, but a massive restoration project was launched to rebuild it to its former glory while modernising its interior.",
       "latitude": 0.3336554,
       "longitude": 32.5675605
     },
@@ -379,7 +379,7 @@
       "longitude": 32.5656331
     },
     {
-      "id": "uuid_45",
+      "id": "uuid_43",
       "name": "Lincoln Flats",
       "category": "Hall",
       "foundation_year": 1960,
