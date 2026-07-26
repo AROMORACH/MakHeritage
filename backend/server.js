@@ -118,6 +118,13 @@ app.post('/api/admin/verify-otp', (req, res) => {
     });
 });
 
+app.delete('/api/landmarks/:id', (req, res) => {
+    db.run(`DELETE FROM landmarks WHERE id = ?`, req.params.id, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Landmark deleted successfully" });
+    });
+});
+
 app.get('/api/health', (req, res) => res.json({ status: 'API operational', timestamp: new Date() }));
 
 app.listen(PORT, '0.0.0.0', () => console.log(`Server running on http://127.0.0.1:${PORT}`));

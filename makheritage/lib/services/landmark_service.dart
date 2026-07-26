@@ -79,4 +79,18 @@ class LandmarkService {
       return false;
     }
   }
+  Future<bool> deleteLandmark(int id) async {
+    final url = Uri.parse('$baseUrl/api/landmarks/$id');
+    try {
+      final response = await http.delete(url);
+      
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Network/Exception Error: $e");
+      return false;
+    }
+  }
 }
