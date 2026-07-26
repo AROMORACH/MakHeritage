@@ -17,6 +17,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
   final _descController = TextEditingController();
   final _latController = TextEditingController();
   final _lngController = TextEditingController();
+  final _yearController = TextEditingController(); // Added year controller
   
   bool _isLoading = false;
 
@@ -31,6 +32,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
       "description": _descController.text,
       "latitude": double.tryParse(_latController.text),
       "longitude": double.tryParse(_lngController.text),
+      "year": int.tryParse(_yearController.text), // Changed to "year"
     };
 
     final success = await _service.addLandmark(data);
@@ -41,7 +43,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Landmark added successfully!')),
         );
-        Navigator.pop(context, true); // Return true to trigger map refresh
+        Navigator.pop(context, true); 
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to add landmark. Check server.')),
@@ -57,6 +59,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
     _descController.dispose();
     _latController.dispose();
     _lngController.dispose();
+    _yearController.dispose(); // Disposed year controller
     super.dispose();
   }
 
@@ -79,10 +82,25 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
               validator: (v) => v!.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _categoryController,
-              decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
-              validator: (v) => v!.isEmpty ? 'Required' : null,
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _categoryController,
+                    decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
+                    validator: (v) => v!.isEmpty ? 'Required' : null,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextFormField(
+                    controller: _yearController,
+                    decoration: const InputDecoration(labelText: 'Foundation Year', border: OutlineInputBorder()),
+                    keyboardType: TextInputType.number,
+                    validator: (v) => v!.isEmpty ? 'Required' : null,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Row(

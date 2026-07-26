@@ -163,7 +163,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   String _formatPronunciation(String text) {
     return text
         .replaceAll(RegExp(r'Kikoni', caseSensitive: false), 'Chiko-ni')
-        .replaceAll(RegExp(r'Makerere', caseSensitive: false), 'Maah-keh-reh-reh');
+        .replaceAll(RegExp(r'Makerere', caseSensitive: false), 'Mahkerrehrey');
   }
 
   void _initCompass() {

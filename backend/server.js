@@ -43,15 +43,17 @@ app.get('/api/landmarks', (req, res) => {
 });
 
 app.post('/api/landmarks', (req, res) => {
-    const { name, category, description, latitude, longitude } = req.body;
+    // Extract 'year' from the Flutter payload
+    const { name, category, description, latitude, longitude, year } = req.body;
 
-    if (!name || !latitude || !longitude) {
-        return res.status(400).json({ error: "Name, latitude, and longitude are required." });
+    if (!name || !latitude || !longitude || !year) {
+        return res.status(400).json({ error: "Name, latitude, longitude, and year are required." });
     }
 
-    const sql = `INSERT INTO landmarks (name, category, description, latitude, longitude) 
-                    VALUES (?, ?, ?, ?, ?)`;
-    const params = [name, category || 'Uncategorised', description || '', latitude, longitude];
+    // Include foundation_year in the SQL query and mapping
+    const sql = `INSERT INTO landmarks (name, category, description, latitude, longitude, foundation_year) 
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+    const params = [name, category || 'Uncategorised', description || '', latitude, longitude, year];
 
     db.run(sql, params, function (err) {
         if (err) return res.status(500).json({ error: err.message });

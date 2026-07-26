@@ -68,9 +68,14 @@ class LandmarkService {
         headers: {"Content-Type": "application/json"},
         body: json.encode(data),
       );
-      return response.statusCode == 201;
+      
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      
+      // Accept both 200 (OK) and 201 (Created)
+      return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
-      print("Error creating landmark: $e");
+      print("Network/Exception Error: $e");
       return false;
     }
   }
