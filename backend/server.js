@@ -85,9 +85,9 @@ app.post('/api/admin/request-otp', (req, res) => {
             if (err) return res.status(500).json({ error: "Database error" });
 
             const pass = process.env.MAIL_PASS || '';
-            const fromEmail = process.env.MAIL_FROM || 'MakHeritage Admin <onboarding@resend.dev>';
+            const fromEmail = process.env.MAIL_FROM || '"MakHeritage Admin" <admin@makheritage.com>';
             const subject = 'MakHeritage Admin Login Code';
-            const text = `Your MakHeritage admin access code is: ${otp}. It expires in 5 minutes.`;
+            const text = `Your 6-digit MakHeritage admin access code is: ${otp}. It expires in 5 minutes.`;
 
             // If using Resend API Key (starts with re_)
             if (pass.startsWith('re_')) {
