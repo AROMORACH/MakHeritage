@@ -1,41 +1,16 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+require('dotenv').config();
+const { createClient } = require('@supabase/supabase-js');
 
-// Target the correct sqlite flat-file inside the database folder
-const dbPath = path.resolve(__dirname, '../database/makheritage_db.sqlite');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-        console.error('Error opening database:', err.message);
-    } else {
-        console.log('Connected to the MakHeritage SQLite database.');
-    }
-});
+if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables.');
+    process.exit(1);
+}
 
-/**
- * Fetch all landmarks with optional category filtering
- */
-const getLandmarks = (category, year, callback) => {
-    db.all("PRAGMA table_info(landmarks)", (err, columns) => {
-        if (err) return callback(err, null);
-        const hasGeospatial = columns.some(col => col.name === 'latitude');
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-        let sql = hasGeospatial 
-            ? 'SELECT id, name, description, category, foundation_year, latitude, longitude, image_url FROM landmarks WHERE 1=1'
-            : 'SELECT id, name, description, category, foundation_year, 0.0 AS latitude, 0.0 AS longitude, "" AS image_url FROM landmarks WHERE 1=1';
+console.log('Connected to Supabase (PostgreSQL).');
 
-        const params = [];
-        if (category && category !== 'All') {
-            sql += ' AND category = ?';
-            params.push(category);
-        }
-        if (year) {
-            sql += ' AND foundation_year = ?';
-            params.push(year);
-        }
-
-        db.all(sql, params, callback);
-    });
-};
-
-module.exports = { db, getLandmarks };
+module.exports = { supabase };
