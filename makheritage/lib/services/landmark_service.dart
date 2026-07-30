@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/landmark.dart';
+import '../main.dart';
 
 class LandmarkServiceException implements Exception {
   final String message;
@@ -14,83 +13,104 @@ class LandmarkServiceException implements Exception {
 }
 
 class LandmarkService {
-  static final String baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://makheritage.onrender.com';
-  final http.Client _client;
+  final _supabase = Supabase.instance.client;
 
-  LandmarkService({http.Client? client}) : _client = client ?? http.Client();
+  Future<void> _clearCache() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final keys = prefs.getKeys().where((k) => k.startsWith('cached_landmarks_')).toList();
+      for (final key in keys) {
+        await prefs.remove(key);
+      }
+    } catch (e) {
+      print("Error clearing landmark cache: $e");
+    }
+  }
+
+  void notifyDataChanged() {
+    _clearCache();
+    globalLandmarksRefreshNotifier.value++;
+  }
 
   Future<List<Landmark>> fetchLandmarks({String? category, int? year}) async {
-    final queryParams = <String, String>{};
-    if (category != null && category != 'All') queryParams['category'] = category;
-    if (year != null) queryParams['year'] = year.toString();
-
-    final uri = Uri.parse('$baseUrl/api/landmarks').replace(queryParameters: queryParams);
     final cacheKey = 'cached_landmarks_${category ?? "All"}_${year ?? "All"}';
 
     try {
-      final response = await _client.get(uri).timeout(const Duration(seconds: 60));
-
-      if (response.statusCode == 200) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(cacheKey, response.body);
-        return _parseJson(response.body);
-      } else if (response.statusCode == 404) {
-        throw LandmarkServiceException('No landmarks found (404)');
-      } else {
-        throw LandmarkServiceException('Server error (status ${response.statusCode})');
+      var query = _supabase.from('landmarks').select();
+      
+      if (category != null && category != 'All') {
+        query = query.eq('category', category);
       }
-    } on SocketException {
+      if (year != null) {
+        query = query.eq('foundation_year', year.toString());
+      }
+      
+      final data = await query;
+      
+      // Cache the raw JSON data for offline mode
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(cacheKey, jsonEncode(data));
+      
+      return data.map((json) => Landmark.fromJson(json)).toList();
+      
+    } catch (e) {
+      // Offline fallback: load from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       final cachedData = prefs.getString(cacheKey);
       
       if (cachedData != null) {
-        return _parseJson(cachedData);
+         final decoded = jsonDecode(cachedData) as List;
+         return decoded.map((json) => Landmark.fromJson(Map<String, dynamic>.from(json))).toList();
       }
-      throw LandmarkServiceException('Offline and no cached data available.');
-    } on FormatException {
-      throw LandmarkServiceException('API returned malformed JSON');
-    } catch (e) {
-      if (e is LandmarkServiceException) rethrow;
-      throw LandmarkServiceException('Unexpected error: $e');
+      throw LandmarkServiceException('Offline and no cached data available. Error: $e');
     }
   }
 
-  List<Landmark> _parseJson(String responseBody) {
-    final decoded = jsonDecode(responseBody);
-    if (decoded is! List) throw const FormatException();
-    return decoded.whereType<Map<String, dynamic>>().map(Landmark.fromJson).toList();
-  }
   Future<bool> addLandmark(Map<String, dynamic> data) async {
-    final url = Uri.parse('$baseUrl/api/landmarks');
     try {
-      final response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: json.encode(data),
-      );
-      
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
-      
-      // Accept both 200 (OK) and 201 (Created)
-      return response.statusCode == 200 || response.statusCode == 201;
+      await _supabase.from('landmarks').insert({
+        'name': data['name'],
+        'category': data['category'] ?? 'Uncategorised',
+        'description': data['description'] ?? '',
+        'latitude': data['latitude'],
+        'longitude': data['longitude'],
+        'foundation_year': data['year']?.toString(), // Handle the backend conversion automatically
+      });
+      notifyDataChanged();
+      return true;
     } catch (e) {
-      print("Network/Exception Error: $e");
+      print("Supabase Insert Error: $e");
       return false;
     }
   }
+
   Future<bool> deleteLandmark(int id) async {
-    final url = Uri.parse('$baseUrl/api/landmarks/$id');
     try {
-      final response = await http.delete(url);
-      
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
-      
-      return response.statusCode == 200;
+      await _supabase.from('landmarks').delete().eq('id', id);
+      notifyDataChanged();
+      return true;
     } catch (e) {
-      print("Network/Exception Error: $e");
+      print("Supabase Delete Error: $e");
       return false;
     }
   }
+
+  Future<bool> updateLandmark(int id, Map<String, dynamic> data) async {
+    try {
+      await _supabase.from('landmarks').update({
+        'name': data['name'],
+        'category': data['category'] ?? 'Uncategorised',
+        'description': data['description'] ?? '',
+        'latitude': data['latitude'],
+        'longitude': data['longitude'],
+        'foundation_year': data['year']?.toString(),
+      }).eq('id', id);
+      notifyDataChanged();
+      return true;
+    } catch (e) {
+      print("Supabase Update Error: $e");
+      return false;
+    }
+  }
+
 }

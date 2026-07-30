@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/map_screen.dart';
 import 'screens/landmark_list_screen.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'dart:isolate';
 import 'package:geolocator/geolocator.dart';
 
-// Background task entry point
+// ----------------------------------------------------
+// GLOBAL STATE: Keeps Admin Mode alive across all tabs
+final ValueNotifier<bool> globalIsAdminMode = ValueNotifier<bool>(false);
+
+// GLOBAL STATE: Triggers all landmark views (Map & List) to refresh immediately when updated
+final ValueNotifier<int> globalLandmarksRefreshNotifier = ValueNotifier<int>(0);
+final ValueNotifier<int> landmarkListRefreshNotifier = globalLandmarksRefreshNotifier;
+
 @pragma('vm:entry-point')
 void startCallback() {
   FlutterForegroundTask.setTaskHandler(LocationTaskHandler());
@@ -24,14 +31,11 @@ class LocationTaskHandler extends TaskHandler {
         desiredAccuracy: LocationAccuracy.high,
       );
       
-      // Send live coordinates back to the main UI thread
       sendPort?.send({
         'lat': position.latitude,
         'lng': position.longitude,
       });
-    } catch (e) {
-      // Fails silently in background if location is off
-    }
+    } catch (e) { }
   }
 
   @override
@@ -41,6 +45,12 @@ class LocationTaskHandler extends TaskHandler {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+  );
+
   FlutterForegroundTask.init(
     androidNotificationOptions: AndroidNotificationOptions(
       channelId: 'makheritage_bg',
@@ -48,6 +58,7 @@ Future<void> main() async {
       channelDescription: 'Running in background to track landmarks',
       channelImportance: NotificationChannelImportance.LOW,
       priority: NotificationPriority.LOW,
+      isSticky: false, 
       iconData: const NotificationIconData(
         resType: ResourceType.mipmap,
         resPrefix: ResourcePrefix.ic,
@@ -58,7 +69,7 @@ Future<void> main() async {
     foregroundTaskOptions: const ForegroundTaskOptions(
       interval: 5000,
       isOnceEvent: false,
-      autoRunOnBoot: true,
+      autoRunOnBoot: false,
       allowWakeLock: true,
       allowWifiLock: true,
     ),
@@ -128,7 +139,19 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             children: [
               ScaleTransition(
                 scale: _animation,
-                child: const Icon(Icons.school, size: 100, color: Colors.white), // Replace with Image.asset for custom logo
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ), 
               ),
               const SizedBox(height: 20),
               const Text(
@@ -168,27 +191,56 @@ class _RootScreenState extends State<RootScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.school, color: Colors.white), // Makerere Logo
-                SizedBox(width: 8),
-                Text(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset(
+                    'assets/images/app_icon.png',
+                    width: 28,
+                    height: 28,
+                  ),
+                ), 
+                const SizedBox(width: 8),
+                const Text(
                   'MakHeritage',
                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),
                 ),
               ],
             ),
-            Text(
-              _titles[_index],
-              style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white70, fontSize: 16),
+            // The top bar now watches the Admin Mode and displays the Exit button cleanly
+            ValueListenableBuilder<bool>(
+              valueListenable: globalIsAdminMode,
+              builder: (context, isAdmin, _) {
+                if (isAdmin) {
+                  return TextButton.icon(
+                    onPressed: () => globalIsAdminMode.value = false,
+                    icon: const Icon(Icons.exit_to_app, color: Colors.red),
+                    label: const Text('Exit Admin Mode', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 14)),
+                    style: TextButton.styleFrom(backgroundColor: Colors.white),
+                  );
+                }
+                return Text(
+                  _titles[_index],
+                  style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white70, fontSize: 16),
+                );
+              },
             ),
           ],
         ),
       ),
-      body: _screens[_index],
+      // USING INDEXEDSTACK: This completely stops the app from "booting you out" of views when you switch tabs! 
+      body: IndexedStack(
+        index: _index,
+        children: _screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
+        onTap: (i) {
+          setState(() => _index = i);
+          // Force all active tabs to refetch fresh data on tab change
+          globalLandmarksRefreshNotifier.value++;
+        },
         selectedItemColor: const Color(0xFF006633),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),

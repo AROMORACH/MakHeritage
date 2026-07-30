@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -63,39 +64,51 @@ app.post('/api/landmarks', (req, res) => {
 
 app.post('/api/admin/request-otp', (req, res) => {
     const { email } = req.body;
-    const cleanEmail = email.trim().toLowerCase();
-    
-    const isAllowedDomain = cleanEmail.endsWith('@students.mak.ac.ug') || cleanEmail.endsWith('@mak.ac.ug');
-    const isDevGmail = cleanEmail === 'joshuassenyonjo1@gmail.com'; 
+    if (!email) {
+        return res.status(400).json({ error: "Email address is required." });
+    }
 
-    if (!isAllowedDomain && !isDevGmail) {
-        return res.status(403).json({ error: "Unauthorised email domain. Must be a Makerere address." });
+    const cleanEmail = email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+        return res.status(400).json({ error: "Invalid email format." });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 5 * 60 * 1000; 
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
 
     db.run(
         `INSERT INTO otps (email, code, expires_at) VALUES (?, ?, ?) 
          ON CONFLICT(email) DO UPDATE SET code = excluded.code, expires_at = excluded.expires_at`,
-        [email, otp, expiresAt],
+        [cleanEmail, otp, expiresAt],
         function(err) {
             if (err) return res.status(500).json({ error: "Database error" });
 
-            const mailOptions = {
-                from: '"MakHeritage Admin" <admin@makheritage.com>', 
-                to: email,
-                subject: 'MakHeritage Admin Login Code',
-                text: `Your admin access code is: ${otp}. It expires in 5 minutes.`
-            };
+            const pass = process.env.MAIL_PASS || '';
+            const fromEmail = process.env.MAIL_FROM || 'MakHeritage Admin <onboarding@resend.dev>';
+            const subject = 'MakHeritage Admin Login Code';
+            const text = `Your MakHeritage admin access code is: ${otp}. It expires in 5 minutes.`;
 
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.error("NODEMAILER ERROR:", error); 
-                    return res.status(500).json({ error: "Failed to send email" });
-                }
-                res.status(200).json({ message: "OTP sent successfully" });
-            });
+            // If using Resend API Key (starts with re_)
+            if (pass.startsWith('re_')) {
+                sendResendEmail(pass, fromEmail, cleanEmail, subject, text, (error, result) => {
+                    if (error) {
+                        console.error("RESEND API ERROR:", error.message);
+                        return res.status(400).json({ error: error.message });
+                    }
+                    res.status(200).json({ message: "OTP sent successfully" });
+                });
+            } else {
+                // Fallback to standard Nodemailer SMTP
+                const mailOptions = { from: fromEmail, to: cleanEmail, subject, text };
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.error("NODEMAILER ERROR:", error);
+                        return res.status(500).json({ error: "Failed to send email. Check SMTP credentials." });
+                    }
+                    res.status(200).json({ message: "OTP sent successfully" });
+                });
+            }
         }
     );
 });

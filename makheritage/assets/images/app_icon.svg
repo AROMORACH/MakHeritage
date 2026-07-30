@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Makerere Green Background -->
+  <rect width="1024" height="1024" fill="#006633"/>
+
+  <!-- Perfectly Centered White Graduation Cap (Material Icons.school style) -->
+  <g fill="#FFFFFF" transform="translate(0, 30)">
+    <!-- Mortarboard Diamond Top -->
+    <polygon points="512,250 850,410 512,570 174,410" />
+
+    <!-- Cap Base (Skull Cap underneath) -->
+    <path d="M 330,490 
+             L 330,600 
+             C 330,660 694,660 694,600 
+             L 694,490 
+             C 630,530 390,530 330,490 Z" />
+
+    <!-- Tassel Button on Top Center -->
+    <circle cx="512" cy="410" r="16" fill="#FFFFFF"/>
+    <!-- Tassel Cord drape to the right -->
+    <path d="M 512,410 C 650,410 790,430 790,580" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+    <!-- Tassel Fringe Pendant -->
+    <polygon points="765,580 815,580 825,660 755,660" fill="#FFFFFF"/>
+  </g>
+</svg>

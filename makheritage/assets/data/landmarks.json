@@ -5,7 +5,7 @@
       "name": "The Main Building (Ivory Tower)",
       "category": "Infrastructure",
       "foundation_year": 1941,
-      "description": "The Makerere University Main Administration Building, affectionately known as the Ivory Tower, is the most recognisable symbol of the university. Completed in 1941, its striking white-walled and blue-tiled architecture was heavily funded by the British colonial government. It serves as the central hub for administrative affairs and stands as a monument to East Africa's academic heritage. In September 2020, a devastating fire caused extensive damage to the structure, but a massive restoration project was launched to rebuild it to its former glory while modernising its interior.",
+      "description": "Completed in 1941, the Makerere University Main Administration Building, affectionately known as the Ivory Tower, stands as the most iconic architectural landmark of higher education in East Africa. Featuring a distinctive white-walled tower, bell clock, and blue-tiled roof, it served as the nerve centre for East African academic governance throughout the 20th century. Following a midnight fire in September 2020, a comprehensive restoration preserved its iconic 1941 colonial exterior while modernising its interior.",
       "latitude": 0.3336554,
       "longitude": 32.5675605
     },
@@ -14,7 +14,7 @@
       "name": "Freedom Square",
       "category": "Infrastructure",
       "foundation_year": 1922,
-      "description": "It serves as the designated ground for major university ceremonies and every graduation congregation since Makerere's early days as a technical school in 1922. It was formerly dubbed as 'Freedom Square' during the political shifts of the 1970s. But beyond academic functions, it is famous historically as the staging ground for Makerere's intense student politics, guild rallies, general freshers orientation and passionate debates that have shaped the national political landscape of Uganda.\n",
+      "description": "Freedom Square is the sacred open-air heart of Makerere University, serving as the designated venue for every graduation ceremony since Makerere's foundation as a technical college in 1922. Originally called the Main Court, it earned the name 'Freedom Square' during the political turbulence of the 1970s under Idi Amin's regime, when students gathered here to hold courageous political rallies, guild debates, and anti-authoritarian demonstrations. It remains the legendary birthplace of Ugandan student activism, national political movements, freshers' orientation, and historic speeches by African revolutionaries.",
       "latitude": 0.3337585,
       "longitude": 32.5683837
     },
@@ -23,7 +23,7 @@
       "name": "Main Library",
       "category": "Infrastructure",
       "foundation_year": 1949,
-      "description": "Established in 1949, the Main Library is the oldest academic library in Uganda. It serves as the National Reference Library and legal depository for published works in Uganda. The library houses the renowned Africana Section, which contains rare historical collections, photographs, manuscripts, and diaries of early explorers and political figures.",
+      "description": "Established in 1949, Makerere University Main Library is the oldest and largest academic library in Uganda, serving as the official National Reference Library and legal deposit for all published material in the country. It houses the world-renowned Africana Special Collections, containing priceless original manuscripts, early 19th-century missionary archives, rare maps, historical photographs, and personal diaries of African leaders, anti-colonial figures, and early European explorers.",
       "latitude": 0.3293574,
       "longitude": 32.6161659
     },
@@ -41,7 +41,7 @@
       "name": "Lumumba Hall",
       "category": "Hall",
       "foundation_year": 1971,
-      "description": "Opened in 1971 to accommodate the post-independence increase in student enrollment, Lumumba Hall was named after Patrice Lumumba, the first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants,' the hall has a strong tradition of student leadership and campus solidarity. It is also home to the iconic 'Gongom' monument, a symbol of student autonomy and the hall's cultural heritage.",
+      "description": "Opened in 1971 to accommodate rising post-independence enrolment, Lumumba Hall was named after Patrice Lumumba, the martyred pan-Africanist and first Prime Minister of the Democratic Republic of the Congo. Known as 'The Elephants', Lumumba Hall is famous for its fierce student solidarity and militant political activism. At its entrance stands the legendary 'Gongom' monument\u2014a concrete statue of a traditional warrior erected by students in 1999 to symbolize student autonomy, protection of student rights, and cultural heritage.",
       "latitude": 0.3319012,
       "longitude": 32.5660851
     },
@@ -50,7 +50,7 @@
       "name": "Mary Stuart Hall",
       "category": "Hall",
       "foundation_year": 1953,
-      "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere University's permanent residence for female students after the university admitted its first women in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart, the hall symbolizes the advancement of women's higher education in East Africa. Known as 'The Box,' it shares a long-standing cultural alliance with Lumumba Hall through the 'Lumbox' tradition.",
+      "description": "Officially opened in 1953, Mary Stuart Hall was established as Makerere's first permanent hall of residence for female students after Makerere admitted its pioneering women scholars in 1945. Named after Mary Stuart, wife of Anglican Bishop Cyril Stuart and a passionate advocate for female empowerment, the hall is affectionally nicknamed 'The Box'. Rising 9 storeys high, it shares a celebrated cultural and political alliance with Lumumba Hall, known throughout East Africa as the 'Lumbox' solidarity.",
       "latitude": 0.3306141,
       "longitude": 32.5667851
     },
@@ -59,7 +59,7 @@
       "name": "Mitchell Hall",
       "category": "Hall",
       "foundation_year": 1930,
-      "description": "Originating in the 1930s as one of the original hostels of Makerere Technical School, Mitchell Hall was later named after Sir Philip Mitchell, the colonial Governor of Uganda, who supported Makerere's development into a center of higher learning. Known as 'The Rats,' the hall is recognized for its traditions of resilience, independence, and active participation in student leadership and campus activities.",
+      "description": "Dating back to the 1930s as one of the original wooden hostels of Makerere Technical College, Mitchell Hall was rebuilt in its present form and named after Sir Philip Mitchell, the colonial Governor of Uganda who championed Makerere's university status. Known as 'The Rats', Mitchell residents are legendary for their spirit of resilience, camaraderie, and active participation in university governance.",
       "latitude": 0.3338704,
       "longitude": 32.5703265
     },
@@ -95,7 +95,7 @@
       "name": "Nkrumah Hall",
       "category": "Hall",
       "foundation_year": 1954,
-      "description": "Officially opened on 6 July 1954 as 'New Hall,' the residence was later renamed in honour of Osagyefo Dr. Kwame Nkrumah, the first President of Ghana and a leading figure in the Pan-African movement. Known as 'The Rams,' the hall symbolizes strength, determination, and leadership. A prominent bronze statue of Kwame Nkrumah stands at its entrance, serving as a landmark for cultural events and student gatherings.",
+      "description": "Opened on July 6, 1954 as 'New Hall', it was renamed in honour of Osagyefo Dr. Kwame Nkrumah, the first President of Ghana and the father of Pan-Africanism. Known as 'The Rams', the hall embodies strength and pan-African unity. A famous bronze bust of Kwame Nkrumah stands proudly at its entrance, unveiled during historic pan-African youth gatherings.",
       "latitude": 0.3359256,
       "longitude": 32.5693814
     },
@@ -104,16 +104,16 @@
       "name": "Nsibirwa Hall",
       "category": "Hall",
       "foundation_year": 1952,
-      "description": "Originally opened in 1952 as Northcote Hall, the residence was later renamed Nsibirwa Hall in 1996 to honour Martin Luther Nsibirwa, the former Katikkiro (Prime Minister) of Buganda. The hall is known for its rich student traditions and its unique history of student self-governance. Today, its residents are known as 'Roosters.'",
+      "description": "Originally opened in 1952 as Northcote Hall, it was renamed Nsibirwa Hall in 1996 in honour of Martin Luther Nsibirwa, the former Katikkiro (Prime Minister) of Buganda who courageously signed the land acquisition decree that gave Makerere Hill to the university before his assassination in 1945. Famous for its rich traditions, residents are known as 'The Roosters'.",
       "latitude": 0.33582,
       "longitude": 32.5700121
     },
     {
       "id": "uuid-13",
-      "name": "Dag Hammarskjöld Hall",
+      "name": "Dag Hammarskj\u00f6ld Hall",
       "category": "Hall",
       "foundation_year": 1961,
-      "description": "Established in 1961, Dag Hammarskjöld Hall was named in honour of Dag Hammarskjöld, the second Secretary-General of the United Nations, who died in a plane crash while on a peace mission to the Congo. The hall was dedicated as a quiet residential community for postgraduate Master's and PhD students, providing an environment that supports advanced study and research.",
+      "description": "Established in 1961, Dag Hammarskj\u00f6ld Hall was named in honour of Dag Hammarskj\u00f6ld, the second Secretary-General of the United Nations, who died in a plane crash while on a peace mission to the Congo. The hall was dedicated as a quiet residential community for postgraduate Master's and PhD students, providing an environment that supports advanced study and research.",
       "latitude": 0.333898,
       "longitude": 32.5723508
     },
@@ -212,7 +212,7 @@
       "name": "St. Francis Chapel",
       "category": "Spiritual",
       "foundation_year": 1942,
-      "description": "Built in 1942, St. Francis Chapel is Makerere University's historic Anglican place of worship. Located near the main administrative area, the chapel is renowned for its striking mosaic artwork on the front exterior wall, symbolizing spiritual illumination. It continues to serve as a centre for worship, reflection, and spiritual life within the university community.",
+      "description": "Built in 1942, St. Francis Chapel is Makerere's historic Anglican sanctuary, renowned for its striking external mosaic artwork depicting spiritual light. Directly opposite stands St. Augustine Catholic Chapel, consecrated in 1950 with striking mid-century stained glass. Together, these two chapels on Makerere Hill represent decades of spiritual guidance, sanctuary during political turmoil, and interfaith harmony.",
       "latitude": 0.3329318,
       "longitude": 32.567456
     },
@@ -284,7 +284,7 @@
       "name": "The Main Gate",
       "category": "Gate",
       "foundation_year": 1940,
-      "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years, it was completely demolished and reconstructed in 2022 into a majestic dual-carriage monument as part of the university's Centenary celebrations.",
+      "description": "The Main Gate of Makerere University was originally constructed in the 1940s as a simple rustic stone-walled colonial gate checkpoint along Makerere Hill Road. After standing for nearly 80 years as the gateway to East African higher education, it was completely reconstructed in 2022 into a majestic dual-carriage monument as part of the university's historic Centenary celebrations.",
       "latitude": 0.329201,
       "longitude": 32.5710341
     },

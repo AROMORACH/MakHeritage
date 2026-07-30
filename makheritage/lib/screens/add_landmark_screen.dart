@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/landmark.dart';
 import '../services/landmark_service.dart';
+import '../widgets/landmark_card.dart';
 
 class AddLandmarkScreen extends StatefulWidget {
   const AddLandmarkScreen({super.key});
@@ -17,7 +19,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
   final _descController = TextEditingController();
   final _latController = TextEditingController();
   final _lngController = TextEditingController();
-  final _yearController = TextEditingController(); // Added year controller
+  final _yearController = TextEditingController();
   
   bool _isLoading = false;
 
@@ -32,7 +34,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
       "description": _descController.text,
       "latitude": double.tryParse(_latController.text),
       "longitude": double.tryParse(_lngController.text),
-      "year": int.tryParse(_yearController.text), // Changed to "year"
+      "year": int.tryParse(_yearController.text),
     };
 
     final success = await _service.addLandmark(data);
@@ -59,7 +61,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
     _descController.dispose();
     _latController.dispose();
     _lngController.dispose();
-    _yearController.dispose(); // Disposed year controller
+    _yearController.dispose();
     super.dispose();
   }
 
@@ -70,6 +72,18 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
         title: const Text('Add Landmark', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: const Color(0xFFE5A93C),
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            tooltip: 'Manage & Delete Landmarks',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ManageLandmarksScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,
@@ -145,6 +159,161 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// You can place this class in the same file or in landmark_list_screen.dart
+class ManageLandmarksScreen extends StatefulWidget {
+  const ManageLandmarksScreen({super.key});
+
+  @override
+  State<ManageLandmarksScreen> createState() => _ManageLandmarksScreenState();
+}
+
+class _ManageLandmarksScreenState extends State<ManageLandmarksScreen> {
+  final LandmarkService _service = LandmarkService();
+  final TextEditingController _searchController = TextEditingController();
+  late Future<List<Landmark>> _future;
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLandmarks();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _loadLandmarks() {
+    setState(() {
+      _future = _service.fetchLandmarks();
+    });
+  }
+
+  Future<void> _delete(Landmark landmark) async {
+    final success = await _service.deleteLandmark(landmark.id);
+    if (mounted) {
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${landmark.name} deleted')),
+        );
+        setState(() {
+          _searchController.clear();
+          _searchQuery = '';
+        });
+        _loadLandmarks(); // Refresh list silently without redirecting
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete landmark')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Manage Landmarks'),
+        backgroundColor: Colors.red[800],
+        foregroundColor: Colors.white,
+      ),
+      body: FutureBuilder<List<Landmark>>(
+        future: _future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final allLandmarks = snapshot.data ?? [];
+          final landmarks = allLandmarks.where((l) => 
+            l.name.toLowerCase().contains(_searchQuery.toLowerCase())
+          ).toList();
+
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Search Landmarks',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _searchController.clear();
+                                _searchQuery = '';
+                              });
+                            },
+                          )
+                        : null,
+                    border: const OutlineInputBorder(),
+                  ),
+                  onChanged: (value) => setState(() => _searchQuery = value),
+                ),
+              ),
+              Expanded(
+                child: landmarks.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('No landmarks found.'),
+                            if (_searchQuery.isNotEmpty) ...[
+                              const SizedBox(height: 8),
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _searchController.clear();
+                                    _searchQuery = '';
+                                  });
+                                },
+                                child: const Text('Clear search'),
+                              ),
+                            ],
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        itemCount: landmarks.length,
+                        itemBuilder: (context, index) {
+                          final landmark = landmarks[index];
+                          return Stack(
+                            children: [
+                              LandmarkCard(landmark: landmark),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: IconButton(
+                                  icon: const Icon(Icons.delete_forever, color: Colors.red),
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  onPressed: () => _delete(landmark),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
