@@ -21,6 +21,7 @@ dependencies:
   flutter_tts: ^4.2.5
   flutter_compass: ^0.8.1
   flutter_foreground_task: ^6.1.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

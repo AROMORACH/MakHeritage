@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/landmark.dart';
 import '../main.dart';
 
@@ -66,16 +67,40 @@ class LandmarkService {
     }
   }
 
+  Future<String?> uploadImage(XFile imageFile) async {
+    try {
+      final bytes = await imageFile.readAsBytes();
+      final fileName = 'landmark_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      
+      await _supabase.storage.from('landmarks').uploadBinary(
+        fileName,
+        bytes,
+        fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
+      );
+      
+      final publicUrl = _supabase.storage.from('landmarks').getPublicUrl(fileName);
+      return publicUrl;
+    } catch (e) {
+      print("Supabase Storage Upload Error: $e");
+      // Fallback: return image file path if storage upload is not configured
+      return imageFile.path;
+    }
+  }
+
   Future<bool> addLandmark(Map<String, dynamic> data) async {
     try {
-      await _supabase.from('landmarks').insert({
+      final payload = <String, dynamic>{
         'name': data['name'],
         'category': data['category'] ?? 'Uncategorised',
         'description': data['description'] ?? '',
         'latitude': data['latitude'],
         'longitude': data['longitude'],
-        'foundation_year': data['year']?.toString(), // Handle the backend conversion automatically
-      });
+        'foundation_year': data['year']?.toString(),
+      };
+      if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
+        payload['image_url'] = data['image_url'];
+      }
+      await _supabase.from('landmarks').insert(payload);
       notifyDataChanged();
       return true;
     } catch (e) {
@@ -97,14 +122,18 @@ class LandmarkService {
 
   Future<bool> updateLandmark(int id, Map<String, dynamic> data) async {
     try {
-      await _supabase.from('landmarks').update({
+      final payload = <String, dynamic>{
         'name': data['name'],
         'category': data['category'] ?? 'Uncategorised',
         'description': data['description'] ?? '',
         'latitude': data['latitude'],
         'longitude': data['longitude'],
         'foundation_year': data['year']?.toString(),
-      }).eq('id', id);
+      };
+      if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
+        payload['image_url'] = data['image_url'];
+      }
+      await _supabase.from('landmarks').update(payload).eq('id', id);
       notifyDataChanged();
       return true;
     } catch (e) {

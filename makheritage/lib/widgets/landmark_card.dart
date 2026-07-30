@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/landmark.dart';
 
@@ -12,6 +13,26 @@ class LandmarkCard extends StatelessWidget {
     this.onTap,
     this.onDelete,
   });
+
+  Widget _buildThumbnail(String path) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(path, width: 52, height: 52, fit: BoxFit.cover, errorBuilder: (_, __, ___) => _buildFallbackAvatar());
+    } else if (path.startsWith('/') || path.startsWith('file://')) {
+      return Image.file(File(path.replaceFirst('file://', '')), width: 52, height: 52, fit: BoxFit.cover, errorBuilder: (_, __, ___) => _buildFallbackAvatar());
+    } else {
+      return Image.asset(path, width: 52, height: 52, fit: BoxFit.cover, errorBuilder: (_, __, ___) => _buildFallbackAvatar());
+    }
+  }
+
+  Widget _buildFallbackAvatar() {
+    return CircleAvatar(
+      backgroundColor: const Color(0xFF006633),
+      child: Text(
+        landmark.name.isNotEmpty ? landmark.name[0].toUpperCase() : '?',
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +59,9 @@ class LandmarkCard extends StatelessWidget {
         leading: imagePath != null
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  imagePath,
-                  width: 52,
-                  height: 52,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => CircleAvatar(
-                    backgroundColor: const Color(0xFF006633),
-                    child: Text(
-                      landmark.name.isNotEmpty ? landmark.name[0].toUpperCase() : '?',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                child: _buildThumbnail(imagePath),
               )
-            : CircleAvatar(
-                backgroundColor: const Color(0xFF006633),
-                child: Text(
-                  landmark.name.isNotEmpty ? landmark.name[0].toUpperCase() : '?',
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
+            : _buildFallbackAvatar(),
         title: Text(landmark.name, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(
           displayDesc,

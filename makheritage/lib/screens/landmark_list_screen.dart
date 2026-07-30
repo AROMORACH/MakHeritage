@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
 import '../widgets/landmark_card.dart';
@@ -59,6 +61,8 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
     }
 
     final imagePath = landmark.imageAssetPath;
+    bool isPlaying = false;
+    final FlutterTts flutterTts = FlutterTts();
 
     showModalBottomSheet(
       context: context,
@@ -67,16 +71,18 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.65,
-          maxChildSize: 0.95,
-          minChildSize: 0.4,
-          builder: (context, scrollController) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            flutterTts.setCompletionHandler(() {
+              setModalState(() {
+                isPlaying = false;
+              });
+            });
+
             return SingleChildScrollView(
-              controller: scrollController,
               padding: const EdgeInsets.all(24.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
@@ -93,19 +99,44 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
                   if (imagePath != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        imagePath,
-                        height: 180,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                      ),
+                      child: imagePath.startsWith('http://') || imagePath.startsWith('https://')
+                          ? Image.network(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink())
+                          : imagePath.startsWith('/') || imagePath.startsWith('file://')
+                              ? Image.file(File(imagePath.replaceFirst('file://', '')), height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink())
+                              : Image.asset(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink()),
                     ),
                     const SizedBox(height: 16),
                   ],
-                  Text(
-                    landmark.name,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          landmark.name,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          isPlaying ? Icons.volume_up : Icons.volume_off,
+                          color: const Color(0xFFE5A93C),
+                          size: 28,
+                        ),
+                        onPressed: () async {
+                          if (isPlaying) {
+                            await flutterTts.stop();
+                            setModalState(() {
+                              isPlaying = false;
+                            });
+                          } else {
+                            await flutterTts.speak(displayDescription);
+                            setModalState(() {
+                              isPlaying = true;
+                            });
+                          }
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -131,6 +162,7 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: () {
+                          flutterTts.stop();
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -146,7 +178,9 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
           },
         );
       },
-    );
+    ).then((_) {
+      flutterTts.stop();
+    });
   }
 
   @override

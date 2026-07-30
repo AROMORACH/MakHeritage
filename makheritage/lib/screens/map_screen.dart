@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -392,7 +393,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   }
 
   void _showAdminAuthDialog() {
-    final emailController = TextEditingController();
+    final emailController = TextEditingController(text: 'test@example.com');
     final otpController = TextEditingController();
     final secretCodeController = TextEditingController(); 
     bool isOtpSent = false;
@@ -424,7 +425,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                         controller: otpController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          labelText: '8-Digit OTP',
+                          labelText: '6-Digit OTP',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -462,47 +463,53 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       return;
                     }
 
-                    if (!isOtpSent) {
-                      final isAllowedDomain = email.endsWith('@students.mak.ac.ug') || email.endsWith('@mak.ac.ug');
-                      final isDev = email == 'joshuassenyonjo1@gmail.com'; 
-                      
-                      if (!isAllowedDomain && !isDev) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unauthorised email domain.'))
-                          );
-                          setDialogState(() => isProcessing = false);
-                          return;
-                      }
+                    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://makheritage.onrender.com';
 
-                      await Supabase.instance.client.auth.signInWithOtp(email: email);
-                      
-                      setDialogState(() => isOtpSent = true);
+                    if (!isOtpSent) {
+                      // Send OTP via our custom Mailtrap backend
+                      final res = await http.post(
+                        Uri.parse('$baseUrl/api/admin/request-otp'),
+                        headers: {'Content-Type': 'application/json'},
+                        body: jsonEncode({'email': email}),
+                      );
+
+                      if (res.statusCode == 200) {
+                        setDialogState(() => isOtpSent = true);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('OTP sent! Check your Mailtrap inbox.'))
+                          );
+                        }
+                      } else {
+                        final error = jsonDecode(res.body)['error'] ?? 'Failed to send OTP.';
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        }
+                        setDialogState(() => isProcessing = false);
+                        return;
+                      }
                     } else {
                       final otp = otpController.text.trim();
                       final secret = secretCodeController.text.trim();
 
-                      if (secret != 'MAK2026') {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid Secret Code')));
-                        setDialogState(() => isProcessing = false);
-                        return; 
-                      }
-
-                      final authResponse = await Supabase.instance.client.auth.verifyOTP(
-                          email: email, 
-                          token: otp, 
-                          type: OtpType.email
+                      // Verify OTP via our custom backend
+                      final res = await http.post(
+                        Uri.parse('$baseUrl/api/admin/verify-otp'),
+                        headers: {'Content-Type': 'application/json'},
+                        body: jsonEncode({'email': email, 'code': otp, 'secretCode': secret}),
                       );
 
-                      if (authResponse.session != null) {
+                      if (res.statusCode == 200) {
                         if (context.mounted) {
-                          Navigator.pop(context); 
-                          
-                          // Activate via the global notifier!
+                          Navigator.pop(context);
                           globalIsAdminMode.value = true;
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Admin Mode activated!')));
                         }
                       } else {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid or Expired OTP')));
+                        final error = jsonDecode(res.body)['error'] ?? 'Verification failed.';
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                        }
                       }
                     }
                   } catch (e) {
@@ -586,13 +593,11 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                   if (imagePath != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        imagePath,
-                        height: 180,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                      ),
+                      child: imagePath.startsWith('http://') || imagePath.startsWith('https://')
+                          ? Image.network(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink())
+                          : imagePath.startsWith('/') || imagePath.startsWith('file://')
+                              ? Image.file(File(imagePath.replaceFirst('file://', '')), height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink())
+                              : Image.asset(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink()),
                     ),
                     const SizedBox(height: 16),
                   ],

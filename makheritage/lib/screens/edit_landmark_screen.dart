@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
 
@@ -13,6 +15,7 @@ class EditLandmarkScreen extends StatefulWidget {
 class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
   final _formKey = GlobalKey<FormState>();
   final _service = LandmarkService();
+  final ImagePicker _picker = ImagePicker();
   
   late final TextEditingController _nameController;
   late final TextEditingController _categoryController;
@@ -21,6 +24,8 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
   late final TextEditingController _lngController;
   late final TextEditingController _yearController;
   
+  XFile? _selectedImage;
+  String? _existingImageUrl;
   bool _isLoading = false;
 
   @override
@@ -31,15 +36,67 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
     _descController = TextEditingController(text: widget.landmark.description ?? '');
     _latController = TextEditingController(text: widget.landmark.latitude?.toString() ?? '');
     _lngController = TextEditingController(text: widget.landmark.longitude?.toString() ?? '');
-    // Need to extract the year if the model only has it generically, assuming they mapped it if needed later!
-    // Often foundation_year is mapped or left alone. 
-    _yearController = TextEditingController(text: ''); 
+    _yearController = TextEditingController(text: '');
+    _existingImageUrl = widget.landmark.imageAssetPath;
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final picked = await _picker.pickImage(source: source, imageQuality: 85);
+      if (picked != null) {
+        setState(() {
+          _selectedImage = picked;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error selecting image: $e')),
+        );
+      }
+    }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Color(0xFF006633)),
+              title: const Text('Choose from Gallery'),
+              onTap: () {
+                Navigator.pop(ctx);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Color(0xFF006633)),
+              title: const Text('Take a Photo'),
+              onTap: () {
+                Navigator.pop(ctx);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
+
+    String? imageUrl = _existingImageUrl;
+    if (_selectedImage != null) {
+      imageUrl = await _service.uploadImage(_selectedImage!);
+    }
 
     final data = {
       "name": _nameController.text,
@@ -48,6 +105,7 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
       "latitude": double.tryParse(_latController.text),
       "longitude": double.tryParse(_lngController.text),
       "year": int.tryParse(_yearController.text),
+      "image_url": imageUrl,
     };
 
     final success = await _service.updateLandmark(widget.landmark.id, data);
@@ -78,8 +136,31 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
     super.dispose();
   }
 
+  Widget _buildImagePreview() {
+    if (_selectedImage != null) {
+      return Image.file(
+        File(_selectedImage!.path),
+        width: double.infinity,
+        height: 160,
+        fit: BoxFit.cover,
+      );
+    } else if (_existingImageUrl != null && _existingImageUrl!.isNotEmpty) {
+      final imgPath = _existingImageUrl!;
+      if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+        return Image.network(imgPath, width: double.infinity, height: 160, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 40));
+      } else if (imgPath.startsWith('/') || imgPath.startsWith('file://')) {
+        return Image.file(File(imgPath.replaceFirst('file://', '')), width: double.infinity, height: 160, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 40));
+      } else {
+        return Image.asset(imgPath, width: double.infinity, height: 160, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 40));
+      }
+    }
+    return const SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final hasImage = _selectedImage != null || (_existingImageUrl != null && _existingImageUrl!.isNotEmpty);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Landmark', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -91,6 +172,54 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            GestureDetector(
+              onTap: _showImageSourceDialog,
+              child: Container(
+                height: 160,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF006633), width: 1.5),
+                ),
+                child: hasImage
+                    ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: _buildImagePreview(),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black54,
+                              child: IconButton(
+                                icon: const Icon(Icons.edit, color: Colors.white, size: 20),
+                                onPressed: _showImageSourceDialog,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_a_photo, size: 40, color: Color(0xFF006633)),
+                          SizedBox(height: 8),
+                          Text(
+                            'Upload Landmark Image',
+                            style: TextStyle(color: Color(0xFF006633), fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Tap to select from Gallery or Camera',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+              ),
+            ),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name', border: OutlineInputBorder()),

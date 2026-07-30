@@ -5,6 +5,7 @@ class Landmark {
   final String? description;
   final double? latitude;
   final double? longitude;
+  final String? imageUrl;
 
   Landmark({
     required this.id,
@@ -13,6 +14,7 @@ class Landmark {
     this.description,
     this.latitude,
     this.longitude,
+    this.imageUrl,
   });
 
   /// Built to be defensive: the backend/db work (Maria/Josephine) may still be
@@ -29,6 +31,7 @@ class Landmark {
       description: json['description'] as String?,
       latitude: _parseDouble(json['latitude']),
       longitude: _parseDouble(json['longitude']),
+      imageUrl: json['image_url'] as String?,
     );
   }
 
@@ -51,8 +54,11 @@ class Landmark {
   /// Use this before plotting a marker — never assume lat/lng exist.
   bool get hasCoordinates => latitude != null && longitude != null;
 
-  /// Returns the relative asset path to the landmark's picture if available.
+  /// Returns the relative asset path, network URL, or local file path to the landmark's picture if available.
   String? get imageAssetPath {
+    if (imageUrl != null && imageUrl!.trim().isNotEmpty) {
+      return imageUrl;
+    }
     final lowerName = name.toLowerCase();
     if (lowerName.contains('ivory tower') || lowerName.contains('main building') || lowerName.contains('main admin')) {
       return 'assets/data/landmarks_pictures/The main building.jpg';
@@ -112,6 +118,16 @@ class Landmark {
       return 'assets/data/landmarks_pictures/CTF II.jpg';
     } else if (lowerName.contains('ctf i') || lowerName.contains('ctf1') || lowerName.contains('central teaching facility i')) {
       return 'assets/data/landmarks_pictures/CTF1.webp';
+    } else if (lowerName.contains('mary stuart')) {
+      return 'assets/data/landmarks_pictures/Mary Stuart Hall.jpg';
+    } else if (lowerName.contains('university hall')) {
+      return 'assets/data/landmarks_pictures/University Hall.jpg';
+    } else if (lowerName.contains('innovation hub')) {
+      return 'assets/data/landmarks_pictures/MakerereInnovation Hub.jpg';
+    } else if (lowerName.contains('printery')) {
+      return 'assets/data/landmarks_pictures/University Printery.jpg';
+    } else if (lowerName.contains('oval') || lowerName.contains('sports ground')) {
+      return 'assets/data/landmarks_pictures/Main Sports Grounds.jpg';
     } else if (lowerName.contains('mastercard')) {
       return 'assets/data/landmarks_pictures/Mastercard.jpeg';
     } else if (lowerName.contains('caes') || lowerName.contains('agricultural')) {

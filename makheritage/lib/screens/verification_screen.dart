@@ -11,7 +11,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-  final _emailController = TextEditingController();
+  final _emailController = TextEditingController(text: 'test@example.com');
   final _otpController = TextEditingController();
   final _secretController = TextEditingController();
   bool _otpSent = false;
@@ -19,7 +19,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   Future<void> _requestOtp() async {
     setState(() => _isLoading = true);
-    final baseUrl = dotenv.env['API_URL'] ?? 'https://makheritage-dev.onrender.com';
+    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://makheritage.onrender.com';
     
     try {
       final res = await http.post(
@@ -43,7 +43,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   Future<void> _verifyAdmin() async {
     setState(() => _isLoading = true);
-    final baseUrl = dotenv.env['API_URL'] ?? 'https://makheritage-dev.onrender.com';
+    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://makheritage.onrender.com';
     
     try {
       final res = await http.post(
@@ -85,7 +85,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
-                labelText: 'Makerere Email',
+                labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
               enabled: !_otpSent,
@@ -95,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               TextField(
                 controller: _otpController,
                 decoration: const InputDecoration(
-                  labelText: 'OTP Code',
+                  labelText: '6-Digit OTP Code',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,

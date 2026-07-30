@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
 import '../widgets/landmark_card.dart';
@@ -13,6 +15,7 @@ class AddLandmarkScreen extends StatefulWidget {
 class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
   final _formKey = GlobalKey<FormState>();
   final _service = LandmarkService();
+  final ImagePicker _picker = ImagePicker();
   
   final _nameController = TextEditingController();
   final _categoryController = TextEditingController();
@@ -21,12 +24,66 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
   final _lngController = TextEditingController();
   final _yearController = TextEditingController();
   
+  XFile? _selectedImage;
   bool _isLoading = false;
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final picked = await _picker.pickImage(source: source, imageQuality: 85);
+      if (picked != null) {
+        setState(() {
+          _selectedImage = picked;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error selecting image: $e')),
+        );
+      }
+    }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Color(0xFF006633)),
+              title: const Text('Choose from Gallery'),
+              onTap: () {
+                Navigator.pop(ctx);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Color(0xFF006633)),
+              title: const Text('Take a Photo'),
+              onTap: () {
+                Navigator.pop(ctx);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
+
+    String? imageUrl;
+    if (_selectedImage != null) {
+      imageUrl = await _service.uploadImage(_selectedImage!);
+    }
 
     final data = {
       "name": _nameController.text,
@@ -35,6 +92,7 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
       "latitude": double.tryParse(_latController.text),
       "longitude": double.tryParse(_lngController.text),
       "year": int.tryParse(_yearController.text),
+      "image_url": imageUrl,
     };
 
     final success = await _service.addLandmark(data);
@@ -90,6 +148,61 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            GestureDetector(
+              onTap: _showImageSourceDialog,
+              child: Container(
+                height: 160,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF006633), width: 1.5),
+                ),
+                child: _selectedImage != null
+                    ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              File(_selectedImage!.path),
+                              width: double.infinity,
+                              height: 160,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black54,
+                              child: IconButton(
+                                icon: const Icon(Icons.close, color: Colors.white, size: 20),
+                                onPressed: () {
+                                  setState(() => _selectedImage = null);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_a_photo, size: 40, color: Color(0xFF006633)),
+                          SizedBox(height: 8),
+                          Text(
+                            'Upload Landmark Image',
+                            style: TextStyle(color: Color(0xFF006633), fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Tap to select from Gallery or Camera',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+              ),
+            ),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name', border: OutlineInputBorder()),
