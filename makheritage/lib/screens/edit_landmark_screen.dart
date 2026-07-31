@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
+import 'map_screen.dart';
 
 class EditLandmarkScreen extends StatefulWidget {
   final Landmark landmark;
@@ -246,6 +248,30 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
               ],
             ),
             const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.map, color: Colors.white),
+              label: const Text('Pick Location on Map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF006633),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () async {
+                final picked = await Navigator.push<LatLng>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MapScreen(isPickingLocation: true),
+                  ),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _latController.text = picked.latitude.toStringAsFixed(7);
+                    _lngController.text = picked.longitude.toStringAsFixed(7);
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(

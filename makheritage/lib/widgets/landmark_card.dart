@@ -5,12 +5,14 @@ import '../models/landmark.dart';
 class LandmarkCard extends StatelessWidget {
   final Landmark landmark;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final VoidCallback? onDelete;
 
   const LandmarkCard({
     super.key,
     required this.landmark,
     this.onTap,
+    this.onLongPress,
     this.onDelete,
   });
 
@@ -55,6 +57,7 @@ class LandmarkCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         onTap: onTap,
+        onLongPress: onLongPress,
         contentPadding: const EdgeInsets.all(12),
         leading: imagePath != null
             ? ClipRRect(

@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
 import '../widgets/landmark_card.dart';
+import 'map_screen.dart';
 
 class AddLandmarkScreen extends StatefulWidget {
-  const AddLandmarkScreen({super.key});
+  final double? initialLat;
+  final double? initialLng;
+
+  const AddLandmarkScreen({super.key, this.initialLat, this.initialLng});
 
   @override
   State<AddLandmarkScreen> createState() => _AddLandmarkScreenState();
@@ -17,15 +22,30 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
   final _service = LandmarkService();
   final ImagePicker _picker = ImagePicker();
   
-  final _nameController = TextEditingController();
-  final _categoryController = TextEditingController();
-  final _descController = TextEditingController();
-  final _latController = TextEditingController();
-  final _lngController = TextEditingController();
-  final _yearController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _categoryController;
+  late final TextEditingController _descController;
+  late final TextEditingController _latController;
+  late final TextEditingController _lngController;
+  late final TextEditingController _yearController;
   
   XFile? _selectedImage;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _categoryController = TextEditingController();
+    _descController = TextEditingController();
+    _latController = TextEditingController(
+      text: widget.initialLat != null ? widget.initialLat!.toStringAsFixed(7) : '',
+    );
+    _lngController = TextEditingController(
+      text: widget.initialLng != null ? widget.initialLng!.toStringAsFixed(7) : '',
+    );
+    _yearController = TextEditingController();
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -230,6 +250,30 @@ class _AddLandmarkScreenState extends State<AddLandmarkScreen> {
               ],
             ),
             const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.map, color: Colors.white),
+              label: const Text('Pick Location on Map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF006633),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () async {
+                final picked = await Navigator.push<LatLng>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MapScreen(isPickingLocation: true),
+                  ),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _latController.text = picked.latitude.toStringAsFixed(7);
+                    _lngController.text = picked.longitude.toStringAsFixed(7);
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(

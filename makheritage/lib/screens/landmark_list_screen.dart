@@ -291,6 +291,15 @@ class _LandmarkListScreenState extends State<LandmarkListScreen> {
                                 return LandmarkCard(
                                   landmark: landmark,
                                   onTap: () => _showDetailsModal(context, landmark, true),
+                                  onLongPress: () async {
+                                    final edited = await Navigator.push<bool>(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EditLandmarkScreen(landmark: landmark),
+                                      ),
+                                    );
+                                    if (edited == true) _retry();
+                                  },
                                   onDelete: () async {
                                     bool confirm = await showDialog(
                                       context: context,

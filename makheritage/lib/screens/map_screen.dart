@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/landmark.dart';
 import '../services/landmark_service.dart';
 import '../services/geofence_service.dart';
@@ -26,7 +27,8 @@ void startCallback() {
 }
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  final bool isPickingLocation;
+  const MapScreen({super.key, this.isPickingLocation = false});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -39,6 +41,9 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   final MapController _mapController = MapController();
   List<Landmark> _loadedLandmarks = [];
   
+  Landmark? _repositionLandmark;
+  LatLng? _selectedPickLocation;
+
   late Future<List<Landmark>> _future;
   StreamSubscription<Position>? _positionStream;
   StreamSubscription<CompassEvent>? _compassStream;
@@ -666,6 +671,27 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
+                        icon: const Icon(Icons.location_on),
+                        label: const Text('Relocate Pin on Map'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF006633),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            _repositionLandmark = landmark;
+                            _selectedPickLocation = null;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
                         icon: const Icon(Icons.edit),
                         label: const Text('Edit Landmark'),
                         style: ElevatedButton.styleFrom(
@@ -808,6 +834,24 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                   );
                 }
 
+                if (_selectedPickLocation != null) {
+                  markers.add(
+                    Marker(
+                      point: _selectedPickLocation!,
+                      width: 60,
+                      height: 60,
+                      child: const Tooltip(
+                        message: "Selected Location",
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                          size: 52,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
                 return Stack(
                   children: [
                     FlutterMap(
@@ -815,6 +859,13 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       options: MapOptions(
                         initialCenter: _makerereCenter,
                         initialZoom: 16,
+                        onTap: (tapPosition, point) {
+                          if (widget.isPickingLocation || isAdmin) {
+                            setState(() {
+                              _selectedPickLocation = point;
+                            });
+                          }
+                        },
                         onPositionChanged: (position, hasGesture) {
                           if (hasGesture && _followUser) {
                             setState(() {
@@ -1042,8 +1093,224 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                             debugPrint("Location error: $e");
                           }
                         },
+                    // --- Reposition Banner (Top) ---
+                    if (_repositionLandmark != null)
+                      Positioned(
+                        top: 16,
+                        left: 16,
+                        right: 16,
+                        child: Material(
+                          elevation: 6,
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFF006633),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.edit_location_alt, color: Colors.white),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    'Tap anywhere on map to set new location for "${_repositionLandmark!.name}"',
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.close, color: Colors.white),
+                                  onPressed: () {
+                                    setState(() {
+                                      _repositionLandmark = null;
+                                      _selectedPickLocation = null;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+
+                    // --- Location Picker Floating Bar (Bottom) for Form ---
+                    if (widget.isPickingLocation)
+                      Positioned(
+                        bottom: 24,
+                        left: 20,
+                        right: 20,
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('📍 Tap anywhere on the map to pick a location', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                                if (_selectedPickLocation != null) ...[
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Selected: ${_selectedPickLocation!.latitude.toStringAsFixed(7)}, ${_selectedPickLocation!.longitude.toStringAsFixed(7)}',
+                                    style: const TextStyle(color: Color(0xFF006633), fontWeight: FontWeight.bold, fontSize: 13),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: OutlinedButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: const Text('Cancel'),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF006633)),
+                                          onPressed: () => Navigator.pop(context, _selectedPickLocation),
+                                          child: const Text('Confirm Location', style: TextStyle(color: Colors.white)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ]
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // --- Admin Repositioning Confirmation Card ---
+                    if (isAdmin && _repositionLandmark != null && _selectedPickLocation != null)
+                      Positioned(
+                        bottom: 24,
+                        left: 20,
+                        right: 20,
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'New Location for ${_repositionLandmark!.name}:',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Lat: ${_selectedPickLocation!.latitude.toStringAsFixed(7)}, Lng: ${_selectedPickLocation!.longitude.toStringAsFixed(7)}',
+                                  style: const TextStyle(color: Color(0xFF006633), fontWeight: FontWeight.bold, fontSize: 13),
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedPickLocation = null;
+                                          });
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF006633)),
+                                        onPressed: () async {
+                                          final success = await _service.updateLandmark(_repositionLandmark!.id, {
+                                            'latitude': _selectedPickLocation!.latitude,
+                                            'longitude': _selectedPickLocation!.longitude,
+                                          });
+                                          if (mounted) {
+                                            if (success) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(content: Text('Location updated for ${_repositionLandmark!.name}!')),
+                                              );
+                                              setState(() {
+                                                _repositionLandmark = null;
+                                                _selectedPickLocation = null;
+                                              });
+                                              _retry();
+                                            } else {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text('Failed to update location.')),
+                                              );
+                                            }
+                                          }
+                                        },
+                                        child: const Text('Save Location', style: TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // --- Admin Tap Empty Space on Map Card ---
+                    if (isAdmin && !widget.isPickingLocation && _repositionLandmark == null && _selectedPickLocation != null)
+                      Positioned(
+                        bottom: 24,
+                        left: 20,
+                        right: 20,
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('📍 Selected Location:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Lat: ${_selectedPickLocation!.latitude.toStringAsFixed(7)}, Lng: ${_selectedPickLocation!.longitude.toStringAsFixed(7)}',
+                                  style: const TextStyle(color: Color(0xFF006633), fontWeight: FontWeight.bold, fontSize: 13),
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedPickLocation = null;
+                                          });
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        icon: const Icon(Icons.add, color: Colors.white),
+                                        label: const Text('Add Landmark', style: TextStyle(color: Colors.white)),
+                                        style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFE5A93C)),
+                                        onPressed: () {
+                                          final lat = _selectedPickLocation!.latitude;
+                                          final lng = _selectedPickLocation!.longitude;
+                                          setState(() {
+                                            _selectedPickLocation = null;
+                                          });
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => AddLandmarkScreen(initialLat: lat, initialLng: lng),
+                                            ),
+                                          ).then((_) => _retry());
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 );
               },

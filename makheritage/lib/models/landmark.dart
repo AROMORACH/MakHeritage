@@ -134,6 +134,8 @@ class Landmark {
       return 'assets/data/landmarks_pictures/College of Agricultural and Environmental Sciences.jpeg';
     } else if (lowerName.contains('lincoln')) {
       return 'assets/data/landmarks_pictures/Lincoln Flats.jpeg';
+    } else if (lowerName.contains('western gate') || lowerName.contains('kikoni gate')) {
+      return 'assets/data/landmarks_pictures/Western Gate.jpeg';
     }
     return null;
   }
