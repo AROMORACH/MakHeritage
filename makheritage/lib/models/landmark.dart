@@ -132,6 +132,8 @@ class Landmark {
       return 'assets/data/landmarks_pictures/Mastercard.jpeg';
     } else if (lowerName.contains('caes') || lowerName.contains('agricultural')) {
       return 'assets/data/landmarks_pictures/College of Agricultural and Environmental Sciences.jpeg';
+    } else if (lowerName.contains('lincoln')) {
+      return 'assets/data/landmarks_pictures/Lincoln Flats.jpeg';
     }
     return null;
   }
