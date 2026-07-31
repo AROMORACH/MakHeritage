@@ -122,17 +122,18 @@ class LandmarkService {
 
   Future<bool> updateLandmark(int id, Map<String, dynamic> data) async {
     try {
-      final payload = <String, dynamic>{
-        'name': data['name'],
-        'category': data['category'] ?? 'Uncategorised',
-        'description': data['description'] ?? '',
-        'latitude': data['latitude'],
-        'longitude': data['longitude'],
-        'foundation_year': data['year']?.toString(),
-      };
-      if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
-        payload['image_url'] = data['image_url'];
-      }
+      final payload = <String, dynamic>{};
+      if (data.containsKey('name') && data['name'] != null) payload['name'] = data['name'];
+      if (data.containsKey('category') && data['category'] != null) payload['category'] = data['category'];
+      if (data.containsKey('description') && data['description'] != null) payload['description'] = data['description'];
+      if (data.containsKey('latitude') && data['latitude'] != null) payload['latitude'] = data['latitude'];
+      if (data.containsKey('longitude') && data['longitude'] != null) payload['longitude'] = data['longitude'];
+      if (data.containsKey('year') && data['year'] != null) payload['foundation_year'] = data['year'].toString();
+      if (data.containsKey('foundation_year') && data['foundation_year'] != null) payload['foundation_year'] = data['foundation_year'].toString();
+      if (data.containsKey('image_url') && data['image_url'] != null) payload['image_url'] = data['image_url'];
+
+      if (payload.isEmpty) return true;
+
       await _supabase.from('landmarks').update(payload).eq('id', id);
       notifyDataChanged();
       return true;
