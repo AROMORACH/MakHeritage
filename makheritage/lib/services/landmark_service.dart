@@ -100,7 +100,16 @@ class LandmarkService {
       if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
         payload['image_url'] = data['image_url'];
       }
-      await _supabase.from('landmarks').insert(payload);
+      try {
+        await _supabase.from('landmarks').insert(payload);
+      } on PostgrestException catch (pe) {
+        if (pe.message.contains('image_url') || pe.code == 'PGRST204') {
+          payload.remove('image_url');
+          await _supabase.from('landmarks').insert(payload);
+        } else {
+          rethrow;
+        }
+      }
       notifyDataChanged();
       return true;
     } catch (e) {
@@ -134,7 +143,19 @@ class LandmarkService {
 
       if (payload.isEmpty) return true;
 
-      await _supabase.from('landmarks').update(payload).eq('id', id);
+      try {
+        await _supabase.from('landmarks').update(payload).eq('id', id);
+      } on PostgrestException catch (pe) {
+        if (pe.message.contains('image_url') || pe.code == 'PGRST204') {
+          payload.remove('image_url');
+          if (payload.isNotEmpty) {
+            await _supabase.from('landmarks').update(payload).eq('id', id);
+          }
+        } else {
+          rethrow;
+        }
+      }
+
       notifyDataChanged();
       return true;
     } catch (e) {
