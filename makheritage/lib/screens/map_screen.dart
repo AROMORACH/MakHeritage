@@ -860,7 +860,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                         initialCenter: _makerereCenter,
                         initialZoom: 16,
                         onTap: (tapPosition, point) {
-                          if (widget.isPickingLocation || isAdmin) {
+                          if ((widget.isPickingLocation == true) || isAdmin) {
                             setState(() {
                               _selectedPickLocation = point;
                             });
@@ -1134,7 +1134,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       ),
 
                     // --- Location Picker Floating Bar (Bottom) for Form ---
-                    if (widget.isPickingLocation)
+                    if (widget.isPickingLocation == true)
                       Positioned(
                         bottom: 24,
                         left: 20,
@@ -1254,7 +1254,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                       ),
 
                     // --- Admin Tap Empty Space on Map Card ---
-                    if (isAdmin && !widget.isPickingLocation && _repositionLandmark == null && _selectedPickLocation != null)
+                    if (isAdmin && (widget.isPickingLocation != true) && _repositionLandmark == null && _selectedPickLocation != null)
                       Positioned(
                         bottom: 24,
                         left: 20,
