@@ -1093,6 +1093,9 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                             debugPrint("Location error: $e");
                           }
                         },
+                      ),
+                    ),
+
                     // --- Reposition Banner (Top) ---
                     if (_repositionLandmark != null)
                       Positioned(
