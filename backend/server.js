@@ -70,7 +70,7 @@ app.get('/api/landmarks', async (req, res) => {
         const { category, year } = req.query;
         let query = supabase
             .from('landmarks')
-            .select('id, name, description, category, foundation_year, latitude, longitude, image_url');
+            .select('*');
 
         if (category && category !== 'All') query = query.eq('category', category);
         if (year) query = query.eq('foundation_year', year);
@@ -92,22 +92,27 @@ app.post('/api/landmarks', async (req, res) => {
             return res.status(400).json({ error: 'Name, latitude, longitude, and year are required.' });
         }
 
-        const { data, error } = await supabase
-            .from('landmarks')
-            .insert({
-                name,
-                category: category || 'Uncategorised',
-                description: description || '',
-                latitude,
-                longitude,
-                foundation_year: year,
-                image_url: image_url || null
-            })
-            .select()
-            .single();
+        const payload = {
+            name,
+            category: category || 'Uncategorised',
+            description: description || '',
+            latitude,
+            longitude,
+            foundation_year: year
+        };
+        if (image_url) payload.image_url = image_url;
+
+        let { data, error } = await supabase.from('landmarks').insert(payload).select().single();
+
+        if (error && (error.message.includes('image_url') || error.code === 'PGRST204')) {
+            delete payload.image_url;
+            const retry = await supabase.from('landmarks').insert(payload).select().single();
+            data = retry.data;
+            error = retry.error;
+        }
 
         if (error) return res.status(500).json({ error: error.message });
-        res.status(201).json({ message: 'Landmark added successfully!', id: data.id });
+        res.status(201).json({ message: 'Landmark added successfully!', id: data ? data.id : null });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
@@ -128,10 +133,17 @@ app.put('/api/landmarks/:id', async (req, res) => {
         if (year !== undefined) updatePayload.foundation_year = year;
         if (image_url !== undefined) updatePayload.image_url = image_url;
 
-        const { error } = await supabase
-            .from('landmarks')
-            .update(updatePayload)
-            .eq('id', id);
+        let { error } = await supabase.from('landmarks').update(updatePayload).eq('id', id);
+
+        if (error && (error.message.includes('image_url') || error.code === 'PGRST204')) {
+            delete updatePayload.image_url;
+            if (Object.keys(updatePayload).length > 0) {
+                const retry = await supabase.from('landmarks').update(updatePayload).eq('id', id);
+                error = retry.error;
+            } else {
+                error = null;
+            }
+        }
 
         if (error) return res.status(500).json({ error: error.message });
         res.json({ message: 'Landmark updated successfully!' });
