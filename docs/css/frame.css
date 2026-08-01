@@ -1,0 +1,231 @@
+/*************************************************************************
+ * GitHub: https://github.com/yenchiah/project-website-template
+ * Version: v3.44
+ * This CSS file is for the website frame
+ *************************************************************************/
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  left: 0;
+  right: 0;
+  width: auto;
+  color: #333333;
+}
+
+strong,
+b {
+  font-weight: bold;
+}
+
+a {
+  outline: none;
+  cursor: pointer;
+  color: #006633;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img, video {
+  user-select: none;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  color: #111827;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+h1 { font-size: 32px; font-weight: 700; }
+h2 { font-size: 26px; font-weight: 700; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+h3 { font-size: 20px; font-weight: 600; color: #006633; }
+h4 { font-size: 16px; font-weight: 600; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+.menu-container {
+  z-index: 100;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #006633;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu {
+  position: relative;
+  margin: 0 auto;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.menu .logo a {
+  color: #ffffff;
+  font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
+  font-size: 26px;
+  text-decoration: none;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+}
+
+.menu .menu-items {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.menu .menu-items > a {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  transition: color 0.2s;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.menu .menu-items > a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+}
+
+.banner {
+  width: 100%;
+  background: linear-gradient(135deg, #004d26 0%, #006633 60%, #003319 100%);
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.banner h1 {
+  color: #ffffff;
+  font-size: 40px;
+  margin-bottom: 12px;
+  font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.banner p {
+  font-size: 18px;
+  color: #e2e8f0;
+  max-width: 800px;
+  margin: 0 auto 24px auto;
+  line-height: 1.6;
+}
+
+.banner-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E5A93C;
+  color: #111827;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.banner-btn:hover {
+  background: #f3b64c;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.banner-btn.outline {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+}
+
+.banner-btn.outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.content-container {
+  width: 100%;
+  padding: 40px 0;
+}
+
+.content {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-item {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .flex-row {
+    flex-direction: column;
+  }
+  .content {
+    padding: 20px;
+  }
+  .banner h1 {
+    font-size: 28px;
+  }
+  .menu .menu-items {
+    display: none;
+  }
+}
+
+.footer {
+  background: #1f2937;
+  color: #9ca3af;
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 60px;
+}
+
+.footer a {
+  color: #E5A93C;
+}

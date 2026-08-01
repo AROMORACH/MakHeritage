@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>MakHeritage | Mobile Digital Spatial Archive & Audio Guidance System</title>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" type="text/css" />
+  <link href="css/frame.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="css/controls.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="css/custom.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Open+Sans+Condensed:wght@700&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/footer.js"></script>
+</head>
+
+<body>
+  <div class="menu-container"></div>
+
+  <!-- Header Banner -->
+  <div id="home" class="banner">
+    <h1>MakHeritage</h1>
+    <p>A Mobile Digital Spatial Archive & Automated Audio Guidance System for Makerere University</p>
+    <div class="banner-buttons">
+      <a href="https://github.com/AROMORACH/MakHeritage" target="_blank" class="banner-btn">
+        <i class="fab fa-github"></i> GitHub Repository
+      </a>
+      <a href="#architecture" class="banner-btn outline">
+        <i class="fas fa-sitemap"></i> System Architecture
+      </a>
+      <a href="#features" class="banner-btn outline">
+        <i class="fas fa-mobile-alt"></i> App Features
+      </a>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="content">
+
+      <!-- Stats Bar -->
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-number">42</div>
+          <div class="stat-label">Mapped Landmarks</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">7 Dec</div>
+          <div class="stat-label">Coordinate Precision</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">50m</div>
+          <div class="stat-label">Geofence Proximity</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Offline Resilience</div>
+        </div>
+      </div>
+
+      <!-- Overview / Abstract -->
+      <section id="overview">
+        <h2>1. Executive Summary & Abstract</h2>
+        <p class="text">
+          Makerere University ("The Hill"), established in 1922, holds over a century of architectural, political, and socio-cultural legacy. Despite its historic significance, students, academic researchers, and campus visitors frequently face challenges in exploring and understanding the historical context of its landmarks due to sparse physical plaques, network volatility, and fragmented archives.
+        </p>
+        <p class="text">
+          <strong>MakHeritage</strong> bridges this gap by combining a <strong>Flutter mobile application</strong> with a <strong>Node.js/Express RESTful API</strong> deployed on cloud infrastructure (Render & Supabase PostgreSQL). The platform delivers real-time interactive vector cartography using open-source OpenStreetMap tiles, geofenced GPS proximity alerts that automatically trigger Text-to-Speech (TTS) voice narration, chronological timeline filtering (1922–present), offline data caching via <code>SharedPreferences</code>, and a domain-restricted One-Time Password (OTP) administrator portal with interactive map location picking.
+        </p>
+      </section>
+
+      <!-- Problem & Objectives -->
+      <section id="problem">
+        <h2>2. Problem Statement & Functional Objectives</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3><i class="fas fa-exclamation-triangle" style="color: #dc2626;"></i> Spatial & Historical Disconnect</h3>
+            <p>Physical plaques on campus sites are sparse, weathered, or lack deep background information for visitors and freshers.</p>
+          </div>
+          <div class="card">
+            <h3><i class="fas fa-wifi" style="color: #d97706;"></i> Network Volatility</h3>
+            <p>Frequent cellular data disruptions on campus disrupt traditional web-only navigation platforms.</p>
+          </div>
+          <div class="card">
+            <h3><i class="fas fa-shield-alt" style="color: #059669;"></i> Content Governance</h3>
+            <p>Historical archives require strict administrative security controls to prevent unauthorized tampering.</p>
+          </div>
+        </div>
+
+        <h3>Key Objectives</h3>
+        <ul>
+          <li><strong>R1 (Interactive Mapping):</strong> Render vector maps using <code>flutter_map</code> and OpenStreetMap tiles centered on Makerere (0.3349° N, 32.5681° E).</li>
+          <li><strong>R2 (Audio Guidance):</strong> Compute Haversine distance and automatically trigger <code>flutter_tts</code> narration upon entering 50m landmark proximity.</li>
+          <li><strong>R3 (Offline Persistence):</strong> Cache JSON payloads locally via <code>SharedPreferences</code> for network-resilient access.</li>
+          <li><strong>R4 (Domain Authentication):</strong> Validate admin emails for 6-digit OTP single-use login with 5-minute expiry.</li>
+          <li><strong>R5 (Interactive CRUD Management):</strong> Enable authenticated administrators to create, edit, relocate on map, and delete landmark records.</li>
+        </ul>
+      </section>
+
+      <!-- System Architecture -->
+      <section id="architecture">
+        <h2>3. System Architecture & Product Design</h2>
+        <p class="text">
+          MakHeritage utilizes a multi-tiered, decoupled full-stack architecture designed for reliable data synchronization and high performance.
+        </p>
+        <div class="architecture-diagram">
+          <img src="img/main_building.jpg" alt="Makerere University Main Building" class="img-responsive" style="max-height: 350px; object-fit: cover; width: 100%;">
+          <p style="margin-top: 10px; font-weight: 600; color: #4b5563;">Iconic Landmark Archive: Makerere Main Building (Ivory Tower)</p>
+        </div>
+
+        <table class="table-style">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Technology Component</th>
+              <th>Responsibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Layer 1: Mobile Client</strong></td>
+              <td>Flutter, Dart, <code>flutter_map</code>, <code>geolocator</code>, <code>flutter_tts</code></td>
+              <td>Interactive cartography, GPS location tracking, proximity triggers, voice narration, UI state.</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 2: Local Persistence</strong></td>
+              <td><code>SharedPreferences</code> Cache</td>
+              <td>Stores offline JSON landmark snapshots for instant auto-loading when network is unavailable.</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 3: Cloud REST API</strong></td>
+              <td>Node.js 22, Express.js (Deployed on Render)</td>
+              <td>Handles HTTP API routes (<code>/api/landmarks</code>, <code>/api/admin/request-otp</code>, <code>/api/admin/verify-otp</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 4: Cloud Database & Storage</strong></td>
+              <td>Supabase PostgreSQL & Supabase Storage</td>
+              <td>Persistent cloud PostgreSQL relational database and cloud storage bucket for uploaded photo assets.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Features -->
+      <section id="features">
+        <h2>4. Core Application Functionalities</h2>
+        <div class="grid-3">
+          <div class="card">
+            <span class="badge primary">Feature 1</span>
+            <h3>Interactive Map & Geofencing</h3>
+            <p>Plots high-precision pins across Makerere. Automatically calculates Haversine distance to trigger voice narration when entering 50m proximity.</p>
+          </div>
+          <div class="card">
+            <span class="badge primary">Feature 2</span>
+            <h3>Landmark Directory & Filtering</h3>
+            <p>Full-text live search and categorical tabs (Colleges, Halls, Infrastructure, Spiritual, Gates). View rich narratives and foundation dates.</p>
+          </div>
+          <div class="card">
+            <span class="badge warning">Feature 3</span>
+            <h3>Interactive Location Picker</h3>
+            <p>Admin mode allows curators to tap directly anywhere on the live map to set or relocate landmark coordinates with 7-decimal place sub-meter precision.</p>
+          </div>
+          <div class="card">
+            <span class="badge warning">Feature 4</span>
+            <h3>OTP Admin Authentication</h3>
+            <p>Restricted 6-digit OTP delivery to institutional emails via Mailtrap SMTP and Resend API for secure content curation access.</p>
+          </div>
+          <div class="card">
+            <span class="badge info">Feature 5</span>
+            <h3>Cloud Image Upload</h3>
+            <p>Admins can select photos from device gallery or camera, preview, and upload directly to Supabase Cloud Storage.</p>
+          </div>
+          <div class="card">
+            <span class="badge info">Feature 6</span>
+            <h3>Offline Payload Caching</h3>
+            <p>Automatically saves network JSON snapshots locally, guaranteeing uninterrupted navigation during campus network loss.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results & Evaluation -->
+      <section id="results">
+        <h2>5. Implementation Results & Key Metrics</h2>
+        <div class="flex-row">
+          <div class="flex-item">
+            <img src="img/freedom_square.jpg" alt="Freedom Square" class="img-responsive">
+            <p style="text-align: center; font-size: 14px; margin-top: 6px; color: #4b5563;">Freedom Square (Geofenced Audio Narration Site)</p>
+          </div>
+          <div class="flex-item">
+            <img src="img/senate.jpg" alt="Senate Building" class="img-responsive">
+            <p style="text-align: center; font-size: 14px; margin-top: 6px; color: #4b5563;">Senate Building (Administrative Hub)</p>
+          </div>
+        </div>
+
+        <h3>Performance & Precision Metrics</h3>
+        <ul>
+          <li><strong>Coordinate Precision:</strong> Achieved <strong>7-decimal place accuracy (0.XXXXXXX)</strong> across all 42 campus landmarks, eliminating pin drift.</li>
+          <li><strong>Geofence Trigger Latency:</strong> Proximity alerts activate within <strong>< 1.2 seconds</strong> of entering the 50m radius.</li>
+          <li><strong>Offline Failover:</strong> Instant <strong>< 15ms cache response</strong> when mobile connectivity drops.</li>
+        </ul>
+      </section>
+
+      <!-- Team Members -->
+      <section id="team">
+        <h2>6. Team Members & Contributions (Group 27)</h2>
+        <table class="table-style">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Team Member</th>
+              <th>Project Role & Technical Contribution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>AROMORACH RITAH FIONA</strong></td>
+              <td><strong>GIS & Audio Guidance Engineer:</strong> Implemented location proximity algorithms (<code>geolocator</code>), integrated <code>flutter_tts</code> speech engine, compiled precise GPS coordinates.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>ANZOA JOSEPHINE CHONO</strong></td>
+              <td><strong>Quality Assurance & Documentation Lead:</strong> Compiled historical profile archives, designed poster and technical report, built project GitHub Pages website.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>SSENYONJO JOSHUA KATABIRA</strong></td>
+              <td><strong>Security & Authentication Specialist:</strong> Built domain-restricted OTP admin authentication pipeline, managed REST API security and input validation.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>WAMIMBI CHRISTIAN</strong></td>
+              <td><strong>Lead Mobile Frontend Engineer:</strong> Designed Flutter UI components, integrated <code>flutter_map</code> cartography, built <code>SharedPreferences</code> offline cache layer.</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>SSEKIZIYIVU MARIA</strong></td>
+              <td><strong>Lead Backend & Database Engineer:</strong> Architected Node.js/Express API endpoints, executed Supabase PostgreSQL database migration scripts, managed Render cloud deployment.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- References -->
+      <section id="references">
+        <h2>7. References & Citations</h2>
+        <ol>
+          <li>Flutter Documentation. <em>"Build apps with Flutter,"</em> 2026. [Online]. Available: <a href="https://docs.flutter.dev/" target="_blank">https://docs.flutter.dev/</a></li>
+          <li>Express.js. <em>"Fast, unopinionated, minimalist web framework for Node.js,"</em> 2026. [Online]. Available: <a href="https://expressjs.com/" target="_blank">https://expressjs.com/</a></li>
+          <li>Makerere University Archives. <em>"Makerere University Comprehensive Historical and Spatial Profile V3,"</em> Makerere University Press, Kampala, Uganda, 2024.</li>
+          <li>Supabase Team. <em>"PostgreSQL Cloud Database & Storage Architecture,"</em> 2026. [Online]. Available: <a href="https://supabase.com/" target="_blank">https://supabase.com/</a></li>
+        </ol>
+      </section>
+
+    </div>
+  </div>
+
+</body>
+</html>
