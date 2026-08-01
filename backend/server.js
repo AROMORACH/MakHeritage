@@ -70,7 +70,7 @@ app.get('/api/landmarks', async (req, res) => {
         const { category, year } = req.query;
         let query = supabase
             .from('landmarks')
-            .select('*');
+            .select('id, name, description, category, foundation_year, latitude, longitude');
 
         if (category && category !== 'All') query = query.eq('category', category);
         if (year) query = query.eq('foundation_year', year);
