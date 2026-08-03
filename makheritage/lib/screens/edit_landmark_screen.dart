@@ -38,7 +38,7 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
     _descController = TextEditingController(text: widget.landmark.description ?? '');
     _latController = TextEditingController(text: widget.landmark.latitude?.toString() ?? '');
     _lngController = TextEditingController(text: widget.landmark.longitude?.toString() ?? '');
-    _yearController = TextEditingController(text: '');
+    _yearController = TextEditingController(text: widget.landmark.foundationYear ?? '');
     _existingImageUrl = widget.landmark.imageAssetPath;
   }
 
@@ -101,12 +101,13 @@ class _EditLandmarkScreenState extends State<EditLandmarkScreen> {
     }
 
     final data = {
-      "name": _nameController.text,
-      "category": _categoryController.text,
-      "description": _descController.text,
-      "latitude": double.tryParse(_latController.text),
-      "longitude": double.tryParse(_lngController.text),
-      "year": int.tryParse(_yearController.text),
+      "name": _nameController.text.trim(),
+      "category": _categoryController.text.trim(),
+      "description": _descController.text.trim(),
+      "latitude": double.tryParse(_latController.text.trim()),
+      "longitude": double.tryParse(_lngController.text.trim()),
+      "year": _yearController.text.trim().isNotEmpty ? _yearController.text.trim() : null,
+      "foundation_year": _yearController.text.trim().isNotEmpty ? _yearController.text.trim() : null,
       "image_url": imageUrl,
     };
 

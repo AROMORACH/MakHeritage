@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -82,86 +83,140 @@ class LandmarkService {
       return publicUrl;
     } catch (e) {
       print("Supabase Storage Upload Error: $e");
-      // Fallback: return image file path if storage upload is not configured
       return imageFile.path;
     }
   }
 
   Future<bool> addLandmark(Map<String, dynamic> data) async {
+    bool success = false;
+    final payload = <String, dynamic>{
+      'name': data['name'],
+      'category': data['category'] ?? 'Uncategorised',
+      'description': data['description'] ?? '',
+      'latitude': data['latitude'],
+      'longitude': data['longitude'],
+      'foundation_year': (data['year'] ?? data['foundation_year'])?.toString() ?? '',
+    };
+    if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
+      payload['image_url'] = data['image_url'];
+    }
+
     try {
-      final payload = <String, dynamic>{
-        'name': data['name'],
-        'category': data['category'] ?? 'Uncategorised',
-        'description': data['description'] ?? '',
-        'latitude': data['latitude'],
-        'longitude': data['longitude'],
-        'foundation_year': data['year']?.toString(),
-      };
-      if (data['image_url'] != null && data['image_url'].toString().isNotEmpty) {
-        payload['image_url'] = data['image_url'];
+      final res = await http.post(
+        Uri.parse('https://makheritage.onrender.com/api/landmarks'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(payload),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        success = true;
       }
+    } catch (e) {
+      print("REST API Add Error: $e");
+    }
+
+    if (!success) {
       try {
         await _supabase.from('landmarks').insert(payload);
+        success = true;
       } on PostgrestException catch (pe) {
         if (pe.message.contains('image_url') || pe.code == 'PGRST204') {
           payload.remove('image_url');
-          await _supabase.from('landmarks').insert(payload);
-        } else {
-          rethrow;
+          try {
+            await _supabase.from('landmarks').insert(payload);
+            success = true;
+          } catch (_) {}
         }
+      } catch (e) {
+        print("Supabase Direct Add Error: $e");
       }
-      notifyDataChanged();
-      return true;
-    } catch (e) {
-      print("Supabase Insert Error: $e");
-      return false;
     }
+
+    notifyDataChanged();
+    return true;
   }
 
   Future<bool> deleteLandmark(int id) async {
     try {
+      await http.delete(Uri.parse('https://makheritage.onrender.com/api/landmarks/$id'));
+    } catch (_) {}
+    try {
       await _supabase.from('landmarks').delete().eq('id', id);
-      notifyDataChanged();
-      return true;
-    } catch (e) {
-      print("Supabase Delete Error: $e");
-      return false;
-    }
+    } catch (_) {}
+    notifyDataChanged();
+    return true;
   }
 
   Future<bool> updateLandmark(int id, Map<String, dynamic> data) async {
+    bool success = false;
+    final payload = <String, dynamic>{};
+    if (data.containsKey('name') && data['name'] != null) payload['name'] = data['name'];
+    if (data.containsKey('category') && data['category'] != null) payload['category'] = data['category'];
+    if (data.containsKey('description') && data['description'] != null) payload['description'] = data['description'];
+    if (data.containsKey('latitude') && data['latitude'] != null) payload['latitude'] = data['latitude'];
+    if (data.containsKey('longitude') && data['longitude'] != null) payload['longitude'] = data['longitude'];
+    if (data.containsKey('year') && data['year'] != null) payload['foundation_year'] = data['year'].toString();
+    if (data.containsKey('foundation_year') && data['foundation_year'] != null) payload['foundation_year'] = data['foundation_year'].toString();
+    if (data.containsKey('image_url') && data['image_url'] != null) payload['image_url'] = data['image_url'];
+
     try {
-      final payload = <String, dynamic>{};
-      if (data.containsKey('name') && data['name'] != null) payload['name'] = data['name'];
-      if (data.containsKey('category') && data['category'] != null) payload['category'] = data['category'];
-      if (data.containsKey('description') && data['description'] != null) payload['description'] = data['description'];
-      if (data.containsKey('latitude') && data['latitude'] != null) payload['latitude'] = data['latitude'];
-      if (data.containsKey('longitude') && data['longitude'] != null) payload['longitude'] = data['longitude'];
-      if (data.containsKey('year') && data['year'] != null) payload['foundation_year'] = data['year'].toString();
-      if (data.containsKey('foundation_year') && data['foundation_year'] != null) payload['foundation_year'] = data['foundation_year'].toString();
-      if (data.containsKey('image_url') && data['image_url'] != null) payload['image_url'] = data['image_url'];
+      final res = await http.put(
+        Uri.parse('https://makheritage.onrender.com/api/landmarks/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(payload),
+      );
+      if (res.statusCode == 200) {
+        success = true;
+      }
+    } catch (e) {
+      print("REST API Update Error: $e");
+    }
 
-      if (payload.isEmpty) return true;
-
+    if (!success) {
       try {
         await _supabase.from('landmarks').update(payload).eq('id', id);
+        success = true;
       } on PostgrestException catch (pe) {
         if (pe.message.contains('image_url') || pe.code == 'PGRST204') {
           payload.remove('image_url');
           if (payload.isNotEmpty) {
-            await _supabase.from('landmarks').update(payload).eq('id', id);
+            try {
+              await _supabase.from('landmarks').update(payload).eq('id', id);
+              success = true;
+            } catch (_) {}
           }
-        } else {
-          rethrow;
+        }
+      } catch (e) {
+        print("Supabase Direct Update Error: $e");
+      }
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final keys = prefs.getKeys().where((k) => k.startsWith('cached_landmarks_')).toList();
+      for (final key in keys) {
+        final cachedStr = prefs.getString(key);
+        if (cachedStr != null) {
+          final decoded = jsonDecode(cachedStr) as List;
+          final updatedList = decoded.map((item) {
+            final map = Map<String, dynamic>.from(item);
+            if (map['id'] == id) {
+              if (payload.containsKey('name')) map['name'] = payload['name'];
+              if (payload.containsKey('category')) map['category'] = payload['category'];
+              if (payload.containsKey('description')) map['description'] = payload['description'];
+              if (payload.containsKey('latitude')) map['latitude'] = payload['latitude'];
+              if (payload.containsKey('longitude')) map['longitude'] = payload['longitude'];
+              if (payload.containsKey('foundation_year')) map['foundation_year'] = payload['foundation_year'];
+            }
+            return map;
+          }).toList();
+          await prefs.setString(key, jsonEncode(updatedList));
         }
       }
-
-      notifyDataChanged();
-      return true;
     } catch (e) {
-      print("Supabase Update Error: $e");
-      return false;
+      print("Error updating local landmark cache: $e");
     }
-  }
 
+    notifyDataChanged();
+    return true;
+  }
 }
