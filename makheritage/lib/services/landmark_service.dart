@@ -37,35 +37,48 @@ class LandmarkService {
   Future<List<Landmark>> fetchLandmarks({String? category, int? year}) async {
     final cacheKey = 'cached_landmarks_${category ?? "All"}_${year ?? "All"}';
 
+    // Build REST API URL with optional filters
+    String apiUrl = 'https://makheritage.onrender.com/api/landmarks';
+    final queryParams = <String>[];
+    if (category != null && category != 'All') queryParams.add('category=${Uri.encodeComponent(category)}');
+    if (year != null) queryParams.add('year=$year');
+    if (queryParams.isNotEmpty) apiUrl += '?${queryParams.join('&')}';
+
+    // 1. Try Render REST API (bypasses Supabase RLS — reflects real updates)
+    try {
+      final res = await http.get(Uri.parse(apiUrl)).timeout(const Duration(seconds: 10));
+      if (res.statusCode == 200) {
+        final decoded = jsonDecode(res.body) as List;
+        final landmarks = decoded.map((json) => Landmark.fromJson(Map<String, dynamic>.from(json))).toList();
+        // Save fresh data to cache
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(cacheKey, jsonEncode(decoded));
+        return landmarks;
+      }
+    } catch (_) {}
+
+    // 2. Fallback: try Supabase directly
     try {
       var query = _supabase.from('landmarks').select();
-      
-      if (category != null && category != 'All') {
-        query = query.eq('category', category);
-      }
-      if (year != null) {
-        query = query.eq('foundation_year', year.toString());
-      }
-      
+      if (category != null && category != 'All') query = query.eq('category', category);
+      if (year != null) query = query.eq('foundation_year', year.toString());
       final data = await query;
-      
-      // Cache the raw JSON data for offline mode
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(cacheKey, jsonEncode(data));
-      
       return data.map((json) => Landmark.fromJson(json)).toList();
-      
-    } catch (e) {
-      // Offline fallback: load from SharedPreferences
+    } catch (_) {}
+
+    // 3. Offline fallback: load from SharedPreferences cache
+    try {
       final prefs = await SharedPreferences.getInstance();
       final cachedData = prefs.getString(cacheKey);
-      
       if (cachedData != null) {
-         final decoded = jsonDecode(cachedData) as List;
-         return decoded.map((json) => Landmark.fromJson(Map<String, dynamic>.from(json))).toList();
+        final decoded = jsonDecode(cachedData) as List;
+        return decoded.map((json) => Landmark.fromJson(Map<String, dynamic>.from(json))).toList();
       }
-      throw LandmarkServiceException('Offline and no cached data available. Error: $e');
-    }
+    } catch (_) {}
+
+    throw LandmarkServiceException('Unable to load landmarks. Please check your connection.');
   }
 
   Future<String?> uploadImage(XFile imageFile) async {
