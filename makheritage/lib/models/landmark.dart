@@ -5,6 +5,7 @@ class Landmark {
   final String? description;
   final double? latitude;
   final double? longitude;
+  final String? foundationYear;
   final String? imageUrl;
 
   Landmark({
@@ -14,6 +15,7 @@ class Landmark {
     this.description,
     this.latitude,
     this.longitude,
+    this.foundationYear,
     this.imageUrl,
   });
 
@@ -31,6 +33,7 @@ class Landmark {
       description: json['description'] as String?,
       latitude: _parseDouble(json['latitude']),
       longitude: _parseDouble(json['longitude']),
+      foundationYear: (json['foundation_year'] ?? json['year'])?.toString(),
       imageUrl: json['image_url'] as String?,
     );
   }
