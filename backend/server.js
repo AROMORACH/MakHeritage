@@ -3,7 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const https = require('https');
+const multer = require('multer');
 const { supabase } = require('./db');
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -59,6 +62,35 @@ function sendResendEmail(apiKey, fromEmail, toEmail, subject, text, callback) {
     req.write(payload);
     req.end();
 }
+
+// ============================================================
+// IMAGE UPLOAD ENDPOINT
+// ============================================================
+
+// POST /api/upload-image — Upload image to Supabase Storage via backend (bypasses client-side RLS)
+app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: 'No image file provided.' });
+
+        const fileName = `landmark_${Date.now()}.jpg`;
+        const { error } = await supabase.storage
+            .from('landmarks')
+            .upload(fileName, req.file.buffer, {
+                contentType: req.file.mimetype || 'image/jpeg',
+                upsert: true
+            });
+
+        if (error) {
+            console.error('Storage upload error:', error.message);
+            return res.status(500).json({ error: error.message });
+        }
+
+        const { data } = supabase.storage.from('landmarks').getPublicUrl(fileName);
+        res.json({ url: data.publicUrl });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 // ============================================================
 // LANDMARK ENDPOINTS — all backed by Supabase (PostgreSQL)

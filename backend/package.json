@@ -16,6 +16,7 @@
     "express": "^5.2.1",
     "nodemailer": "^9.0.3",
     "ws": "^8.18.0",
-    "@supabase/supabase-js": "^2.50.3"
+    "@supabase/supabase-js": "^2.50.3",
+    "multer": "^1.4.5-lts.1"
   }
 }

@@ -83,21 +83,29 @@ class LandmarkService {
 
   Future<String?> uploadImage(XFile imageFile) async {
     try {
-      final bytes = await imageFile.readAsBytes();
-      final fileName = 'landmark_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      
-      await _supabase.storage.from('landmarks').uploadBinary(
-        fileName,
-        bytes,
-        fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
+      // Upload via backend (uses service role key — bypasses Supabase Storage RLS)
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://makheritage.onrender.com/api/upload-image'),
       );
-      
-      final publicUrl = _supabase.storage.from('landmarks').getPublicUrl(fileName);
-      return publicUrl;
+      final bytes = await imageFile.readAsBytes();
+      request.files.add(http.MultipartFile.fromBytes(
+        'image',
+        bytes,
+        filename: 'landmark_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      ));
+      final streamed = await request.send().timeout(const Duration(seconds: 30));
+      final res = await http.Response.fromStream(streamed);
+      if (res.statusCode == 200) {
+        final json = jsonDecode(res.body) as Map<String, dynamic>;
+        if (json['url'] != null) return json['url'] as String;
+      }
+      print("Backend upload failed (${res.statusCode}): ${res.body}");
     } catch (e) {
-      print("Supabase Storage Upload Error: $e");
-      return imageFile.path;
+      print("Image upload error: $e");
     }
+    // Last resort: return local file path (works only on this device session)
+    return imageFile.path;
   }
 
   Future<bool> addLandmark(Map<String, dynamic> data) async {
